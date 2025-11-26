@@ -11,7 +11,7 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "frontend:dev": "turbo dev --filter=web",
-    "postinstall": "pnpm --filter @workspace/database run database:generate",
+    "postinstall": "node scripts/postinstall.mjs",
     "heroku-postbuild": "pnpm build:database && pnpm build:express"
   },
   "devDependencies": {

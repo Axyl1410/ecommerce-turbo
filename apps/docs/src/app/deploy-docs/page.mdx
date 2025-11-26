@@ -1,0 +1,130 @@
+# Deploy Documentation Site
+
+This guide explains how to deploy the **docs** app (`apps/docs`) to various hosting platforms.
+
+## Overview
+
+The docs app is a Next.js application built with Nextra. When deploying, you need to handle the monorepo structure and avoid unnecessary builds.
+
+## Environment Variables
+
+### `SKIP_PRISMA_GENERATE`
+
+The root `postinstall` script automatically runs Prisma generate, which requires `DATABASE_URL`. Since the docs app doesn't need the database, you should skip this step.
+
+**Set this environment variable based on your deployment method:**
+
+### Self-hosted deployments
+
+If you're deploying on your own server (VPS, Docker, etc.), you **must** set:
+
+```bash
+SKIP_PRISMA_GENERATE=1
+```
+
+This prevents the `postinstall` script from trying to generate Prisma client, which would fail without `DATABASE_URL`.
+
+### Platform deployments (Vercel, Netlify, etc.)
+
+Most platforms like **Vercel** automatically detect and build only the app you're deploying. However, if you're deploying from the monorepo root, you may still need to set:
+
+```bash
+SKIP_PRISMA_GENERATE=1
+```
+
+**Note:** Some platforms allow you to configure the root directory (e.g., `apps/docs`), which can help avoid this issue entirely.
+
+## Build Commands
+
+### From monorepo root
+
+```bash
+# Build only docs (recommended)
+pnpm build:docs
+
+# Or using turbo directly
+turbo build --filter=docs
+```
+
+### From docs directory
+
+```bash
+cd apps/docs
+pnpm build
+```
+
+## Deployment Examples
+
+### Vercel
+
+1. **Connect your repository** to Vercel
+2. **Set root directory** to `apps/docs` (recommended)
+3. **Build command**: `cd ../.. && pnpm build:docs` (if root is `apps/docs`)
+   - Or: `pnpm build` (if root is monorepo root)
+4. **Environment variables**:
+   - `SKIP_PRISMA_GENERATE=1` (if building from root)
+
+### Netlify
+
+1. **Base directory**: `apps/docs`
+2. **Build command**: `cd ../.. && pnpm build:docs`
+3. **Environment variables**:
+   - `SKIP_PRISMA_GENERATE=1`
+
+### Self-hosted (Docker example)
+
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/docs/package.json ./apps/docs/
+COPY packages/*/package.json ./packages/*/
+
+# Install dependencies
+ENV SKIP_PRISMA_GENERATE=1
+RUN corepack enable && corepack prepare pnpm@10.23.0 --activate
+RUN pnpm install --frozen-lockfile
+
+# Copy source
+COPY apps/docs ./apps/docs
+COPY turbo.json ./
+
+# Build
+RUN pnpm build:docs
+
+# Start
+WORKDIR /app/apps/docs
+CMD ["pnpm", "start"]
+```
+
+## Turborepo Configuration
+
+The `turbo.json` includes a specific task override for docs:
+
+```json
+"docs#build": {
+  "dependsOn": [],
+  "inputs": ["$TURBO_DEFAULT$"],
+  "outputs": [".next/**", "!.next/cache/**"]
+}
+```
+
+This ensures that building docs doesn't trigger builds of other packages (`@workspace/database`, `apps/express`, etc.).
+
+## Troubleshooting
+
+### Error: "DATABASE_URL environment variable is not defined"
+
+**Solution:** Set `SKIP_PRISMA_GENERATE=1` in your environment variables.
+
+### Build includes other packages
+
+**Solution:** Use `pnpm build:docs` or `turbo build --filter=docs` instead of `turbo build`.
+
+### Postinstall script fails
+
+**Solution:** Ensure `SKIP_PRISMA_GENERATE=1` is set before running `pnpm install`.
+

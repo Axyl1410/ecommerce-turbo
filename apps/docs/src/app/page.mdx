@@ -1,0 +1,43 @@
+# Get started
+
+Welcome to the documentation for your **e-commerce** monorepo.
+
+This site is powered by the **Axyl Docs** experience (built on Nextra) and uses the shared layout (navbar, sidebar, footer) defined in `layout.js`.
+
+## What’s inside this monorepo?
+
+- **`apps/web`** – Next.js storefront
+- **`apps/express`** – Express API (Better Auth, REST endpoints)
+- **`apps/docs`** – This documentation site
+- **`packages/database`** – Prisma + Postgres database client
+- **`packages/ui`** – Shared UI components
+
+## Quick start
+
+### 1. Run the dev servers
+
+```bash
+# From the monorepo root
+pnpm install
+pnpm dev
+```
+
+Then open:
+
+- Storefront: `http://localhost:3000`
+- Docs: `http://localhost:3001` (or the port used by the docs app)
+
+### 2. Deploy Express API to Heroku
+
+See the detailed guide at:
+
+- [`/heroku-deploy`](/heroku-deploy) – **Deploy Express API to Heroku**
+
+## Next steps
+
+- Update docs content in `apps/docs/src/app`
+- Add new MDX pages for:
+  - API reference
+  - Database schema (Prisma models)
+  - UI components
+

@@ -1,0 +1,137 @@
+# Deploy Express API to Heroku
+
+## Setup overview
+
+### 1. Files created/updated
+
+- `Procfile` (root): defines the web process and release command  
+- `app.json`: Heroku app configuration  
+- `project.toml`: build and deploy configuration for the monorepo  
+- `.slugignore`: excludes files that are not needed in the Heroku slug  
+- `apps/express/package.json`: engines and scripts for Node and pnpm  
+- `apps/express/src/index.ts`: server listens on `0.0.0.0` so Heroku can bind the port  
+
+### 2. Key changes
+
+#### Server configuration
+
+- Server listens on `0.0.0.0` instead of just `localhost`  
+- Port comes from `process.env.PORT` (set automatically by Heroku)  
+
+#### Procfile (root)
+
+```procfile
+web: cd apps/express && node dist/index.js
+release: pnpm --filter @workspace/database run database:generate && pnpm --filter @workspace/database run database:deploy
+```
+
+#### Package.json engines
+
+```json
+"engines": {
+  "node": "20.x",
+  "pnpm": "10.23.0"
+}
+```
+
+## Deploy steps (build from root)
+
+### 1. Install Heroku CLI
+
+```bash
+npm install -g heroku
+```
+
+### 2. Login to Heroku
+
+```bash
+heroku login
+```
+
+### 3. Create Heroku app (if you don't have one)
+
+```bash
+heroku create your-app-name
+```
+
+### 4. Set environment variables
+
+```bash
+# DATABASE_URL (for Heroku Postgres or any PostgreSQL instance)
+heroku config:set DATABASE_URL="your-database-url"
+
+# Other required env variables
+heroku config:set NODE_ENV=production
+heroku config:set BETTER_AUTH_SECRET="your-secret"
+heroku config:set BETTER_AUTH_URL="https://your-app.herokuapp.com"
+# ... any additional env variables
+```
+
+### 5. Build & deploy
+
+Root `package.json` is configured with:
+
+```json
+"scripts": {
+  "build:database": "pnpm --filter @workspace/database run build",
+  "build:express": "cd apps/express && pnpm build",
+  "postinstall": "pnpm --filter @workspace/database run database:generate",
+  "heroku-postbuild": "pnpm build:database && pnpm build:express"
+}
+```
+
+Heroku pipeline:
+
+1. Install dependencies at the monorepo root  
+2. Run `postinstall` → generate Prisma client  
+3. Run `heroku-postbuild` → build `@workspace/database` and `apps/express`  
+4. Start the app using the `web` process from `Procfile`  
+
+Deploy command:
+
+```bash
+git push heroku main
+```
+
+### 6. Check logs
+
+```bash
+heroku logs --tail
+```
+
+## Important notes
+
+1. **Monorepo setup**: Heroku builds from the root, the server runs from `apps/express`.  
+2. **Database migrations**:
+   - The release command automatically runs migrations on each deploy  
+   - Make sure `DATABASE_URL` is set before deploying  
+3. **Environment variables**:
+   - All required env vars must be set in the Heroku dashboard or via CLI  
+   - Do **not** commit `.env` files to Git  
+4. **Port binding**:
+   - Heroku sets `PORT` automatically  
+   - The server is configured to listen on that port  
+
+## Troubleshooting
+
+### "Cannot find module" errors
+
+- Ensure the `postinstall` script in the root `package.json` runs correctly  
+- Verify that `@workspace/database` has been built and `dist/index.js` exists  
+
+### Database connection errors
+
+- Double-check that `DATABASE_URL` is correct  
+- Ensure database migrations have run (check release phase logs)  
+
+### Build errors
+
+- Check Node version (should be `20.x`)  
+- Check pnpm version (should be `10.23.0`)  
+- Inspect build logs:
+
+```bash
+heroku logs --tail
+```
+
+

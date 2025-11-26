@@ -1,4 +1,4 @@
-import { PrismaClient } from "../generated/prisma/client.js";
+import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 // Use globalThis to cache the Prisma client in development
@@ -28,5 +28,3 @@ export const prisma =
 
     return client;
   })();
-
-

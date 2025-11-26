@@ -1,0 +1,11 @@
+# Ignore files not needed for production
+apps/web/**
+apps/web/.next/**
+packages/ui/**
+node_modules/.cache/**
+.git/**
+*.md
+.env.local
+.env.development
+.env.test
+

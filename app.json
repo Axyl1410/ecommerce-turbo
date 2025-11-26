@@ -1,0 +1,31 @@
+{
+  "name": "E-commerce API",
+  "description": "E-commerce Express API with Better Auth",
+  "repository": "https://github.com/axyl1410/e-commerce",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "keywords": ["node", "express", "api", "e-commerce"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "env": {
+    "NODE_ENV": {
+      "required": true,
+      "value": "production"
+    },
+    "DATABASE_URL": {
+      "required": true,
+      "description": "PostgreSQL database connection string"
+    }
+  },
+  "scripts": {
+    "postdeploy": "cd apps/express && pnpm build"
+  }
+}

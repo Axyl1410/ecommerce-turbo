@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:database": "pnpm --filter @workspace/database run build",
     "build:express": "cd apps/express && pnpm build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "frontend:dev": "turbo dev --filter=web",
     "postinstall": "pnpm --filter @workspace/database run database:generate",
-    "heroku-postbuild": "pnpm build:express"
+    "heroku-postbuild": "pnpm build:database && pnpm build:express"
   },
   "devDependencies": {
     "@workspace/eslint-config": "workspace:*",

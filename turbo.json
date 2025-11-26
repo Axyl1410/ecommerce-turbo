@@ -20,6 +20,7 @@
       "persistent": true
     },
     "database:generate": {
+      "env": ["DATABASE_URL"],
       "cache": false
     },
     "database:migrate": {

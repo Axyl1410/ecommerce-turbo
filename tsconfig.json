@@ -1,7 +1,3 @@
 {
-  "extends": "@workspace/typescript-config/base.json",
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "moduleResolution": "nodenext"
-  }
+  "extends": "@workspace/typescript-config/base.json"
 }

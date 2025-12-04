@@ -1,0 +1,111 @@
+# API reference
+
+This page documents the Express API that lives in `apps/express`. Endpoints follow the Clean Architecture layering you see in:
+
+- Routing: `apps/express/src/routes/v1/index.ts`
+- Presentation: `apps/express/src/presentation/routes/v1`
+- Controllers & use cases: `apps/express/src/presentation/controllers` and `apps/express/src/application/use-cases`
+- Dependency wiring: `apps/express/src/infrastructure/di/container.ts`
+
+Use this as a quick map from HTTP route → validation → business logic.
+
+---
+
+## Products API
+
+All product endpoints live under `/api/v1/products` and are wired up in `product.routes.ts`. Public reads require no auth; mutations run through `AdminMiddleware`.
+
+### `GET /api/v1/products`
+
+- **Purpose**: List products with pagination, filters, and sorting.
+- **Query params**: `page`, `pageSize`, `status`, `categoryId`, `search`, `sortBy`, `sortOrder` (validated via `getProductsQuerySchema`).
+- **Flow**: Router → `ProductController.getProducts()` → `GetProductsUseCase`.
+
+### `GET /api/v1/products/slug/:slug`
+
+- **Purpose**: Fetch full product detail by slug (variants + media).
+- **Auth**: Public.
+- **Flow**: Validator ensures `slug`, then `ProductController.getProductBySlug()` → `GetProductBySlugUseCase`.
+
+### `GET /api/v1/products/:id`
+
+- **Purpose**: Fetch product detail by ID.
+- **Auth**: Public.
+- **Flow**: Validators guard `id`, then `ProductController.getProductById()` → `GetProductByIdUseCase`.
+
+### `POST /api/v1/products`
+
+- **Purpose**: Create a product with variants/images.
+- **Auth**: Requires `AdminMiddleware`.
+- **Body**: Validated by `createProductBodySchema` (name, slug, price, status, variants, images).
+- **Flow**: Controller delegates to `CreateProductUseCase`, which persists via `PrismaProductRepository`.
+
+### `PUT /api/v1/products/:id`
+
+- **Purpose**: Update product + relations.
+- **Auth**: Admin only.
+- **Body**: `updateProductBodySchema`.
+- **Flow**: Controller → `UpdateProductUseCase` (reuses `GetProductByIdUseCase` for existence checks).
+
+### `DELETE /api/v1/products/:id`
+
+- **Purpose**: Soft delete product.
+- **Auth**: Admin only.
+- **Flow**: Controller → `DeleteProductUseCase`.
+
+---
+
+## Cart API
+
+Mounted at `/api/v1/cart` through `cart.routes.ts`. Instead of a reusable Express middleware, cart routes call `resolveIdentifier()` to read either:
+
+- Better Auth session (`Authorization` cookie/headers), **or**
+- `x-session-id` header for guests.
+
+If both `userId` and `sessionId` exist, guest carts are automatically merged into the signed-in user cart (`GetOrCreateCartUseCase.mergeGuestCart`).
+
+### `GET /api/v1/cart`
+
+- **Purpose**: Retrieve cart items plus validation warnings (stock, price changes, etc.).
+- **Headers**: Provide auth cookies for logged-in users or `x-session-id` for guests.
+- **Flow**: `CartController.getCart()` → `GetOrCreateCartUseCase` (ensures cart) → `GetCartDetailsUseCase` (loads items + validation) → `PrismaCartRepository`.
+
+### `POST /api/v1/cart`
+
+- **Purpose**: Add an item to the active cart (creates cart when missing).
+- **Body**: `{ "variantId": string, "quantity": number }` validated via `cartAddItemBodySchema`.
+- **Flow**: Controller ensures identifier → `AddItemToCartUseCase` (also hits Redis cache).
+
+### `PUT /api/v1/cart/items/:itemId`
+
+- **Purpose**: Update quantity for an existing cart item.
+- **Body**: `{ "quantity": number }` validated via `cartUpdateItemBodySchema`.
+- **Flow**: Controller → `UpdateCartItemUseCase`.
+
+### `DELETE /api/v1/cart/items/:itemId`
+
+- **Purpose**: Remove a cart line item.
+- **Flow**: Controller → `RemoveCartItemUseCase`.
+
+### `DELETE /api/v1/cart`
+
+- **Purpose**: Empty the cart after checkout or manual clear.
+- **Flow**: Controller reuses `GetOrCreateCartUseCase` to find the cart, then `ClearCartUseCase`.
+
+---
+
+## Folder reference
+
+| Layer | Path | Notes |
+| --- | --- | --- |
+| Routes | `apps/express/src/presentation/routes/v1` | Express routers + validation |
+| Controllers | `apps/express/src/presentation/controllers` | HTTP orchestration, error mapping |
+| Use cases | `apps/express/src/application/use-cases` | Business rules per feature |
+| DTO/validators | `apps/express/src/application/dto`, `.../presentation/validators` | Shapes shared between layers |
+| Repositories | `apps/express/src/domain/repositories` | Interfaces implemented by Prisma |
+| Prisma impls | `apps/express/src/infrastructure/persistence/prisma` | Database access, entity mapping |
+| DI container | `apps/express/src/infrastructure/di/container.ts` | Manual dependency wiring |
+
+Use this table with the route sections above to jump straight to the files that define each behavior.
+
+

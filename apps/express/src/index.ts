@@ -4,12 +4,18 @@ import { CreateServer } from "./server";
 
 const server = CreateServer();
 
-// Listen on 0.0.0.0 to allow Heroku to bind to the port
-const host = process.env.HOST || "0.0.0.0";
-
-server.listen(config.port, host, () => {
+server.listen(config.port, () => {
   logger.info(
-    { port: config.port, host },
-    `Server is running at http://${host}:${config.port}`
+    { port: config.port },
+    `Server is running at http://localhost:${config.port}`
   );
 });
+
+if (process.env.NODE_ENV === "production") {
+  server.listen(config.port, config.host, () => {
+    logger.info(
+      { port: config.port, host: config.host },
+      `Server is running at http://${config.host}:${config.port}`
+    );
+  });
+}

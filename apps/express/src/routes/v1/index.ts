@@ -1,8 +1,11 @@
 import express, { type Request, type Response, type Router } from "express";
 import { sendSuccess } from "@/lib/api-response-helper";
 import AuthMiddleware from "@/middleware/auth.middleware";
-import cartRouter from "./cart";
-import productRouter from "./product";
+import { createCartRoutes } from "@/presentation/routes/v1/cart.routes";
+import { container } from "@/infrastructure/di/container";
+import { createProductRoutes } from "@/presentation/routes/v1/product.routes";
+import type { ProductController } from "@/presentation/controllers/product.controller";
+import type { CartController } from "@/presentation/controllers/cart.controller";
 
 const v1: Router = express.Router();
 
@@ -20,10 +23,10 @@ v1.get("/me", AuthMiddleware, (req, res) => {
   sendSuccess(res, { session: req.session }, "User session");
 });
 
-// Product routes
-v1.use("/products", productRouter);
+const productController = container.get<ProductController>("productController");
+v1.use("/products", createProductRoutes(productController));
 
-// Cart routes
-v1.use("/cart", cartRouter);
+const cartController = container.get<CartController>("cartController");
+v1.use("/cart", createCartRoutes(cartController));
 
 export default v1;

@@ -9,6 +9,7 @@
     "build:express": "cd apps/express && pnpm build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "frontend:dev": "turbo dev --filter=web",
     "postinstall": "node scripts/postinstall.mjs",

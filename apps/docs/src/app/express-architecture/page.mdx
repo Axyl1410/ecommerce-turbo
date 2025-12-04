@@ -1,0 +1,88 @@
+# Express app architecture
+
+This page captures the current Clean Architecture layout of `apps/express`. Use it as a map when you need to trace an endpoint, identify where to add new logic, or explain the layering to teammates.
+
+---
+
+## Layer overview
+
+| Layer | Location | Purpose |
+| --- | --- | --- |
+| **Domain** | `apps/express/src/domain` | Entities, value objects, repository contracts, domain services |
+| **Application** | `apps/express/src/application` | Use cases, DTOs, cache/interface contracts |
+| **Infrastructure** | `apps/express/src/infrastructure` | Prisma repositories, Redis cache, DI container, adapters |
+| **Presentation** | `apps/express/src/presentation` | Controllers, validators, Express routers |
+| **Routes** | `apps/express/src/routes/v1` | Entry points mounted by the main server |
+| **Shared** | `apps/express/src/shared` | Common errors, helpers (e.g., API response helpers) |
+
+Each request flows Presentation → Application → Domain, with Infrastructure providing concrete implementations via dependency injection.
+
+---
+
+## Directory map
+
+```
+apps/express/src
+├── domain
+│   ├── entities/              # Product, Cart, CartItem …
+│   ├── value-objects/         # Price, Slug, etc.
+│   ├── repositories/          # Interfaces consumed by use cases
+│   └── services/              # Cross-entity domain services (e.g., cart merge)
+├── application
+│   ├── dto/                   # Input/output contracts for use cases
+│   ├── interfaces/            # Cache abstraction and other ports
+│   └── use-cases/
+│       ├── product/           # CRUD + query use cases
+│       └── cart/              # Cart lifecycle + item operations
+├── infrastructure
+│   ├── cache/                 # Redis cache implementation
+│   ├── di/                    # Manual DI container wiring every dependency
+│   └── persistence/
+│       └── prisma/            # Prisma repositories mapping DB → domain
+├── presentation
+│   ├── controllers/           # HTTP orchestration + error translation
+│   ├── validators/            # Zod schemas for body/query params
+│   └── routes/
+│       └── v1/                # Express Router definitions (product, cart)
+├── routes/
+│   └── v1/index.ts            # Mounts versioned routers + health endpoints
+└── shared/
+    ├── errors/                # DomainError, ApplicationError, NotFoundError
+    └── lib/                   # API response helper, logging, etc.
+```
+
+---
+
+## Dependency injection
+
+- `apps/express/src/infrastructure/di/container.ts` instantiates Prisma repositories, Redis cache, and every use case.
+- Controllers are constructed with their required use cases and registered under descriptive keys (`productController`, `cartController`).
+- `apps/express/src/routes/v1/index.ts` pulls controllers from the container so routes stay framework-only.
+
+This manual DI container keeps wiring in one place, letting tests replace dependencies or future modules plug into the same pattern.
+
+---
+
+## Request flow example
+
+For `GET /api/v1/cart`:
+
+1. `routes/v1/index.ts` mounts `createCartRoutes`.
+2. `presentation/routes/v1/cart.routes.ts` resolves the user/session identifier and invokes `CartController.getCart`.
+3. `CartController` calls `GetOrCreateCartUseCase` (ensures cart, merges guest → user) then `GetCartDetailsUseCase`.
+4. Use cases rely on `ICartRepository`/`ICacheService`, supplied by `PrismaCartRepository` and `RedisCacheService`.
+5. Responses flow back via the shared API helper, keeping consistent `{ result, message, data }` payloads.
+
+---
+
+## When adding new features
+
+1. **Start in Domain** – Define entities/value objects or extend repository interfaces.
+2. **Add a use case** – Place orchestration logic in `application/use-cases/<module>`.
+3. **Implement infrastructure** – Extend the Prisma repository or add new adapters.
+4. **Expose via presentation** – Create controller methods/validators/routes.
+5. **Wire it up** – Register the new use case + controller method in the DI container and route index.
+
+Following these steps keeps the Clean Architecture boundaries intact and makes future refactors safer.
+
+

@@ -1,27 +1,27 @@
 import Link from "next/link";
-import * as React from "react";
 import {
-	NavigationMenuItem,
-	NavigationMenuLink,
-	navigationMenuTriggerStyle,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
 type MenuItemProps = {
-	label: string;
-	url?: string;
+  label: string;
+  url?: string;
 };
 
 export function MenuItem({ label, url }: MenuItemProps) {
-	return (
-		<NavigationMenuItem>
-			<Link href={url ?? "/"} legacyBehavior passHref>
-				<NavigationMenuLink
-					className={cn([navigationMenuTriggerStyle(), "font-normal px-3"])}
-				>
-					{label}
-				</NavigationMenuLink>
-			</Link>
-		</NavigationMenuItem>
-	);
+  return (
+    <NavigationMenuItem>
+      <NavigationMenuLink asChild>
+        <Link
+          href={url ?? "/"}
+          className={cn([navigationMenuTriggerStyle(), "font-normal px-3"])}
+        >
+          {label}
+        </Link>
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+  );
 }

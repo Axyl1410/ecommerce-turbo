@@ -30,4 +30,3 @@ export interface ICacheService {
    */
   deleteMultiple(keys: string[]): Promise<void>;
 }
-

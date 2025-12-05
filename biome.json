@@ -1,12 +1,12 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
 	"vcs": {
-		"enabled": false,
+		"enabled": true,
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": true
+		"ignoreUnknown": false
 	},
 	"formatter": {
 		"enabled": true,
@@ -30,5 +30,6 @@
 				"organizeImports": "on"
 			}
 		}
-	}
+	},
+	"root": true
 }

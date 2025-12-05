@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 export default function TestPage() {
-	const { isLoading, error, data } = useQuery({
+	const { isLoading, data } = useQuery({
 		queryKey: ["repoData"],
 		queryFn: () =>
 			axios
@@ -13,8 +13,6 @@ export default function TestPage() {
 	});
 
 	if (isLoading) return "Loading...";
-
-	if (error) return "An error has occurred: " + error.message;
 
 	return (
 		<div>

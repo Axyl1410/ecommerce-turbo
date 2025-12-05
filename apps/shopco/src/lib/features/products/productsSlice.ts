@@ -7,7 +7,7 @@ export type Color = {
 };
 
 // Define a type for the slice state
-interface ProductsState {
+export interface ProductsState {
   colorSelection: Color;
   sizeSelection: string;
 }

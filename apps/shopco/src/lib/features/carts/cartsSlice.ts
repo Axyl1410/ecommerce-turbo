@@ -38,7 +38,7 @@ export type Cart = {
 };
 
 // Define a type for the slice state
-interface CartsState {
+export interface CartsState {
   cart: Cart | null;
   totalPrice: number;
   adjustedTotalPrice: number;

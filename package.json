@@ -15,7 +15,6 @@
     "heroku-postbuild": "pnpm build:database && pnpm build:express"
   },
   "devDependencies": {
-    "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "prettier": "^3.6.2",
     "turbo": "^2.6.1",

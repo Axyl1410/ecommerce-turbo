@@ -32,7 +32,10 @@ const Slider = React.forwardRef<
     const [values, setValues] = React.useState<[number, number]>(defaultValue);
 
     const handleValueChange = (newValues: number[]) => {
-      setValues([newValues[0], newValues[1]]);
+      setValues([
+        newValues[0] !== undefined ? newValues[0] : min,
+        newValues[1] !== undefined ? newValues[1] : max,
+      ]);
     };
 
     return (

@@ -13,10 +13,10 @@ import { RedisClient } from "./redis";
  * @throws Error if connection fails
  */
 async function ensureConnection(): Promise<void> {
-  if (!RedisClient.isOpen) {
-    await RedisClient.connect();
-    logger.debug("Redis connection established");
-  }
+	if (!RedisClient.isOpen) {
+		await RedisClient.connect();
+		logger.debug("Redis connection established");
+	}
 }
 
 /**
@@ -27,23 +27,23 @@ async function ensureConnection(): Promise<void> {
  * @throws Error if cache operation fails
  */
 export async function setCache<T>(
-  key: string,
-  data: T,
-  ttl = 60
+	key: string,
+	data: T,
+	ttl = 60,
 ): Promise<void> {
-  try {
-    await ensureConnection();
+	try {
+		await ensureConnection();
 
-    const serialized = JSON.stringify(data);
-    await RedisClient.setEx(key, ttl, serialized);
+		const serialized = JSON.stringify(data);
+		await RedisClient.setEx(key, ttl, serialized);
 
-    logger.debug({ key, ttl }, "Cache set successfully");
-  } catch (error) {
-    logger.error({ error, key }, "Failed to set cache");
-    throw new Error(
-      `Failed to set cache: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+		logger.debug({ key, ttl }, "Cache set successfully");
+	} catch (error) {
+		logger.error({ error, key }, "Failed to set cache");
+		throw new Error(
+			`Failed to set cache: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }
 
 /**
@@ -53,25 +53,25 @@ export async function setCache<T>(
  * @throws Error if cache operation fails
  */
 export async function getCache<T>(key: string): Promise<T | null> {
-  try {
-    await ensureConnection();
+	try {
+		await ensureConnection();
 
-    const cached = await RedisClient.get(key);
+		const cached = await RedisClient.get(key);
 
-    if (!cached) {
-      logger.debug({ key }, "Cache miss");
-      return null;
-    }
+		if (!cached) {
+			logger.debug({ key }, "Cache miss");
+			return null;
+		}
 
-    const parsed = JSON.parse(cached) as T;
-    logger.debug({ key }, "Cache hit");
-    return parsed;
-  } catch (error) {
-    logger.error({ error, key }, "Failed to get cache");
-    throw new Error(
-      `Failed to get cache: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+		const parsed = JSON.parse(cached) as T;
+		logger.debug({ key }, "Cache hit");
+		return parsed;
+	} catch (error) {
+		logger.error({ error, key }, "Failed to get cache");
+		throw new Error(
+			`Failed to get cache: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }
 
 /**
@@ -80,17 +80,17 @@ export async function getCache<T>(key: string): Promise<T | null> {
  * @throws Error if cache operation fails
  */
 export async function deleteCache(key: string): Promise<void> {
-  try {
-    await ensureConnection();
+	try {
+		await ensureConnection();
 
-    await RedisClient.del(key);
-    logger.debug({ key }, "Cache deleted successfully");
-  } catch (error) {
-    logger.error({ error, key }, "Failed to delete cache");
-    throw new Error(
-      `Failed to delete cache: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+		await RedisClient.del(key);
+		logger.debug({ key }, "Cache deleted successfully");
+	} catch (error) {
+		logger.error({ error, key }, "Failed to delete cache");
+		throw new Error(
+			`Failed to delete cache: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }
 
 /**
@@ -99,24 +99,24 @@ export async function deleteCache(key: string): Promise<void> {
  * @throws Error if cache operation fails
  */
 export async function deleteCacheMultiple(keys: string[]): Promise<void> {
-  if (keys.length === 0) {
-    return;
-  }
+	if (keys.length === 0) {
+		return;
+	}
 
-  try {
-    await ensureConnection();
+	try {
+		await ensureConnection();
 
-    await RedisClient.del(keys);
-    logger.debug(
-      { keys, count: keys.length },
-      "Multiple cache keys deleted successfully"
-    );
-  } catch (error) {
-    logger.error({ error, keys }, "Failed to delete multiple cache keys");
-    throw new Error(
-      `Failed to delete multiple cache keys: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+		await RedisClient.del(keys);
+		logger.debug(
+			{ keys, count: keys.length },
+			"Multiple cache keys deleted successfully",
+		);
+	} catch (error) {
+		logger.error({ error, keys }, "Failed to delete multiple cache keys");
+		throw new Error(
+			`Failed to delete multiple cache keys: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }
 
 /**
@@ -126,17 +126,17 @@ export async function deleteCacheMultiple(keys: string[]): Promise<void> {
  * @throws Error if cache operation fails
  */
 export async function existsCache(key: string): Promise<boolean> {
-  try {
-    await ensureConnection();
+	try {
+		await ensureConnection();
 
-    const exists = await RedisClient.exists(key);
-    return exists > 0;
-  } catch (error) {
-    logger.error({ error, key }, "Failed to check cache existence");
-    throw new Error(
-      `Failed to check cache existence: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+		const exists = await RedisClient.exists(key);
+		return exists > 0;
+	} catch (error) {
+		logger.error({ error, key }, "Failed to check cache existence");
+		throw new Error(
+			`Failed to check cache existence: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }
 
 /**
@@ -146,15 +146,15 @@ export async function existsCache(key: string): Promise<boolean> {
  * @throws Error if cache operation fails
  */
 export async function getCacheTTL(key: string): Promise<number> {
-  try {
-    await ensureConnection();
+	try {
+		await ensureConnection();
 
-    const ttl = await RedisClient.ttl(key);
-    return ttl;
-  } catch (error) {
-    logger.error({ error, key }, "Failed to get cache TTL");
-    throw new Error(
-      `Failed to get cache TTL: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+		const ttl = await RedisClient.ttl(key);
+		return ttl;
+	} catch (error) {
+		logger.error({ error, key }, "Failed to get cache TTL");
+		throw new Error(
+			`Failed to get cache TTL: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
 }

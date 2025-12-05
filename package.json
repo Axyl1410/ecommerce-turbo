@@ -1,28 +1,31 @@
 {
-  "name": "e-commerce",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "build:docs": "turbo build --filter=docs",
-    "build:database": "pnpm --filter @workspace/database run build",
-    "build:express": "cd apps/express && pnpm build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "test": "turbo test",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "node scripts/postinstall.mjs",
-    "heroku-postbuild": "pnpm build:database && pnpm build:express"
-  },
-  "devDependencies": {
-    "@workspace/typescript-config": "workspace:*",
-    "prettier": "^3.6.2",
-    "turbo": "^2.6.1",
-    "typescript": "5.7.3"
-  },
-  "engines": {
-    "node": "20.x",
-    "pnpm": "10.23.0"
-  },
-  "packageManager": "pnpm@10.23.0"
+	"name": "e-commerce",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"build": "turbo build",
+		"build:docs": "turbo build --filter=docs",
+		"build:database": "pnpm --filter @workspace/database run build",
+		"build:express": "cd apps/express && pnpm build",
+		"dev": "turbo dev",
+		"lint": "turbo lint",
+		"test": "turbo test",
+		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
+		"postinstall": "node scripts/postinstall.mjs",
+		"heroku-postbuild": "pnpm build:database && pnpm build:express",
+		"format-and-lint": "biome check .",
+		"format-and-lint:fix": "biome check . --write"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.0",
+		"@workspace/typescript-config": "workspace:*",
+		"prettier": "^3.6.2",
+		"turbo": "^2.6.1",
+		"typescript": "5.7.3"
+	},
+	"engines": {
+		"node": "20.x",
+		"pnpm": "10.23.0"
+	},
+	"packageManager": "pnpm@10.23.0"
 }

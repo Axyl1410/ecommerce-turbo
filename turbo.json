@@ -1,43 +1,47 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build", "database:generate"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["DATABASE_URL"]
-    },
-    "docs#build": {
-      "dependsOn": [],
-      "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "test": {
-      "dependsOn": ["^test"],
-      "outputs": []
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
-    "dev": {
-      "dependsOn": ["^database:generate"],
-      "cache": false,
-      "persistent": true
-    },
-    "database:generate": {
-      "env": ["DATABASE_URL"],
-      "cache": false
-    },
-    "database:migrate": {
-      "cache": false,
-      "persistent": true
-    },
-    "database:deploy": {
-      "cache": false
-    }
-  }
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build", "database:generate"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"outputs": [".next/**", "!.next/cache/**", "dist/**"],
+			"env": ["DATABASE_URL"]
+		},
+		"//#format-and-lint": {},
+		"//#format-and-lint:fix": {
+			"cache": false
+		},
+		"docs#build": {
+			"dependsOn": [],
+			"inputs": ["$TURBO_DEFAULT$"],
+			"outputs": [".next/**", "!.next/cache/**"]
+		},
+		"lint": {
+			"dependsOn": ["^lint"]
+		},
+		"test": {
+			"dependsOn": ["^test"],
+			"outputs": []
+		},
+		"check-types": {
+			"dependsOn": ["^check-types"]
+		},
+		"dev": {
+			"dependsOn": ["^database:generate"],
+			"cache": false,
+			"persistent": true
+		},
+		"database:generate": {
+			"env": ["DATABASE_URL"],
+			"cache": false
+		},
+		"database:migrate": {
+			"cache": false,
+			"persistent": true
+		},
+		"database:deploy": {
+			"cache": false
+		}
+	}
 }

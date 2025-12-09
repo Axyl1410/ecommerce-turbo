@@ -1,5 +1,5 @@
 import request from "supertest";
-import { CreateServer } from "../server";
+import { CreateServer } from "../../server";
 
 // Mock ESM modules that Jest cannot parse in CommonJS mode
 jest.mock("@scalar/express-api-reference", () => ({
@@ -18,7 +18,7 @@ jest.mock("better-auth/node", () => ({
 		},
 }));
 
-jest.mock("../lib/auth", () => ({
+jest.mock("../../lib/auth", () => ({
 	auth: {
 		api: {
 			getSession: jest.fn().mockResolvedValue(null),
@@ -26,7 +26,7 @@ jest.mock("../lib/auth", () => ({
 	},
 }));
 
-jest.mock("../lib/redis", () => ({
+jest.mock("../../lib/redis", () => ({
 	RedisClient: {
 		isOpen: true,
 		connect: jest.fn(),
@@ -66,3 +66,4 @@ describe("Health endpoints", () => {
 		});
 	});
 });
+

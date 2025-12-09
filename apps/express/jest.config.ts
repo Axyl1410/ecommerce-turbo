@@ -9,15 +9,14 @@ const config: Config = {
 		"^@/(.*)$": "<rootDir>/src/$1",
 	},
 	testMatch: [
-		"<rootDir>/src/**/__tests__/**/*.test.ts",
-		"<rootDir>/src/**/*.spec.ts",
-		"<rootDir>/src/**/*.test.ts",
+		"<rootDir>/src/test/**/*.test.ts",
+		"<rootDir>/src/test/**/*.spec.ts",
 	],
 	collectCoverageFrom: [
 		"src/**/*.ts",
 		"!src/**/*.d.ts",
 		"!src/**/index.ts",
-		"!src/**/__tests__/**",
+		"!src/test/**",
 	],
 	setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 	clearMocks: true,

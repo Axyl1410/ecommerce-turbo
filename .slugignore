@@ -35,20 +35,10 @@ node_modules/.cache/**
 apps/express/src/test/**
 
 # Docs app
-apps/docs/.next/**
-apps/docs/.turbo/**
-apps/docs/public/_pagefind/**
-apps/docs/.pagefind/**
-apps/docs/out/**
-apps/docs/.vercel/**
+apps/docs/**
 
 # Shopco Next app
-apps/shopco/.next/**
-apps/shopco/.turbo/**
-apps/shopco/storybook-static/**
-apps/shopco/coverage/**
-apps/shopco/dist/**
-apps/shopco/build/**
+apps/shopco/**
 
 # Express app
 apps/express/coverage/**
@@ -58,9 +48,8 @@ apps/express/.nyc_output/**
 apps/express/node_modules/.cache/**
 
 # UI package
-packages/ui/.next/**
-packages/ui/.turbo/**
-packages/ui/storybook-static/**
-packages/ui/coverage/**
-packages/ui/dist/**
+packages/ui/**
+
+# Other packages not needed at runtime
+packages/typescript-config/**
 

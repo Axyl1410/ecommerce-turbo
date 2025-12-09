@@ -14,13 +14,13 @@ const navbar = (
 		logo={
 			<div className="h-full">
 				<p className="sr-only">Axyl</p>
+				{/** biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 3207 485"
 					fill="currentColor"
-					height={12}
+					height={14}
 				>
-					<title>blacktext</title>
 					<line
 						x1="362.28"
 						y1="151"

@@ -11,6 +11,12 @@ import { GetCartDetailsUseCase } from "@/application/use-cases/cart/get-cart-det
 import { GetOrCreateCartUseCase } from "@/application/use-cases/cart/get-or-create-cart.use-case";
 import { RemoveCartItemUseCase } from "@/application/use-cases/cart/remove-cart-item.use-case";
 import { UpdateCartItemUseCase } from "@/application/use-cases/cart/update-cart-item.use-case";
+import { CreateCategoryUseCase } from "@/application/use-cases/category/create-category.use-case";
+import { DeleteCategoryUseCase } from "@/application/use-cases/category/delete-category.use-case";
+import { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
+import { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
+import { GetCategoryBySlugUseCase } from "@/application/use-cases/category/get-category-by-slug.use-case";
+import { UpdateCategoryUseCase } from "@/application/use-cases/category/update-category.use-case";
 import { CreateProductUseCase } from "@/application/use-cases/product/create-product.use-case";
 import { DeleteProductUseCase } from "@/application/use-cases/product/delete-product.use-case";
 import { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
@@ -18,11 +24,14 @@ import { GetProductBySlugUseCase } from "@/application/use-cases/product/get-pro
 import { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
 import { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
+import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { RedisCacheService } from "@/infrastructure/cache/redis-cache.service";
 import { PrismaCartRepository } from "@/infrastructure/persistence/prisma/cart.repository.impl";
+import { PrismaCategoryRepository } from "@/infrastructure/persistence/prisma/category.repository.impl";
 import { PrismaProductRepository } from "@/infrastructure/persistence/prisma/product.repository.impl";
 import { CartController } from "@/presentation/controllers/cart.controller";
+import { CategoryController } from "@/presentation/controllers/category.controller";
 import { ProductController } from "@/presentation/controllers/product.controller";
 
 export class DIContainer {
@@ -59,11 +68,13 @@ export class DIContainer {
 	initialize(): void {
 		// Infrastructure layer
 		const productRepository: IProductRepository = new PrismaProductRepository();
+		const categoryRepository: ICategoryRepository = new PrismaCategoryRepository();
 		const cartRepository: ICartRepository = new PrismaCartRepository();
 		const cacheService: ICacheService = new RedisCacheService();
 
 		// Register infrastructure
 		this.register("productRepository", productRepository);
+		this.register("categoryRepository", categoryRepository);
 		this.register("cacheService", cacheService);
 		this.register("cartRepository", cartRepository);
 
@@ -121,6 +132,33 @@ export class DIContainer {
 			cacheService,
 		);
 
+		const getCategoriesUseCase = new GetCategoriesUseCase(
+			categoryRepository,
+			cacheService,
+		);
+		const getCategoryByIdUseCase = new GetCategoryByIdUseCase(
+			categoryRepository,
+			cacheService,
+		);
+		const getCategoryBySlugUseCase = new GetCategoryBySlugUseCase(
+			categoryRepository,
+			cacheService,
+		);
+		const createCategoryUseCase = new CreateCategoryUseCase(
+			categoryRepository,
+			cacheService,
+			getCategoryByIdUseCase,
+		);
+		const updateCategoryUseCase = new UpdateCategoryUseCase(
+			categoryRepository,
+			cacheService,
+			getCategoryByIdUseCase,
+		);
+		const deleteCategoryUseCase = new DeleteCategoryUseCase(
+			categoryRepository,
+			cacheService,
+		);
+
 		// Register use cases
 		this.register("getProductsUseCase", getProductsUseCase);
 		this.register("getProductByIdUseCase", getProductByIdUseCase);
@@ -135,6 +173,12 @@ export class DIContainer {
 		this.register("removeCartItemUseCase", removeCartItemUseCase);
 		this.register("clearCartUseCase", clearCartUseCase);
 		this.register("clearCartAfterOrderUseCase", clearCartAfterOrderUseCase);
+		this.register("getCategoriesUseCase", getCategoriesUseCase);
+		this.register("getCategoryByIdUseCase", getCategoryByIdUseCase);
+		this.register("getCategoryBySlugUseCase", getCategoryBySlugUseCase);
+		this.register("createCategoryUseCase", createCategoryUseCase);
+		this.register("updateCategoryUseCase", updateCategoryUseCase);
+		this.register("deleteCategoryUseCase", deleteCategoryUseCase);
 
 		// Presentation layer - Controllers
 		const productController = new ProductController(
@@ -153,10 +197,19 @@ export class DIContainer {
 			removeCartItemUseCase,
 			clearCartUseCase,
 		);
+		const categoryController = new CategoryController(
+			getCategoriesUseCase,
+			getCategoryByIdUseCase,
+			getCategoryBySlugUseCase,
+			createCategoryUseCase,
+			updateCategoryUseCase,
+			deleteCategoryUseCase,
+		);
 
 		// Register controllers
 		this.register("productController", productController);
 		this.register("cartController", cartController);
+		this.register("categoryController", categoryController);
 	}
 }
 

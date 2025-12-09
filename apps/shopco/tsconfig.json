@@ -4,6 +4,7 @@
 		"jsx": "react-jsx",
 		"incremental": true,
 		"lib": ["dom", "dom.iterable", "esnext"],
+		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"]
 		},
@@ -12,7 +13,8 @@
 	"include": [
 		"next-env.d.ts",
 		"**/*.ts",
-		"**/*.tsx"
+		"**/*.tsx",
+		"**/*.d.ts"
 	],
 	"exclude": ["node_modules", ".next"]
 }

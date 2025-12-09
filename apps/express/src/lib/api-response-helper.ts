@@ -2,30 +2,13 @@
  * API Response Helper for Express.js
  *
  * Standard JSON response format:
- * - Success: { result: "SUCCESS", message: string, data: T }
- * - Error: { result: "ERROR", message: string, data: null }
+ * - Success: { status: number | string, message: string, data: T }
+ * - Error: { status: number | string, message: string, data: null, errorCode? }
  */
 
 import type { NextFunction, Request, Response } from "express";
+import type { ApiResponse } from "@workspace/types";
 import logger from "@/lib/logger";
-
-// ==================== Types ====================
-
-export type ApiResult = "SUCCESS" | "ERROR";
-
-export type ApiSuccessResponse<T = unknown> = {
-	result: "SUCCESS";
-	message: string;
-	data: T;
-};
-
-export type ApiErrorResponse = {
-	result: "ERROR";
-	message: string;
-	data: null;
-};
-
-export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
 
 // ==================== Response Builder ====================
 
@@ -38,9 +21,10 @@ export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
 export function createSuccessResponse<T>(
 	data: T,
 	message = "Success",
-): ApiSuccessResponse<T> {
+	status: number | string = 200,
+): ApiResponse<T> {
 	return {
-		result: "SUCCESS",
+		status,
 		message,
 		data,
 	};
@@ -53,9 +37,10 @@ export function createSuccessResponse<T>(
  */
 export function createSuccessNoDataResponse(
 	message = "Success",
-): ApiSuccessResponse<null> {
+	status: number | string = 200,
+): ApiResponse<null> {
 	return {
-		result: "SUCCESS",
+		status,
 		message,
 		data: null,
 	};
@@ -66,11 +51,16 @@ export function createSuccessNoDataResponse(
  * @param message - Error message
  * @returns ApiErrorResponse
  */
-export function createErrorResponse(message: string): ApiErrorResponse {
+export function createErrorResponse(
+	message: string,
+	status: number | string = 400,
+	errorCode?: string,
+): ApiResponse<null> {
 	return {
-		result: "ERROR",
+		status,
 		message,
 		data: null,
+		errorCode,
 	};
 }
 
@@ -81,9 +71,11 @@ export function createErrorResponse(message: string): ApiErrorResponse {
  */
 export function createErrorResponseFromException(
 	error: Error | string,
-): ApiErrorResponse {
+	status: number | string = 400,
+	errorCode?: string,
+): ApiResponse<null> {
 	const message = error instanceof Error ? error.message : error;
-	return createErrorResponse(message);
+	return createErrorResponse(message, status, errorCode);
 }
 
 /**
@@ -112,7 +104,7 @@ export function sendSuccess<T>(
 	message = "Success",
 	statusCode = 200,
 ): void {
-	const response = createSuccessResponse(data, message);
+	const response = createSuccessResponse(data, message, statusCode);
 	res.status(statusCode).json(response);
 }
 
@@ -127,7 +119,7 @@ export function sendSuccessNoData(
 	message = "Success",
 	statusCode = 200,
 ): void {
-	const response = createSuccessNoDataResponse(message);
+	const response = createSuccessNoDataResponse(message, statusCode);
 	res.status(statusCode).json(response);
 }
 
@@ -141,8 +133,9 @@ export function sendError(
 	res: Response,
 	message: string,
 	statusCode = 400,
+	errorCode?: string,
 ): void {
-	const response = createErrorResponse(message);
+	const response = createErrorResponse(message, statusCode, errorCode);
 	res.status(statusCode).json(response);
 }
 
@@ -156,8 +149,13 @@ export function sendErrorFromException(
 	res: Response,
 	error: Error | string,
 	statusCode = 400,
+	errorCode?: string,
 ): void {
-	const response = createErrorResponseFromException(error);
+	const response = createErrorResponseFromException(
+		error,
+		statusCode,
+		errorCode,
+	);
 	res.status(statusCode).json(response);
 }
 

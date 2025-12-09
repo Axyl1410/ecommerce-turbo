@@ -60,7 +60,7 @@ describe("CategoryController", () => {
 			expect(res.status).toHaveBeenCalledWith(200);
 			expect(res.json).toHaveBeenCalledWith(
 				expect.objectContaining({
-					result: "SUCCESS",
+					status: 200,
 					message: "Categories retrieved successfully",
 					data: result,
 				}),
@@ -89,7 +89,7 @@ describe("CategoryController", () => {
 			expect(res.status).toHaveBeenCalledWith(500);
 			expect(res.json).toHaveBeenCalledWith(
 				expect.objectContaining({
-					result: "ERROR",
+					status: 500,
 					message: "Database error",
 				}),
 			);

@@ -17,7 +17,7 @@ describe("API Response Helper", () => {
 			const response = createSuccessResponse(data, "Success message");
 
 			expect(response).toEqual({
-				result: "SUCCESS",
+				status: 200,
 				message: "Success message",
 				data,
 			});
@@ -35,7 +35,7 @@ describe("API Response Helper", () => {
 			const response = createErrorResponse("Error message");
 
 			expect(response).toEqual({
-				result: "ERROR",
+				status: 400,
 				message: "Error message",
 				data: null,
 			});
@@ -47,7 +47,7 @@ describe("API Response Helper", () => {
 			const response = createSuccessNoDataResponse("Operation successful");
 
 			expect(response).toEqual({
-				result: "SUCCESS",
+				status: 200,
 				message: "Operation successful",
 				data: null,
 			});
@@ -66,7 +66,7 @@ describe("API Response Helper", () => {
 			expect(res.status).toHaveBeenCalledWith(201);
 			expect(res.json).toHaveBeenCalledWith(
 				expect.objectContaining({
-					result: "SUCCESS",
+					status: 201,
 					message: "Success",
 					data: { id: 1 },
 				}),
@@ -86,7 +86,7 @@ describe("API Response Helper", () => {
 			expect(res.status).toHaveBeenCalledWith(400);
 			expect(res.json).toHaveBeenCalledWith(
 				expect.objectContaining({
-					result: "ERROR",
+					status: 400,
 					message: "Error message",
 				}),
 			);

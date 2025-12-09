@@ -59,7 +59,7 @@ describe("ProductController", () => {
 			expect(res.status).toHaveBeenCalledWith(200);
 			expect(res.json).toHaveBeenCalledWith(
 				expect.objectContaining({
-					result: "SUCCESS",
+					status: 200,
 					message: "Products retrieved successfully",
 				}),
 			);

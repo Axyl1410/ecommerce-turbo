@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import type { ApiResponse } from "@workspace/types";
 import axios from "axios";
 
 export default function TestPage() {
@@ -8,19 +9,20 @@ export default function TestPage() {
 		queryKey: ["repoData"],
 		queryFn: () =>
 			axios
-				.get("https://api.github.com/repos/TanStack/query")
+				.get<ApiResponse<{ id: string; name: string }>>(
+					"http://localhost:8080/api/v1/categories/slug/t-shirts",
+				)
 				.then((res) => res.data),
 	});
+
+	console.table(data);
 
 	if (isLoading) return "Loading...";
 
 	return (
-		<div>
-			<h1>{data.name}</h1>
-			<p>{data.description}</p>
-			<strong>👀 {data.subscribers_count}</strong>{" "}
-			<strong>✨ {data.stargazers_count}</strong>{" "}
-			<strong>🍴 {data.forks_count}</strong>
+		<div className="max-w-frame mx-auto">
+			<h1>{data?.message}</h1>
+			<p>{data?.data.name}</p>
 		</div>
 	);
 }

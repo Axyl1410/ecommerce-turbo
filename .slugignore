@@ -1,11 +1,66 @@
-# Ignore files not needed for production
-apps/web/**
-apps/web/.next/**
-packages/ui/**
+# Global ignores
+.git/
+.github/
+.gitignore
+.turbo/
+.pnpm-store/
 node_modules/.cache/**
-.git/**
-*.md
+**/.DS_Store
+
+# Env files (only keep production vars on Heroku config)
 .env.local
 .env.development
 .env.test
+.env.example
+
+# Build / cache artifacts
+**/.next/**
+**/.turbo/**
+**/.cache/**
+**/.parcel-cache/**
+**/.vite/**
+**/.storybook/**
+**/storybook-static/**
+**/dist/**
+**/build/**
+**/coverage/**
+**/.nyc_output/**
+**/.jest/**
+**/.idea/**
+
+# Tests (not needed at runtime)
+**/__tests__/**
+**/*.test.*
+**/*.spec.*
+apps/express/src/test/**
+
+# Docs app
+apps/docs/.next/**
+apps/docs/.turbo/**
+apps/docs/public/_pagefind/**
+apps/docs/.pagefind/**
+apps/docs/out/**
+apps/docs/.vercel/**
+
+# Shopco Next app
+apps/shopco/.next/**
+apps/shopco/.turbo/**
+apps/shopco/storybook-static/**
+apps/shopco/coverage/**
+apps/shopco/dist/**
+apps/shopco/build/**
+
+# Express app
+apps/express/coverage/**
+apps/express/.turbo/**
+apps/express/.cache/**
+apps/express/.nyc_output/**
+apps/express/node_modules/.cache/**
+
+# UI package
+packages/ui/.next/**
+packages/ui/.turbo/**
+packages/ui/storybook-static/**
+packages/ui/coverage/**
+packages/ui/dist/**
 

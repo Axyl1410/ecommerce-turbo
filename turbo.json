@@ -15,7 +15,7 @@
 		"docs#build": {
 			"dependsOn": [],
 			"inputs": ["$TURBO_DEFAULT$"],
-			"outputs": [".next/**", "!.next/cache/**"]
+			"outputs": [".next/**", "!.next/cache/**", "public/_pagefind/**"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]

@@ -1,9 +1,9 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { CreateCategoryUseCase } from "@/application/use-cases/category/create-category.use-case";
-import { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
-import { buildCategory } from "@/test/domain/entities/helpers";
+import type { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { buildCategory } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho CategoryRepository
@@ -54,11 +54,7 @@ describe("CreateCategoryUseCase", () => {
 		const repo = categoryRepositoryMock();
 		const cache = cacheServiceMock();
 		const getCategoryById = getCategoryByIdUseCaseMock();
-		const useCase = new CreateCategoryUseCase(
-			repo,
-			cache,
-			getCategoryById,
-		);
+		const useCase = new CreateCategoryUseCase(repo, cache, getCategoryById);
 
 		const category = buildCategory({
 			id: "cat-1",
@@ -115,11 +111,7 @@ describe("CreateCategoryUseCase", () => {
 		const repo = categoryRepositoryMock();
 		const cache = cacheServiceMock();
 		const getCategoryById = getCategoryByIdUseCaseMock();
-		const useCase = new CreateCategoryUseCase(
-			repo,
-			cache,
-			getCategoryById,
-		);
+		const useCase = new CreateCategoryUseCase(repo, cache, getCategoryById);
 
 		const parent = buildCategory({ id: "parent-1" });
 		const category = buildCategory({
@@ -170,11 +162,7 @@ describe("CreateCategoryUseCase", () => {
 		const repo = categoryRepositoryMock();
 		const cache = cacheServiceMock();
 		const getCategoryById = getCategoryByIdUseCaseMock();
-		const useCase = new CreateCategoryUseCase(
-			repo,
-			cache,
-			getCategoryById,
-		);
+		const useCase = new CreateCategoryUseCase(repo, cache, getCategoryById);
 
 		repo.existsBySlug.mockResolvedValue(true);
 
@@ -212,11 +200,7 @@ describe("CreateCategoryUseCase", () => {
 		const repo = categoryRepositoryMock();
 		const cache = cacheServiceMock();
 		const getCategoryById = getCategoryByIdUseCaseMock();
-		const useCase = new CreateCategoryUseCase(
-			repo,
-			cache,
-			getCategoryById,
-		);
+		const useCase = new CreateCategoryUseCase(repo, cache, getCategoryById);
 
 		repo.existsBySlug.mockResolvedValue(false);
 		repo.findById.mockResolvedValue(null);
@@ -258,11 +242,7 @@ describe("CreateCategoryUseCase", () => {
 		const repo = categoryRepositoryMock();
 		const cache = cacheServiceMock();
 		const getCategoryById = getCategoryByIdUseCaseMock();
-		const useCase = new CreateCategoryUseCase(
-			repo,
-			cache,
-			getCategoryById,
-		);
+		const useCase = new CreateCategoryUseCase(repo, cache, getCategoryById);
 
 		const category = buildCategory({ id: "cat-1" });
 		const categoryDetail = {
@@ -298,11 +278,7 @@ describe("CreateCategoryUseCase", () => {
 		const repo = categoryRepositoryMock();
 		const cache = cacheServiceMock();
 		const getCategoryById = getCategoryByIdUseCaseMock();
-		const useCase = new CreateCategoryUseCase(
-			repo,
-			cache,
-			getCategoryById,
-		);
+		const useCase = new CreateCategoryUseCase(repo, cache, getCategoryById);
 
 		const category = buildCategory({ id: "cat-1" });
 		const categoryDetail = {
@@ -337,4 +313,3 @@ describe("CreateCategoryUseCase", () => {
 		expect(result.imageUrl).toBe("https://example.com/image.png");
 	});
 });
-

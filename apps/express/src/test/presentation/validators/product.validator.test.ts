@@ -1,10 +1,10 @@
 import {
-	getProductsQuerySchema,
+	createProductBodySchema,
+	deleteProductParamsSchema,
 	getProductByIdParamsSchema,
 	getProductBySlugParamsSchema,
-	createProductBodySchema,
+	getProductsQuerySchema,
 	updateProductBodySchema,
-	deleteProductParamsSchema,
 } from "@/presentation/validators/product.validator";
 
 describe("Product Validators", () => {
@@ -90,4 +90,3 @@ describe("Product Validators", () => {
 		});
 	});
 });
-

@@ -23,4 +23,3 @@ describe("DomainError", () => {
 		expect(error).toBeInstanceOf(DomainError);
 	});
 });
-

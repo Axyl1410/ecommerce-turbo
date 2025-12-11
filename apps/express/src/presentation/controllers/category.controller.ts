@@ -2,9 +2,9 @@ import type { Request, Response } from "express";
 import type { GetCategoriesDTO } from "@/application/dto/category.dto";
 import type { CreateCategoryUseCase } from "@/application/use-cases/category/create-category.use-case";
 import type { DeleteCategoryUseCase } from "@/application/use-cases/category/delete-category.use-case";
+import type { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
 import type { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
 import type { GetCategoryBySlugUseCase } from "@/application/use-cases/category/get-category-by-slug.use-case";
-import type { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
 import type { UpdateCategoryUseCase } from "@/application/use-cases/category/update-category.use-case";
 import {
 	sendError,
@@ -145,4 +145,3 @@ export class CategoryController {
 		sendError(res, errorMessage, 500);
 	}
 }
-

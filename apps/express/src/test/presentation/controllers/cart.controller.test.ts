@@ -1,11 +1,11 @@
 import type { Response } from "express";
-import { CartController } from "@/presentation/controllers/cart.controller";
 import type { AddItemToCartUseCase } from "@/application/use-cases/cart/add-item-to-cart.use-case";
 import type { ClearCartUseCase } from "@/application/use-cases/cart/clear-cart.use-case";
 import type { GetCartDetailsUseCase } from "@/application/use-cases/cart/get-cart-details.use-case";
 import type { GetOrCreateCartUseCase } from "@/application/use-cases/cart/get-or-create-cart.use-case";
 import type { RemoveCartItemUseCase } from "@/application/use-cases/cart/remove-cart-item.use-case";
 import type { UpdateCartItemUseCase } from "@/application/use-cases/cart/update-cart-item.use-case";
+import { CartController } from "@/presentation/controllers/cart.controller";
 import { ApplicationError } from "@/shared/errors/application.error";
 
 const createUseCaseMocks = () => ({
@@ -239,4 +239,3 @@ describe("CartController", () => {
 		});
 	});
 });
-

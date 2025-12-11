@@ -28,7 +28,8 @@ v1.get("/me", AuthMiddleware, (req, res) => {
 const productController = container.get<ProductController>("productController");
 v1.use("/products", createProductRoutes(productController));
 
-const categoryController = container.get<CategoryController>("categoryController");
+const categoryController =
+	container.get<CategoryController>("categoryController");
 v1.use("/categories", createCategoryRoutes(categoryController));
 
 const cartController = container.get<CartController>("cartController");

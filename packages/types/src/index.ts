@@ -11,4 +11,3 @@ export type Paginated<T> = {
 	page: number;
 	pageSize: number;
 };
-

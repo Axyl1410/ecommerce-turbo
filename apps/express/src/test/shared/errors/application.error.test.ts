@@ -33,4 +33,3 @@ describe("ApplicationError", () => {
 		expect(error).toBeInstanceOf(ApplicationError);
 	});
 });
-

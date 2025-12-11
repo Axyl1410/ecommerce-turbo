@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { DeleteCategoryUseCase } from "@/application/use-cases/category/delete-category.use-case";
-import { buildCategory } from "@/test/domain/entities/helpers";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { buildCategory } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho CategoryRepository
@@ -133,7 +133,9 @@ describe("DeleteCategoryUseCase", () => {
 		await useCase.execute("cat-1");
 
 		expect(cache.delete).toHaveBeenCalledWith("category:detail:id:cat-1");
-		expect(cache.delete).toHaveBeenCalledWith("category:detail:slug:category-1");
+		expect(cache.delete).toHaveBeenCalledWith(
+			"category:detail:slug:category-1",
+		);
 	});
 
 	/**
@@ -160,7 +162,9 @@ describe("DeleteCategoryUseCase", () => {
 		expect(repo.findById).toHaveBeenCalledWith("cat-1");
 		// Verify cache is invalidated
 		expect(cache.delete).toHaveBeenCalledWith("category:detail:id:cat-1");
-		expect(cache.delete).toHaveBeenCalledWith("category:detail:slug:test-category");
+		expect(cache.delete).toHaveBeenCalledWith(
+			"category:detail:slug:test-category",
+		);
 		// Verify delete is called
 		expect(repo.delete).toHaveBeenCalledWith("cat-1");
 	});
@@ -190,4 +194,3 @@ describe("DeleteCategoryUseCase", () => {
 		);
 	});
 });
-

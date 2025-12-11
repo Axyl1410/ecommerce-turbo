@@ -31,9 +31,7 @@ describe("Product Entity", () => {
 	});
 
 	it("throws when creating product with invalid slug", () => {
-		expect(() => createProduct({ slug: "Invalid Slug!" })).toThrow(
-			DomainError,
-		);
+		expect(() => createProduct({ slug: "Invalid Slug!" })).toThrow(DomainError);
 	});
 
 	it("publishes a draft product", () => {
@@ -146,4 +144,3 @@ describe("Product Entity", () => {
 		expect(product.getStatus()).toBe("DRAFT");
 	});
 });
-

@@ -6,8 +6,8 @@
  * - Error: { status: number | string, message: string, data: null, errorCode? }
  */
 
-import type { NextFunction, Request, Response } from "express";
 import type { ApiResponse } from "@workspace/types";
+import type { NextFunction, Request, Response } from "express";
 import logger from "@/lib/logger";
 
 // ==================== Response Builder ====================

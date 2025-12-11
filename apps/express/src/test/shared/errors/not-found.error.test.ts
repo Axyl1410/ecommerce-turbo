@@ -17,4 +17,3 @@ describe("NotFoundError", () => {
 		expect(error).toBeInstanceOf(NotFoundError);
 	});
 });
-

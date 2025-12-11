@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { AddItemToCartUseCase } from "@/application/use-cases/cart/add-item-to-cart.use-case";
-import { buildCartItem, testDates } from "@/test/domain/entities/helpers";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { buildCartItem, testDates } from "@/test/domain/entities/helpers";
 
 const cartRepositoryMock = (): jest.Mocked<ICartRepository> =>
 	({
@@ -213,4 +213,3 @@ describe("AddItemToCartUseCase", () => {
 		expect(error.code).toBe("VARIANT_UNAVAILABLE");
 	});
 });
-

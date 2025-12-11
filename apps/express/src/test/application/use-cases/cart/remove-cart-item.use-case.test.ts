@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { RemoveCartItemUseCase } from "@/application/use-cases/cart/remove-cart-item.use-case";
-import { buildCartItem } from "@/test/domain/entities/helpers";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { buildCartItem } from "@/test/domain/entities/helpers";
 
 const cartRepositoryMock = (): jest.Mocked<ICartRepository> =>
 	({
@@ -76,4 +76,3 @@ describe("RemoveCartItemUseCase", () => {
 		expect(repo.removeItem).not.toHaveBeenCalled();
 	});
 });
-

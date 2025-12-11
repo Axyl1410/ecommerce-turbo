@@ -1,10 +1,10 @@
 import {
+	createCategoryBodySchema,
+	deleteCategoryParamsSchema,
 	getCategoriesQuerySchema,
 	getCategoryByIdParamsSchema,
 	getCategoryBySlugParamsSchema,
-	createCategoryBodySchema,
 	updateCategoryBodySchema,
-	deleteCategoryParamsSchema,
 } from "@/presentation/validators/category.validator";
 
 describe("Category Validators", () => {
@@ -176,4 +176,3 @@ describe("Category Validators", () => {
 		});
 	});
 });
-

@@ -1,7 +1,7 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
-import { buildCategory } from "@/test/domain/entities/helpers";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
+import { buildCategory } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho CategoryRepository
@@ -185,9 +185,7 @@ describe("GetCategoriesUseCase", () => {
 		const cache = cacheServiceMock();
 		const useCase = new GetCategoriesUseCase(repo, cache);
 
-		const searchResults = [
-			buildCategory({ id: "cat-1", name: "Electronics" }),
-		];
+		const searchResults = [buildCategory({ id: "cat-1", name: "Electronics" })];
 
 		cache.get.mockResolvedValue(null);
 		repo.findMany.mockResolvedValue({
@@ -347,4 +345,3 @@ describe("GetCategoriesUseCase", () => {
 		);
 	});
 });
-

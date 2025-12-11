@@ -41,7 +41,7 @@ describe("Cart Entity", () => {
 				updatedAt: testDates.updatedAt,
 			}),
 		).toThrow(DomainError);
-		
+
 		try {
 			Cart.create({
 				id: "cart-1",
@@ -234,4 +234,3 @@ describe("Cart Entity", () => {
 		expect(json.items[0]?.variantId).toBe("variant-1");
 	});
 });
-

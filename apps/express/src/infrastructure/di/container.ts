@@ -68,7 +68,8 @@ export class DIContainer {
 	initialize(): void {
 		// Infrastructure layer
 		const productRepository: IProductRepository = new PrismaProductRepository();
-		const categoryRepository: ICategoryRepository = new PrismaCategoryRepository();
+		const categoryRepository: ICategoryRepository =
+			new PrismaCategoryRepository();
 		const cartRepository: ICartRepository = new PrismaCartRepository();
 		const cacheService: ICacheService = new RedisCacheService();
 

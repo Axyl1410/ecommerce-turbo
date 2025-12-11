@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import { CategoryController } from "@/presentation/controllers/category.controller";
 import type { CreateCategoryUseCase } from "@/application/use-cases/category/create-category.use-case";
 import type { DeleteCategoryUseCase } from "@/application/use-cases/category/delete-category.use-case";
+import type { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
 import type { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
 import type { GetCategoryBySlugUseCase } from "@/application/use-cases/category/get-category-by-slug.use-case";
-import type { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
 import type { UpdateCategoryUseCase } from "@/application/use-cases/category/update-category.use-case";
+import { CategoryController } from "@/presentation/controllers/category.controller";
 import { ApplicationError } from "@/shared/errors/application.error";
 import { NotFoundError } from "@/shared/errors/not-found.error";
 
@@ -112,7 +112,9 @@ describe("CategoryController", () => {
 			const res = createResponseMock();
 			const category = { id: "cat-1", name: "Category" };
 
-			useCases.getCategoryByIdUseCase.execute.mockResolvedValue(category as any);
+			useCases.getCategoryByIdUseCase.execute.mockResolvedValue(
+				category as any,
+			);
 
 			await controller.getCategoryById(req, res);
 
@@ -385,4 +387,3 @@ describe("CategoryController", () => {
 		});
 	});
 });
-

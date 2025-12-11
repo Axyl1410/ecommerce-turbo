@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
-import { ProductController } from "@/presentation/controllers/product.controller";
 import type { CreateProductUseCase } from "@/application/use-cases/product/create-product.use-case";
 import type { DeleteProductUseCase } from "@/application/use-cases/product/delete-product.use-case";
 import type { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
 import type { GetProductBySlugUseCase } from "@/application/use-cases/product/get-product-by-slug.use-case";
 import type { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
 import type { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
+import { ProductController } from "@/presentation/controllers/product.controller";
 import { ApplicationError } from "@/shared/errors/application.error";
 import { NotFoundError } from "@/shared/errors/not-found.error";
 
@@ -265,4 +265,3 @@ describe("ProductController", () => {
 		});
 	});
 });
-

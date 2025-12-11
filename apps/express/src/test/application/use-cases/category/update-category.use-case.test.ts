@@ -1,9 +1,9 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
-import { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
+import type { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
 import { UpdateCategoryUseCase } from "@/application/use-cases/category/update-category.use-case";
-import { buildCategory } from "@/test/domain/entities/helpers";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { buildCategory } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho CategoryRepository
@@ -162,9 +162,7 @@ describe("UpdateCategoryUseCase", () => {
 			children: [],
 		} as any;
 
-		repo.findById
-			.mockResolvedValueOnce(existing)
-			.mockResolvedValueOnce(parent);
+		repo.findById.mockResolvedValueOnce(existing).mockResolvedValueOnce(parent);
 		repo.findAll.mockResolvedValue(allCategories);
 		repo.update.mockResolvedValue(updated);
 		getCategoryById.execute.mockResolvedValue(categoryDetail);
@@ -226,10 +224,12 @@ describe("UpdateCategoryUseCase", () => {
 
 		repo.findById.mockResolvedValue(null);
 
-		await expect(useCase.execute("non-existent", { name: "New" })).rejects
-			.toBeInstanceOf(ApplicationError);
-		await expect(useCase.execute("non-existent", { name: "New" })).rejects
-			.toThrow("Category not found");
+		await expect(
+			useCase.execute("non-existent", { name: "New" }),
+		).rejects.toBeInstanceOf(ApplicationError);
+		await expect(
+			useCase.execute("non-existent", { name: "New" }),
+		).rejects.toThrow("Category not found");
 
 		const error = await useCase
 			.execute("non-existent", { name: "New" })
@@ -283,10 +283,12 @@ describe("UpdateCategoryUseCase", () => {
 
 		repo.findById.mockResolvedValue(existing);
 
-		await expect(useCase.execute("cat-1", { parentId: "cat-1" })).rejects
-			.toBeInstanceOf(ApplicationError);
-		await expect(useCase.execute("cat-1", { parentId: "cat-1" })).rejects
-			.toThrow("Cannot set category as its own parent");
+		await expect(
+			useCase.execute("cat-1", { parentId: "cat-1" }),
+		).rejects.toBeInstanceOf(ApplicationError);
+		await expect(
+			useCase.execute("cat-1", { parentId: "cat-1" }),
+		).rejects.toThrow("Cannot set category as its own parent");
 
 		const error = await useCase
 			.execute("cat-1", { parentId: "cat-1" })
@@ -437,4 +439,3 @@ describe("UpdateCategoryUseCase", () => {
 		expect(result.name).toBe("Updated Name");
 	});
 });
-

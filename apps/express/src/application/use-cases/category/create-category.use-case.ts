@@ -1,6 +1,6 @@
 import type {
-	CreateCategoryDTO,
 	CategoryDetailDTO,
+	CreateCategoryDTO,
 } from "@/application/dto/category.dto";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
@@ -61,4 +61,3 @@ export class CreateCategoryUseCase {
 		// Specific cache keys are handled per operation
 	}
 }
-

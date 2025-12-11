@@ -25,7 +25,9 @@ export const getCategoriesQuerySchema = z.object({
 	active: z
 		.string()
 		.optional()
-		.transform((val) => (val === "true" ? true : val === "false" ? false : undefined)),
+		.transform((val) =>
+			val === "true" ? true : val === "false" ? false : undefined,
+		),
 	search: z.string().optional(),
 	sortBy: z.enum(["name", "createdAt", "updatedAt", "sortOrder"]).optional(),
 	sortOrder: z.enum(["asc", "desc"]).optional(),
@@ -84,4 +86,3 @@ export const updateCategoryBodySchema = z.object({
 export const deleteCategoryParamsSchema = z.object({
 	id: z.string().min(1, "Category ID is required"),
 });
-

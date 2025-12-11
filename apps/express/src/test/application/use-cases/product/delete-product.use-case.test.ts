@@ -1,9 +1,9 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { DeleteProductUseCase } from "@/application/use-cases/product/delete-product.use-case";
-import { buildProductProps } from "@/test/domain/entities/helpers";
+import { Product } from "@/domain/entities/product.entity";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { NotFoundError } from "@/shared/errors/not-found.error";
-import { Product } from "@/domain/entities/product.entity";
+import { buildProductProps } from "@/test/domain/entities/helpers";
 
 const productRepositoryMock = (): jest.Mocked<IProductRepository> =>
 	({
@@ -73,4 +73,3 @@ describe("DeleteProductUseCase", () => {
 		expect(repo.delete).not.toHaveBeenCalled();
 	});
 });
-

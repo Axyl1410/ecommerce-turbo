@@ -1,4 +1,3 @@
 declare module "@workspace/types" {
-	export * from "../../../../packages/types/src/index";
+	export * from "../../../../packages/types/index";
 }
-

@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { GetCartDetailsUseCase } from "@/application/use-cases/cart/get-cart-details.use-case";
-import { buildCartItem, testDates } from "@/test/domain/entities/helpers";
-import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { Cart } from "@/domain/entities/cart.entity";
+import type { ICartRepository } from "@/domain/repositories/cart.repository";
+import { buildCartItem, testDates } from "@/test/domain/entities/helpers";
 
 const cartRepositoryMock = (): jest.Mocked<ICartRepository> =>
 	({
@@ -186,4 +186,3 @@ describe("GetCartDetailsUseCase", () => {
 		expect(cache.set).not.toHaveBeenCalled();
 	});
 });
-

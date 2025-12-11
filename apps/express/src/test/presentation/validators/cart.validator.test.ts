@@ -1,8 +1,8 @@
 import {
 	cartAddItemBodySchema,
+	cartRemoveItemParamsSchema,
 	cartUpdateItemBodySchema,
 	cartUpdateItemParamsSchema,
-	cartRemoveItemParamsSchema,
 } from "@/presentation/validators/cart.validator";
 
 describe("Cart Validators", () => {
@@ -110,4 +110,3 @@ describe("Cart Validators", () => {
 		});
 	});
 });
-

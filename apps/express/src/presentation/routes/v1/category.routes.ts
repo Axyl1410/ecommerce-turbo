@@ -5,9 +5,9 @@ import type { CategoryController } from "@/presentation/controllers/category.con
 import {
 	createCategoryBodySchema,
 	deleteCategoryParamsSchema,
+	getCategoriesQuerySchema,
 	getCategoryByIdParamsSchema,
 	getCategoryBySlugParamsSchema,
-	getCategoriesQuerySchema,
 	updateCategoryBodySchema,
 	updateCategoryParamsSchema,
 } from "@/presentation/validators/category.validator";
@@ -169,4 +169,3 @@ export function createCategoryRoutes(controller: CategoryController): Router {
 
 	return router;
 }
-

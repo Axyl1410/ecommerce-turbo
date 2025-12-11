@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { GetCategoryBySlugUseCase } from "@/application/use-cases/category/get-category-by-slug.use-case";
-import { buildCategory } from "@/test/domain/entities/helpers";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { NotFoundError } from "@/shared/errors/not-found.error";
+import { buildCategory } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho CategoryRepository
@@ -60,9 +60,7 @@ describe("GetCategoryBySlugUseCase", () => {
 				name: "Parent Category",
 				slug: "parent-category",
 			},
-			children: [
-				{ id: "child-1", name: "Child 1", slug: "child-1" },
-			],
+			children: [{ id: "child-1", name: "Child 1", slug: "child-1" }],
 		};
 
 		cache.get.mockResolvedValue(null);
@@ -233,9 +231,7 @@ describe("GetCategoryBySlugUseCase", () => {
 		const details = {
 			category,
 			parent: null,
-			children: [
-				{ id: "child-1", name: "Child 1", slug: "child-1" },
-			],
+			children: [{ id: "child-1", name: "Child 1", slug: "child-1" }],
 		};
 
 		cache.get.mockResolvedValue(null);
@@ -247,4 +243,3 @@ describe("GetCategoryBySlugUseCase", () => {
 		expect(result.children).toHaveLength(1);
 	});
 });
-

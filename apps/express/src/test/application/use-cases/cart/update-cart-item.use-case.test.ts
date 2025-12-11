@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { UpdateCartItemUseCase } from "@/application/use-cases/cart/update-cart-item.use-case";
-import { buildCartItem, testDates } from "@/test/domain/entities/helpers";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { buildCartItem, testDates } from "@/test/domain/entities/helpers";
 
 const cartRepositoryMock = (): jest.Mocked<ICartRepository> =>
 	({
@@ -231,4 +231,3 @@ describe("UpdateCartItemUseCase", () => {
 		expect(error.code).toBe("INSUFFICIENT_STOCK");
 	});
 });
-

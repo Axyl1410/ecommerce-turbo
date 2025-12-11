@@ -1,6 +1,6 @@
 import type {
-	GetCategoriesDTO,
 	CategoryListDTO,
+	GetCategoriesDTO,
 } from "@/application/dto/category.dto";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
@@ -78,13 +78,7 @@ export class GetCategoriesUseCase {
 		active?: boolean;
 		search?: string;
 	}): string {
-		const {
-			page = 1,
-			limit = 10,
-			parentId,
-			active,
-			search,
-		} = params;
+		const { page = 1, limit = 10, parentId, active, search } = params;
 		const parts = [
 			"category:list",
 			`page:${page}`,
@@ -122,4 +116,3 @@ export class GetCategoriesUseCase {
 		};
 	}
 }
-

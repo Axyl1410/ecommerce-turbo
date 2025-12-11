@@ -54,4 +54,3 @@ describe("Slug Value Object", () => {
 		expect(slug1.equals(slug2)).toBe(false);
 	});
 });
-

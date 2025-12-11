@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
-import { buildProductProps } from "@/test/domain/entities/helpers";
-import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { Product } from "@/domain/entities/product.entity";
+import type { IProductRepository } from "@/domain/repositories/product.repository";
+import { buildProductProps } from "@/test/domain/entities/helpers";
 
 const productRepositoryMock = (): jest.Mocked<IProductRepository> =>
 	({
@@ -224,4 +224,3 @@ describe("GetProductsUseCase", () => {
 		);
 	});
 });
-

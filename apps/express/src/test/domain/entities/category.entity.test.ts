@@ -140,7 +140,8 @@ describe("Category Entity", () => {
 
 		// Check if cat-1 is descendant of "other-category" (not its parentId)
 		// Since parent "non-existent" is not in allCategories, it should return false
-		expect(category.isDescendantOf("other-category", allCategories)).toBe(false);
+		expect(category.isDescendantOf("other-category", allCategories)).toBe(
+			false,
+		);
 	});
 });
-

@@ -1,8 +1,8 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { GetCategoryByIdUseCase } from "@/application/use-cases/category/get-category-by-id.use-case";
-import { buildCategory } from "@/test/domain/entities/helpers";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { NotFoundError } from "@/shared/errors/not-found.error";
+import { buildCategory } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho CategoryRepository
@@ -99,9 +99,7 @@ describe("GetCategoryByIdUseCase", () => {
 		await expect(useCase.execute("non-existent")).rejects.toBeInstanceOf(
 			NotFoundError,
 		);
-		await expect(useCase.execute("non-existent")).rejects.toThrow(
-			"Category",
-		);
+		await expect(useCase.execute("non-existent")).rejects.toThrow("Category");
 		expect(cache.set).not.toHaveBeenCalled();
 	});
 
@@ -228,9 +226,7 @@ describe("GetCategoryByIdUseCase", () => {
 		const details = {
 			category,
 			parent: null,
-			children: [
-				{ id: "child-1", name: "Child 1", slug: "child-1" },
-			],
+			children: [{ id: "child-1", name: "Child 1", slug: "child-1" }],
 		};
 
 		cache.get.mockResolvedValue(null);
@@ -242,4 +238,3 @@ describe("GetCategoryByIdUseCase", () => {
 		expect(result.children).toHaveLength(1);
 	});
 });
-

@@ -16,7 +16,11 @@ export class DeleteCategoryUseCase {
 		// Check if category exists
 		const existing = await this.categoryRepository.findById(id);
 		if (!existing) {
-			throw new ApplicationError("Category not found", "CATEGORY_NOT_FOUND", 404);
+			throw new ApplicationError(
+				"Category not found",
+				"CATEGORY_NOT_FOUND",
+				404,
+			);
 		}
 
 		// Get category slug before deletion for cache invalidation
@@ -33,4 +37,3 @@ export class DeleteCategoryUseCase {
 		// In production, you might want to use Redis SCAN to find all category:list:* keys
 	}
 }
-

@@ -1,9 +1,9 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
-import { buildProductProps } from "@/test/domain/entities/helpers";
+import { Product } from "@/domain/entities/product.entity";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { NotFoundError } from "@/shared/errors/not-found.error";
-import { Product } from "@/domain/entities/product.entity";
+import { buildProductProps } from "@/test/domain/entities/helpers";
 
 const productRepositoryMock = (): jest.Mocked<IProductRepository> =>
 	({
@@ -106,4 +106,3 @@ describe("GetProductByIdUseCase", () => {
 		await expect(useCase.execute("non-existent")).rejects.toThrow("Product");
 	});
 });
-

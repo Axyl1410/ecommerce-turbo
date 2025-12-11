@@ -1,6 +1,6 @@
 import type {
-	UpdateCategoryDTO,
 	CategoryDetailDTO,
+	UpdateCategoryDTO,
 } from "@/application/dto/category.dto";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
@@ -25,7 +25,11 @@ export class UpdateCategoryUseCase {
 		// Check if category exists
 		const existing = await this.categoryRepository.findById(id);
 		if (!existing) {
-			throw new ApplicationError("Category not found", "CATEGORY_NOT_FOUND", 404);
+			throw new ApplicationError(
+				"Category not found",
+				"CATEGORY_NOT_FOUND",
+				404,
+			);
 		}
 
 		// Validate slug if provided
@@ -112,4 +116,3 @@ export class UpdateCategoryUseCase {
 		// In production, you might want to use Redis SCAN to find all category:list:* keys
 	}
 }
-

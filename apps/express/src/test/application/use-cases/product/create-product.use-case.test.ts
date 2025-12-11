@@ -1,10 +1,10 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { CreateProductUseCase } from "@/application/use-cases/product/create-product.use-case";
-import { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
-import { buildProductProps } from "@/test/domain/entities/helpers";
+import type { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
+import { Product } from "@/domain/entities/product.entity";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
-import { Product } from "@/domain/entities/product.entity";
+import { buildProductProps } from "@/test/domain/entities/helpers";
 
 /**
  * Tạo mock cho ProductRepository
@@ -159,4 +159,3 @@ describe("CreateProductUseCase", () => {
 		);
 	});
 });
-

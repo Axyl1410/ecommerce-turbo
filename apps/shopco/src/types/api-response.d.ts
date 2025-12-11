@@ -13,4 +13,3 @@ declare module "@workspace/types" {
 		pageSize: number;
 	};
 }
-

@@ -1,9 +1,9 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import { ClearCartAfterOrderUseCase } from "@/application/use-cases/cart/clear-cart-after-order.use-case";
-import { testDates } from "@/test/domain/entities/helpers";
+import { Cart } from "@/domain/entities/cart.entity";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
-import { Cart } from "@/domain/entities/cart.entity";
+import { testDates } from "@/test/domain/entities/helpers";
 
 const cartRepositoryMock = (): jest.Mocked<ICartRepository> =>
 	({
@@ -106,4 +106,3 @@ describe("ClearCartAfterOrderUseCase", () => {
 		expect(error.code).toBe("CART_IDENTIFIER_REQUIRED");
 	});
 });
-

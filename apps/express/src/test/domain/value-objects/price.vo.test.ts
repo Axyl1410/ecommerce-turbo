@@ -96,4 +96,3 @@ describe("Price Value Object", () => {
 		expect(price1.equals(price2)).toBe(false);
 	});
 });
-

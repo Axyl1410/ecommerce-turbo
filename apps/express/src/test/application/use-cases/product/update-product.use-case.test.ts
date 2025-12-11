@@ -1,11 +1,11 @@
 import type { ICacheService } from "@/application/interfaces/cache.interface";
+import type { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
 import { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
-import { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
-import { buildProductProps } from "@/test/domain/entities/helpers";
+import { Product } from "@/domain/entities/product.entity";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
 import { NotFoundError } from "@/shared/errors/not-found.error";
-import { Product } from "@/domain/entities/product.entity";
+import { buildProductProps } from "@/test/domain/entities/helpers";
 
 const productRepositoryMock = (): jest.Mocked<IProductRepository> =>
 	({
@@ -203,4 +203,3 @@ describe("UpdateProductUseCase", () => {
 		expect(cache.delete).toHaveBeenCalledWith("product:slug:new-slug");
 	});
 });
-

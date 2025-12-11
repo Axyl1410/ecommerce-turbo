@@ -119,3 +119,5 @@ export class Category {
 		return parent.isDescendantOf(categoryId, allCategories);
 	}
 }
+
+

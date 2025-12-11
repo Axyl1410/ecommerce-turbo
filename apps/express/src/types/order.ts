@@ -1,4 +1,4 @@
-import type { OrderStatus, PaymentStatus } from "./enums";
+import type { OrderStatus, PaymentStatus } from "@workspace/types";
 
 export type OrderType = {
 	id: string;

@@ -1,4 +1,4 @@
-import type { ProductStatus } from "@workspace/types";
+import type { ProductStatus } from "../enums";
 
 /**
  * Get Products Input DTO
@@ -130,3 +130,4 @@ export interface ProductListDTO {
 	limit: number;
 	totalPages: number;
 }
+

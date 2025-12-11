@@ -1,4 +1,4 @@
-import type { ReviewStatus } from "./enums";
+import type { ReviewStatus } from "@workspace/types";
 
 export type ReviewType = {
 	id: string;

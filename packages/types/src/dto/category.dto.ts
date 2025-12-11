@@ -80,4 +80,3 @@ export interface CategoryListDTO {
 	totalPages: number;
 }
 
-

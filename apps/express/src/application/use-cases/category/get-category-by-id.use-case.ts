@@ -1,4 +1,4 @@
-import type { CategoryDetailDTO } from "@/application/dto/category.dto";
+import type { CategoryDetailDTO } from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { NotFoundError } from "@/shared/errors/not-found.error";
@@ -53,3 +53,5 @@ export class GetCategoryByIdUseCase {
 		return result;
 	}
 }
+
+

@@ -37,3 +37,5 @@ export class DeleteCategoryUseCase {
 		// In production, you might want to use Redis SCAN to find all category:list:* keys
 	}
 }
+
+

@@ -1,6 +1,6 @@
 import { CartItem } from "@/domain/entities/cart-item.entity";
 import { Category } from "@/domain/entities/category.entity";
-import type { ProductStatus } from "@/types/enums";
+import type { ProductStatus } from "@workspace/types";
 
 const defaultDate = new Date("2024-01-01T00:00:00.000Z");
 
@@ -104,3 +104,5 @@ export const buildCategory = (
 		props.updatedAt,
 	);
 };
+
+

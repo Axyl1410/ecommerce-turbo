@@ -1,5 +1,5 @@
 import { DomainError } from "@/shared/errors/domain.error";
-import type { ProductStatus } from "@/types/enums";
+import type { ProductStatus } from "@workspace/types";
 import { Price } from "../value-objects/price.vo";
 import { Slug } from "../value-objects/slug.vo";
 

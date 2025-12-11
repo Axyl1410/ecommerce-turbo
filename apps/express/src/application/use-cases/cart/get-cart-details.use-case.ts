@@ -1,7 +1,7 @@
 import type {
 	CartValidationIssueDTO,
 	CartWithItemsDTO,
-} from "@/application/dto/cart.dto";
+} from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { CartMapper } from "./cart.mapper";

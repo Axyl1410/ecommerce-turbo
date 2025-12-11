@@ -86,3 +86,5 @@ export const updateCategoryBodySchema = z.object({
 export const deleteCategoryParamsSchema = z.object({
 	id: z.string().min(1, "Category ID is required"),
 });
+
+

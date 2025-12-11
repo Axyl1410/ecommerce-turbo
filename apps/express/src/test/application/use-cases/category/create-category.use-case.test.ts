@@ -313,3 +313,5 @@ describe("CreateCategoryUseCase", () => {
 		expect(result.imageUrl).toBe("https://example.com/image.png");
 	});
 });
+
+

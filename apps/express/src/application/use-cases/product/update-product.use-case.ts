@@ -1,7 +1,7 @@
 import type {
 	ProductDetailDTO,
 	UpdateProductDTO,
-} from "@/application/dto/product.dto";
+} from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { ApplicationError } from "@/shared/errors/application.error";

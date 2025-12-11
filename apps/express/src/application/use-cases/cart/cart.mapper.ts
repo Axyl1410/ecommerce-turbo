@@ -3,7 +3,7 @@ import type {
 	CartItemDTO,
 	CartValidationIssueDTO,
 	CartWithItemsDTO,
-} from "@/application/dto/cart.dto";
+} from "@workspace/types";
 import type { Cart } from "@/domain/entities/cart.entity";
 import type { CartItem } from "@/domain/entities/cart-item.entity";
 

@@ -1,4 +1,4 @@
-import type { CartItemDTO } from "@/application/dto/cart.dto";
+import type { CartItemDTO } from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { ApplicationError } from "@/shared/errors/application.error";

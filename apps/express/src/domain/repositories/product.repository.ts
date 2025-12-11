@@ -1,4 +1,4 @@
-import type { ProductStatus } from "@/types/enums";
+import type { ProductStatus } from "@workspace/types";
 import type { Product } from "../entities/product.entity";
 
 /**

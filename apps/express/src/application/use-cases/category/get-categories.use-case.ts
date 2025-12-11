@@ -1,7 +1,7 @@
 import type {
 	CategoryListDTO,
 	GetCategoriesDTO,
-} from "@/application/dto/category.dto";
+} from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 
@@ -116,3 +116,5 @@ export class GetCategoriesUseCase {
 		};
 	}
 }
+
+

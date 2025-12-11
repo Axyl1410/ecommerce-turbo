@@ -1,7 +1,4 @@
-import type {
-	CategoryDetailDTO,
-	CreateCategoryDTO,
-} from "@/application/dto/category.dto";
+import type { CategoryDetailDTO, CreateCategoryDTO } from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { ApplicationError } from "@/shared/errors/application.error";

@@ -79,7 +79,6 @@
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
 		"@workspace/typescript-config": "workspace:*",
-		"pino": "^10.1.0",
 		"postcss": "^8",
 		"tailwindcss": "^4.1.11",
 		"typescript": "^5"

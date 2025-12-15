@@ -1,6 +1,5 @@
 import ResetPasswordEmail from "@workspace/ui/components/email/reset-password";
 import VerificationEmail from "@workspace/ui/components/email/verification-email";
-import logger from "@/lib/logger";
 import { resend } from "@/lib/resend";
 
 export type EmailUser = {
@@ -31,16 +30,9 @@ export async function sendResetPasswordEmail(
 				resetPasswordLink: link.toString(),
 			}),
 		});
-		logger.info(
-			{ email: user.email },
-			"Reset password email sent successfully",
-		);
 	} catch (error) {
-		logger.error(
-			{ error, email: user.email },
-			"Failed to send reset password email",
-		);
-		throw new Error("Failed to send reset password email");
+		console.error("Failed to send reset password email:", error);
+		throw new Error("Failed to send reset password email", { cause: error });
 	}
 }
 
@@ -54,10 +46,10 @@ export async function sendVerificationEmail(
 	user: EmailUser,
 	verificationUrl: string,
 ): Promise<void> {
-	const link = new URL(verificationUrl);
-	link.searchParams.set("callbackURL", "/welcome");
-
 	try {
+		const link = new URL(verificationUrl);
+		link.searchParams.set("callbackURL", "/welcome");
+
 		await resend.emails.send({
 			to: [user.email],
 			from: "Axyl Team <onboarding@resend.dev>",
@@ -67,13 +59,9 @@ export async function sendVerificationEmail(
 				verificationLink: link.toString(),
 			}),
 		});
-		logger.info({ email: user.email }, "Verification email sent successfully");
 	} catch (error) {
-		logger.error(
-			{ error, email: user.email },
-			"Failed to send verification email",
-		);
-		throw new Error("Failed to send verification email");
+		console.error(error);
+		throw new Error("Failed to send verification email", { cause: error });
 	}
 }
 

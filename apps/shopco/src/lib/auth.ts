@@ -75,7 +75,7 @@ export const auth = betterAuth({
 	plugins: [
 		admin({
 			//todo add admin user ids
-			adminUserIds: [""],
+			adminUserIds: [],
 		}),
 		openAPI(),
 	],

@@ -1,16 +1,11 @@
 "use client";
 
-import {
-	QueryClient,
-	QueryClientProvider,
-	useMutation,
-	useQuery,
-	useQueryClient,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import SpinnerbLoader from "@/components/ui/SpinnerbLoader";
+import { Toaster } from "@/components/ui/sonner";
 import { makeStore } from "../lib/store";
 
 type Props = {
@@ -34,6 +29,7 @@ const Providers = ({ children }: Props) => {
 					persistor={persistor}
 				>
 					{children}
+					<Toaster />
 				</PersistGate>
 			</Provider>
 		</QueryClientProvider>

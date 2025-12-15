@@ -2,6 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import type { ApiResponse, CategoryEntity } from "@workspace/types";
+import { Button } from "@workspace/ui/components/button";
+import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
 
 export default function TestPage() {
@@ -13,7 +15,9 @@ export default function TestPage() {
 				.then((res) => res.data),
 	});
 
-	console.table(data);
+	const handleClick = () => {
+		toast.error("Hello");
+	};
 
 	if (isLoading) return "Loading...";
 
@@ -30,6 +34,7 @@ export default function TestPage() {
 			<p>{data?.data.active}</p>
 			<p>{data?.data.createdAt.toString()}</p>
 			<p>{data?.data.updatedAt.toString()}</p>
+			<Button onClick={handleClick}>Click me</Button>
 		</div>
 	);
 }

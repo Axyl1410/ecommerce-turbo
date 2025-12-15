@@ -36,7 +36,7 @@ export default function CartPage() {
 						<div className="flex flex-col lg:flex-row space-y-5 lg:space-y-0 lg:space-x-5 items-start">
 							<div className="w-full p-3.5 md:px-6 flex-col space-y-4 md:space-y-6 rounded-[20px] border border-black/10">
 								{cart?.items.map((product, idx, arr) => (
-									<React.Fragment key={idx}>
+									<React.Fragment key={product.id}>
 										<ProductCard data={product} />
 										{arr.length - 1 !== idx && (
 											<hr className="border-t-black/10" />

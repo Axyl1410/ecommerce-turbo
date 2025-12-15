@@ -1,4 +1,4 @@
-import type { ProductStatus } from "./enums";
+import type { ProductStatus } from "./enums.js";
 
 /**
  * Category Entity Type
@@ -60,4 +60,3 @@ export type CartItemEntity = {
 	priceAtAdd: number;
 	createdAt: Date;
 };
-

@@ -1,7 +1,4 @@
-import type {
-	CreateProductDTO,
-	ProductDetailDTO,
-} from "@workspace/types";
+import type { CreateProductDTO, ProductDetailDTO } from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { ApplicationError } from "@/shared/errors/application.error";

@@ -1,5 +1,5 @@
-import type { Request, Response } from "express";
 import type { GetCategoriesDTO } from "@workspace/types";
+import type { Request, Response } from "express";
 import type { CreateCategoryUseCase } from "@/application/use-cases/category/create-category.use-case";
 import type { DeleteCategoryUseCase } from "@/application/use-cases/category/delete-category.use-case";
 import type { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
@@ -145,5 +145,3 @@ export class CategoryController {
 		sendError(res, errorMessage, 500);
 	}
 }
-
-

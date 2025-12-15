@@ -312,5 +312,3 @@ export class PrismaCategoryRepository implements ICategoryRepository {
 		);
 	}
 }
-
-

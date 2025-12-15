@@ -1,7 +1,4 @@
-import type {
-	CategoryDetailDTO,
-	UpdateCategoryDTO,
-} from "@workspace/types";
+import type { CategoryDetailDTO, UpdateCategoryDTO } from "@workspace/types";
 import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
@@ -116,5 +113,3 @@ export class UpdateCategoryUseCase {
 		// In production, you might want to use Redis SCAN to find all category:list:* keys
 	}
 }
-
-

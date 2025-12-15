@@ -119,4 +119,3 @@ export interface ClearCartAfterOrderDTO {
 	userId?: string;
 	sessionId?: string;
 }
-

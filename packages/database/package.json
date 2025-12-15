@@ -6,7 +6,8 @@
 		"build": "tsc -p ./tsconfig.json",
 		"database:generate": "prisma generate",
 		"database:migrate": "prisma migrate dev --skip-generate",
-		"database:deploy": "prisma migrate deploy"
+		"database:deploy": "prisma migrate deploy",
+		"database:studio": "prisma studio --config ./prisma.config.ts"
 	},
 	"devDependencies": {
 		"@types/pg": "^8.15.6",

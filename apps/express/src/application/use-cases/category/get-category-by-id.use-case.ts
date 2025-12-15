@@ -53,5 +53,3 @@ export class GetCategoryByIdUseCase {
 		return result;
 	}
 }
-
-

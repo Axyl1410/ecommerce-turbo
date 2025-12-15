@@ -1,5 +1,5 @@
-import type { Request, Response } from "express";
 import type { GetProductsDTO } from "@workspace/types";
+import type { Request, Response } from "express";
 import type { CreateProductUseCase } from "@/application/use-cases/product/create-product.use-case";
 import type { DeleteProductUseCase } from "@/application/use-cases/product/delete-product.use-case";
 import type { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";

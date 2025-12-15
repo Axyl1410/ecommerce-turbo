@@ -79,4 +79,3 @@ export interface UpdateCartItemParams {
 export interface RemoveCartItemParams {
 	itemId: string;
 }
-

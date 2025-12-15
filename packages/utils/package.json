@@ -1,0 +1,22 @@
+{
+	"name": "@workspace/utils",
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "tsc -p ./tsconfig.json"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"devDependencies": {
+		"@workspace/typescript-config": "workspace:*",
+		"typescript": "^5.9.2"
+	}
+}

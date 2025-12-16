@@ -1,8 +1,6 @@
 pre-commit:
-  parallel: true
-  commands:
-    ultracite:
-      run: pnpm dlx ultracite fix
+  jobs:
+    - run: npx ultracite fix
       glob:
         - "*.js"
         - "*.jsx"
@@ -12,4 +10,3 @@ pre-commit:
         - "*.jsonc"
         - "*.css"
       stage_fixed: true
-      exclude: "(node_modules|dist|build|.next)/"

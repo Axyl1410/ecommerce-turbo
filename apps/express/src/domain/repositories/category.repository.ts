@@ -98,3 +98,6 @@ export interface ICategoryRepository {
 	 */
 	findAll(): Promise<Category[]>;
 }
+
+
+

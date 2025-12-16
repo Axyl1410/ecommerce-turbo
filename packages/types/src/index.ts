@@ -16,6 +16,8 @@ export type Paginated<T> = {
 // Request Bodies
 export * from "./body.js";
 export * from "./drizzle/schema.js";
+// Drizzle Type Exports
+export * from "./drizzle/type.js";
 export * from "./dto/cart.dto.js";
 // DTOs
 export * from "./dto/category.dto.js";

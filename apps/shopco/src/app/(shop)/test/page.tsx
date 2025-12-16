@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { ApiResponse, CategoryEntity } from "@workspace/types";
+import type { ApiResponse, CategoryRow } from "@workspace/types";
 import { Button } from "@workspace/ui/components/button";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api";
@@ -11,7 +11,7 @@ export default function TestPage() {
 		queryKey: ["repoData"],
 		queryFn: () =>
 			apiClient
-				.get<ApiResponse<CategoryEntity>>("/categories/slug/t-shirts")
+				.get<ApiResponse<CategoryRow>>("/categories/slug/t-shirts")
 				.then((res) => res.data),
 	});
 

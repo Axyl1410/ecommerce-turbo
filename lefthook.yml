@@ -1,0 +1,15 @@
+pre-commit:
+  parallel: true
+  commands:
+    ultracite:
+      run: pnpm ultracite fix {staged_files}
+      glob:
+        - "*.js"
+        - "*.jsx"
+        - "*.ts"
+        - "*.tsx"
+        - "*.json"
+        - "*.jsonc"
+        - "*.css"
+      stage_fixed: true
+      exclude: "(node_modules|dist|build|.next)/"

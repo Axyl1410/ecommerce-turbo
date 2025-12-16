@@ -1,4 +1,4 @@
-import type { ProductStatus } from "./enums";
+import type { ProductStatus } from "./enums.js";
 
 /**
  * Category Request Bodies
@@ -97,4 +97,3 @@ export interface AddCartItemBody {
 export interface UpdateCartItemBody {
 	quantity: number;
 }
-

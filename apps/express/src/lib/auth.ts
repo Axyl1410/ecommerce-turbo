@@ -1,4 +1,5 @@
 import { prisma } from "@workspace/database";
+import { assertValue } from "@workspace/utils";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin, openAPI } from "better-auth/plugins";
@@ -6,7 +7,6 @@ import {
 	sendResetPasswordEmail,
 	sendVerificationEmail,
 } from "@/services/email.service";
-import { assertValue } from "./utils";
 
 export const auth = betterAuth({
 	emailAndPassword: {
@@ -75,7 +75,7 @@ export const auth = betterAuth({
 	plugins: [
 		admin({
 			//todo add admin user ids
-			adminUserIds: [""],
+			adminUserIds: [],
 		}),
 		openAPI(),
 	],

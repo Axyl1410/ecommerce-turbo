@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { reviewsData } from "@/app/page";
+import { reviewsData } from "@/app/(shop)/page";
 import ReviewCard from "@/components/common/ReviewCard";
 import { Button } from "@/components/ui/button";
 import {

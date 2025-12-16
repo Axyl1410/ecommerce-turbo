@@ -1,5 +1,5 @@
-import { z } from "zod";
 import type { ProductStatus } from "@workspace/types";
+import { z } from "zod";
 
 /**
  * Product Validators

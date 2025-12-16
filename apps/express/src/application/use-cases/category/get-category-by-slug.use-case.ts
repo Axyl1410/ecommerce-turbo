@@ -53,5 +53,3 @@ export class GetCategoryBySlugUseCase {
 		return result;
 	}
 }
-
-

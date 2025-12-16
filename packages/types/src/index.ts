@@ -13,19 +13,16 @@ export type Paginated<T> = {
 	pageSize: number;
 };
 
-// Enums
-export * from "./enums";
-
-// Entities
-export * from "./entities";
+// Request Bodies
+export * from "./body.js";
+export * from "./dto/cart.dto.js";
 
 // DTOs
-export * from "./dto/category.dto";
-export * from "./dto/product.dto";
-export * from "./dto/cart.dto";
-
+export * from "./dto/category.dto.js";
+export * from "./dto/product.dto.js";
+// Entities
+export * from "./entities.js";
+// Enums
+export * from "./enums.js";
 // Request Parameters
-export * from "./params";
-
-// Request Bodies
-export * from "./body";
+export * from "./params.js";

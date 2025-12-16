@@ -3,7 +3,6 @@ import Brands from "@/components/homepage/Brands";
 import DressStyle from "@/components/homepage/DressStyle";
 import Header from "@/components/homepage/Header";
 import Reviews from "@/components/homepage/Reviews";
-import { Button } from "@/components/ui/button";
 import type { Product } from "@/types/product.types";
 import type { Review } from "@/types/review.types";
 

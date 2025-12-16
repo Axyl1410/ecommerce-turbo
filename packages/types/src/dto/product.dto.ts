@@ -1,4 +1,4 @@
-import type { ProductStatus } from "../enums";
+import type { ProductStatus } from "../enums.js";
 
 /**
  * Get Products Input DTO
@@ -130,4 +130,3 @@ export interface ProductListDTO {
 	limit: number;
 	totalPages: number;
 }
-

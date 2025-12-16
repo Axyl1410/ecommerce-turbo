@@ -6,9 +6,9 @@ import cors from "cors";
 import express, { type Express, type Request, type Response } from "express";
 import { sendSuccess } from "@/lib/api-response-helper";
 import { auth } from "./lib/auth";
-import errorMiddleware from "./middleware/error.middleware";
-import logMiddleware from "./middleware/log.middleware";
-import v1 from "./routes/v1";
+import errorMiddleware from "./presentation/middleware/error.middleware";
+import logMiddleware from "./presentation/middleware/log.middleware";
+import v1 from "./presentation/routes/v1";
 
 const corsOptions = {
 	origin: "*",

@@ -8,13 +8,17 @@
 		"build:database": "pnpm --filter @workspace/database run build",
 		"build:express": "cd apps/express && pnpm build",
 		"dev": "turbo dev",
+		"dev:express": "cd apps/express && pnpm dev",
+		"dev:express:clean": "node scripts/kill-port.mjs 8080 && pnpm --filter=express run dev",
+		"kill:port": "node scripts/kill-port.mjs",
 		"lint": "turbo lint",
 		"test": "turbo test",
 		"format": "prettier --write \"**/*.{ts,tsx,md}\"",
 		"postinstall": "node scripts/postinstall.mjs",
 		"heroku-postbuild": "pnpm build:database && pnpm build:express",
 		"format-and-lint": "biome check .",
-		"format-and-lint:fix": "biome check . --write"
+		"format-and-lint:fix": "biome check . --write",
+		"database:studio": "pnpm --filter @workspace/database run database:studio"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.3.8",

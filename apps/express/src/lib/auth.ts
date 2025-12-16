@@ -6,7 +6,7 @@ import { admin, openAPI } from "better-auth/plugins";
 import {
 	sendResetPasswordEmail,
 	sendVerificationEmail,
-} from "@/services/email.service";
+} from "@/infrastructure/services/email.service";
 
 export const auth = betterAuth({
 	emailAndPassword: {

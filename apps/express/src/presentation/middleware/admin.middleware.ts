@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { sendError } from "@/lib/api-response-helper";
 import logger from "@/lib/logger";
-import AuthMiddleware from "./auth.middleware";
+import AuthMiddleware from "./auth.middleware.js";
 
 /**
  * Admin Middleware

@@ -1,7 +1,7 @@
 import express, { type Router } from "express";
 import { asyncHandler, sendError } from "@/lib/api-response-helper";
-import AdminMiddleware from "@/middleware/admin.middleware";
 import type { ProductController } from "@/presentation/controllers/product.controller";
+import AdminMiddleware from "@/presentation/middleware/admin.middleware";
 import {
 	createProductBodySchema,
 	deleteProductParamsSchema,

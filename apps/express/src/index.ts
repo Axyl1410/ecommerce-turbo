@@ -1,5 +1,5 @@
 import logger from "@/lib/logger";
-import { config } from "./config";
+import { config } from "./infrastructure/config";
 import { CreateServer } from "./server";
 
 const server = CreateServer();

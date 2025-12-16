@@ -1,7 +1,7 @@
 import express, { type Router } from "express";
 import { asyncHandler, sendError } from "@/lib/api-response-helper";
-import AdminMiddleware from "@/middleware/admin.middleware";
 import type { CategoryController } from "@/presentation/controllers/category.controller";
+import AdminMiddleware from "@/presentation/middleware/admin.middleware";
 import {
 	createCategoryBodySchema,
 	deleteCategoryParamsSchema,

@@ -1,4 +1,4 @@
-import type { CouponType as CouponTypeEnum } from "@workspace/types";
+import type { CouponTypeEnumType as CouponTypeEnum } from "@workspace/types";
 
 export type CouponType = {
 	id: string;

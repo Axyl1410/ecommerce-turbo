@@ -1,4 +1,4 @@
-import type { ProductStatus } from "@workspace/types";
+import type { ProductStatusEnumType as ProductStatus } from "@workspace/types";
 
 /**
  * Get Products Input DTO

@@ -85,4 +85,62 @@ For `GET /api/v1/cart`:
 
 Following these steps keeps the Clean Architecture boundaries intact and makes future refactors safer.
 
+---
+
+## Prisma queries + Drizzle types
+
+We use Prisma for querying (rich `include`/`select`/`orderBy`) but keep Drizzle schema/types as the single source of truth. Prisma cannot emit `typeof Product.$inferSelect`, so we map the results.
+
+### 1) Export Drizzle row/insert types
+
+In `packages/types/src/drizzle/schema.ts`:
+
+```
+export type ProductRow = typeof Product.$inferSelect;
+export type ProductInsert = typeof Product.$inferInsert;
+```
+
+Then re-export in `packages/types/src/index.ts`:
+
+```
+export type { ProductRow, ProductInsert } from "./drizzle/schema.js";
+```
+
+### 2) Query with Prisma, map to Drizzle type
+
+In `apps/express/src/infrastructure/persistence/prisma/product.repository.impl.ts`:
+
+```
+import { prisma } from "@workspace/database";
+import type { ProductRow } from "@workspace/types";
+
+const productsPrisma = await prisma.product.findMany({
+  where,
+  skip: (page - 1) * limit,
+  take: limit,
+  orderBy: { [sortBy]: sortOrder },
+});
+
+const products: ProductRow[] = productsPrisma.map((product) => ({
+  ...product,
+  // Convert special fields here if needed (e.g., Decimal → number, JSON parsing).
+}));
+```
+
+If you wrap rows in domain entities, map `ProductRow` through your entity factory in a `toDomain` helper before returning.
+
+### 3) Use Drizzle enums with Prisma
+
+Drizzle/domain enums (e.g., `ProductStatusEnum`) are strings, so they work directly in Prisma filters:
+
+```
+import { ProductStatusEnum } from "@workspace/types";
+
+await prisma.product.findMany({
+  where: { status: ProductStatusEnum.PUBLISHED },
+});
+```
+
+Outcome: Prisma remains the query tool; Drizzle schema remains the domain/type source. Mapping keeps types aligned without forcing Prisma to understand Drizzle tables.
+
 

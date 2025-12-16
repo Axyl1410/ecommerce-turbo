@@ -1,4 +1,4 @@
-import type { ProductStatus } from "@workspace/types";
+import type { ProductStatusEnumType as ProductStatus } from "@workspace/types";
 import { CartItem } from "@/domain/entities/cart-item.entity";
 import { Category } from "@/domain/entities/category.entity";
 

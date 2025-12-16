@@ -14,6 +14,14 @@ datasource db {
   // url      = env("DATABASE_URL")
 }
 
+generator drizzle {
+  provider = "drizzle-prisma-generator"
+  // Generate Drizzle tables into the shared types package to tránh circular dependency
+  // schema.prisma nằm ở: packages/database/prisma/schema.prisma
+  // "../../types/src/drizzle" -> packages/types/src/drizzle
+  output   = "../../types/src/drizzle"
+}
+
 model User {
   id            String    @id
   name          String

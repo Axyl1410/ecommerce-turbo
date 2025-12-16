@@ -1,4 +1,4 @@
-import type { ReviewStatus } from "@workspace/types";
+import type { ReviewStatusEnumType as ReviewStatus } from "@workspace/types";
 
 export type ReviewType = {
 	id: string;

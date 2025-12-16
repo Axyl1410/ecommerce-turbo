@@ -1,5 +1,5 @@
 import { prisma } from "@workspace/database";
-import type { ProductStatus } from "@workspace/types";
+import type { ProductStatusEnumType as ProductStatus } from "@workspace/types";
 import { Product } from "@/domain/entities/product.entity";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { NotFoundError } from "@/shared/errors/not-found.error";

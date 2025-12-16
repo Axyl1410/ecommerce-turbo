@@ -139,7 +139,7 @@ export function SignupForm({ className, ...props }: SignupFormProps) {
 									<Input
 										id="password"
 										type="password"
-										placeholder="••••••••"
+										placeholder="••••••"
 										autoComplete="new-password"
 										{...field}
 									/>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect } from "react";
 
 export default function GlobalError({
@@ -11,7 +11,6 @@ export default function GlobalError({
 	error: Error & { digest?: string };
 	reset: () => void;
 }) {
-	const router = useRouter();
 	useEffect(() => {
 		console.error(error);
 	}, [error]);
@@ -31,7 +30,8 @@ export default function GlobalError({
 						</p>
 						<div className="mt-6 flex items-center justify-center gap-3">
 							<Button onClick={() => reset()}>Try again</Button>
-							<Button variant={"outline"} onClick={() => router.push("/")}>
+							<Button variant={"outline"} asChild>
+								<Link href="/">Go home</Link>
 								Go home
 							</Button>
 						</div>

@@ -1,4 +1,5 @@
 import { Button } from "@workspace/ui/components/button";
+import Link from "next/link";
 
 export default function NotFound() {
 	return (
@@ -11,7 +12,7 @@ export default function NotFound() {
 					to home.
 				</p>
 				<Button asChild size="lg" className="rounded-lg text-base">
-					<a href="/">Back to home page</a>
+					<Link href="/">Back to home page</Link>
 				</Button>
 			</div>
 

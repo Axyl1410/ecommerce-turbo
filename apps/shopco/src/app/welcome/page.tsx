@@ -29,7 +29,7 @@ export default async function WelcomePage() {
 				<p className="mt-3 text-muted-foreground">
 					Hi{" "}
 					<span className="font-medium text-foreground">
-						{session.user.name}
+						{session.user.name || session.user.email || "there"}
 					</span>
 					, your account has been successfully verified and is ready to use.
 				</p>

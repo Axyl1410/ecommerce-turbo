@@ -89,6 +89,16 @@ export const CreateServer = (): Express => {
     );
   });
 
+  //   app.get("/test", async (_req: Request, res: Response) => {
+  //     const products = await prisma.$drizzle
+  //       .select()
+  //       .from(Product)
+  //       .where(eq(Product.status, ProductStatus.PUBLISHED));
+  //     // const products = await prisma.product.findMany();
+  //     res.json(products);
+  //     // console.log("hey");
+  //     // sendSuccess(res, { message: "Hello, World!" }, "Welcome to API");
+  //   });
   // app.get("/test", async (_req: Request, res: Response) => {
   // const products = await prisma.$drizzle
   // .select()

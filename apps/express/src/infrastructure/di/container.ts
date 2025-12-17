@@ -24,16 +24,22 @@ import { GetProductBySlugUseCase } from "@/application/use-cases/product/get-pro
 import { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
 import { SearchProductsUseCase } from "@/application/use-cases/product/search-products.use-case";
 import { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
+import { AddToWishlistUseCase } from "@/application/use-cases/wishlist/add-wishlist.use-case";
+import { RemoveFromWishlistUseCase } from "@/application/use-cases/wishlist/remove-wishlist.use-case";
+import { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/get-wishlist.use-case";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
+import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
 import { RedisCacheService } from "@/infrastructure/cache/redis-cache.service";
 import { PrismaCartRepository } from "@/infrastructure/persistence/prisma/cart.repository.impl";
 import { PrismaCategoryRepository } from "@/infrastructure/persistence/prisma/category.repository.impl";
 import { PrismaProductRepository } from "@/infrastructure/persistence/prisma/product.repository.impl";
+import { PrismaWishlistRepository } from "@/infrastructure/persistence/prisma/wishlistitem.repository";
 import { CartController } from "@/presentation/controllers/cart.controller";
 import { CategoryController } from "@/presentation/controllers/category.controller";
 import { ProductController } from "@/presentation/controllers/product.controller";
+import { WishlistController } from "@/presentation/controllers/wishlist.controller";
 
 export class DIContainer {
 	private services: Map<string, unknown> = new Map();
@@ -164,6 +170,19 @@ export class DIContainer {
 			cacheService,
 		);
 
+		// Repositories
+		const wishlistRepository = new PrismaWishlistRepository();
+
+		// Use Cases
+		const addToWishlistUseCase = new AddToWishlistUseCase(
+			wishlistRepository,
+			productRepository,
+		);
+		const removeFromWishlistUseCase = new RemoveFromWishlistUseCase(
+			wishlistRepository,
+		);
+		const getUserWishlistUseCase = new GetUserWishlistUseCase(wishlistRepository);
+
 		// Register use cases
 		this.register("getProductsUseCase", getProductsUseCase);
 		this.register("searchProductsUseCase", searchProductsUseCase);
@@ -185,6 +204,9 @@ export class DIContainer {
 		this.register("createCategoryUseCase", createCategoryUseCase);
 		this.register("updateCategoryUseCase", updateCategoryUseCase);
 		this.register("deleteCategoryUseCase", deleteCategoryUseCase);
+		this.register("addToWishlistUseCase", addToWishlistUseCase);
+		this.register("removeFromWishlistUseCase", removeFromWishlistUseCase);
+		this.register("getUserWishlistUseCase", getUserWishlistUseCase);
 
 		// Presentation layer - Controllers
 		const productController = new ProductController(
@@ -212,11 +234,17 @@ export class DIContainer {
 			updateCategoryUseCase,
 			deleteCategoryUseCase,
 		);
+		const wishlistController = new WishlistController(
+			addToWishlistUseCase,
+			removeFromWishlistUseCase,
+			getUserWishlistUseCase,
+		);
 
 		// Register controllers
 		this.register("productController", productController);
 		this.register("cartController", cartController);
 		this.register("categoryController", categoryController);
+		this.register("wishlistController", wishlistController);
 	}
 }
 

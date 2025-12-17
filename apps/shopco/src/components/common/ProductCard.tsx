@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import type { ProductListItemDTO } from "@workspace/types";
 import Rating from "../ui/Rating";
+import { AddToWishlistButton } from "./add-to-wishlist-button";
 
 
 type ProductCardProps = {
@@ -36,6 +37,13 @@ const ProductCard = ({ data }: ProductCardProps) => {
 					alt={data.name}
 					priority
 				/>
+				<div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+					<AddToWishlistButton
+						productId={data.id}
+						size="sm"
+						variant="default"
+					/>
+				</div>
 			</div>
 			<strong className="text-black xl:text-xl">{data.name}</strong>
 			<div className="flex items-end mb-1 xl:mb-2">

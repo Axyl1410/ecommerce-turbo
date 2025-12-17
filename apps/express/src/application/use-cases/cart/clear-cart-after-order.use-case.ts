@@ -2,13 +2,13 @@ import type { ICacheService } from "@/application/interfaces/cache.interface";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
 
-export class ClearCartAfterOrderUseCase {
+export class ClearCartAfterOrderUseCase { // tiengg viet: Xóa giỏ hàng sau khi đặt hàng
 	constructor(
 		private cartRepository: ICartRepository,
 		private cacheService: ICacheService,
 	) {}
 
-	async execute(params: {
+	async execute(params: { // tiengg viet: thực hiện xóa giỏ hàng sau khi đặt hàng
 		userId?: string;
 		sessionId?: string;
 	}): Promise<void> {

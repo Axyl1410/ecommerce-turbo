@@ -1,5 +1,7 @@
-import type { ProductStatusEnumType as ProductStatus } from "@workspace/types";
+import type { ProductRow } from "@workspace/types";
 import type { Product } from "../entities/product.entity";
+
+type ProductStatus = ProductRow["status"];
 
 /**
  * Product Repository Interface
@@ -18,6 +20,7 @@ export interface IProductRepository {
 
 	/**
 	 * Find products with pagination, filtering, and sorting
+	 * Returns products with aggregated pricing and rating data for list views
 	 */
 	findMany(params: {
 		page?: number;
@@ -29,7 +32,14 @@ export interface IProductRepository {
 		sortBy?: "name" | "createdAt" | "updatedAt";
 		sortOrder?: "asc" | "desc";
 	}): Promise<{
-		products: Product[];
+		products: Array<
+			Pick<ProductRow, "id" | "name" | "slug" | "defaultImage"> & {
+				lowestPrice: number;
+				lowestSalePrice: number | null;
+				ratingAvg: number;
+				ratingCount: number;
+			}
+		>;
 		total: number;
 	}>;
 

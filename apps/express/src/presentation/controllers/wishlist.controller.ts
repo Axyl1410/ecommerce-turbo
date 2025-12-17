@@ -4,45 +4,73 @@ import type { RemoveFromWishlistUseCase } from "@/application/use-cases/wishlist
 import type { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/get-wishlist.use-case";
 import { sendSuccess } from "@/lib/api-response-helper";
 import { ApplicationError } from "@/shared/errors/application.error";
+import { auth } from "@/lib/auth";
+import { fromNodeHeaders } from "better-auth/node";
 
-export class WishlistController { // translation: Bộ điều khiển danh sách yêu thích
-    constructor(
-        private addToWishlistUseCase: AddToWishlistUseCase,
-        private removeFromWishlistUseCase: RemoveFromWishlistUseCase,
-        private getUserWishlistUseCase: GetUserWishlistUseCase,
-    ) {}
+export class WishlistController {
+  // translation: Bộ điều khiển danh sách yêu thích
+  constructor(
+    private addToWishlistUseCase: AddToWishlistUseCase,
+    private removeFromWishlistUseCase: RemoveFromWishlistUseCase,
+    private getUserWishlistUseCase: GetUserWishlistUseCase
+  ) {}
 
-    async addToWishlist(req: Request, res: Response): Promise<void> {
-        const userId = req.session?.user?.id;
-        if (!userId) throw new ApplicationError("Unauthorized", "UNAUTHORIZED", 401);
+  async addToWishlist(req: Request, res: Response): Promise<void> {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
 
-        const { productId } = req.body;
-        if (!productId) {
-            throw new ApplicationError("Product ID is required", "INVALID_INPUT", 400);
-        }
+    const userId = session?.user?.id;
+    if (!userId)
+      throw new ApplicationError("Unauthorized", "UNAUTHORIZED", 401);
 
-        await this.addToWishlistUseCase.execute(userId, productId);
-        sendSuccess(res, null, "Product added to wishlist");
+    // Lấy productId từ body
+    const productId = (req.body?.productId ?? "").toString().trim();
+
+    if (!productId) {
+      throw new ApplicationError(
+        "Product ID is required",
+        "INVALID_INPUT",
+        400
+      );
     }
 
-    async removeFromWishlist(req: Request, res: Response): Promise<void> {
-        const userId = req.session?.user?.id;
-        if (!userId) throw new ApplicationError("Unauthorized", "UNAUTHORIZED", 401);
+    await this.addToWishlistUseCase.execute(userId, productId);
+    sendSuccess(res, null, "Product added to wishlist");
+  }
 
-        const { productId } = req.params;
-        if (!productId) {
-            throw new ApplicationError("Product ID is required", "INVALID_INPUT", 400);
-        }
+  async removeFromWishlist(req: Request, res: Response): Promise<void> {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
 
-        await this.removeFromWishlistUseCase.execute(userId, productId);
-        sendSuccess(res, null, "Product removed from wishlist");
+    const userId = session?.user?.id;
+    if (!userId)
+      throw new ApplicationError("Unauthorized", "UNAUTHORIZED", 401);
+
+    const { productId } = req.params;
+    if (!productId) {
+      throw new ApplicationError(
+        "Product ID is required",
+        "INVALID_INPUT",
+        400
+      );
     }
 
-    async getWishlist(req: Request, res: Response): Promise<void> {
-        const userId = req.session?.user?.id;
-        if (!userId) throw new ApplicationError("Unauthorized", "UNAUTHORIZED", 401);
+    await this.removeFromWishlistUseCase.execute(userId, productId);
+    sendSuccess(res, null, "Product removed from wishlist");
+  }
 
-        const wishlist = await this.getUserWishlistUseCase.execute(userId);
-        sendSuccess(res, wishlist, "User wishlist");
-    }
+  async getWishlist(req: Request, res: Response): Promise<void> {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    const userId = session?.user?.id;
+    if (!userId)
+      throw new ApplicationError("Unauthorized", "UNAUTHORIZED", 401);
+
+    const wishlist = await this.getUserWishlistUseCase.execute(userId);
+    sendSuccess(res, wishlist, "User wishlist");
+  }
 }

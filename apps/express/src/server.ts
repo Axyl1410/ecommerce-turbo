@@ -58,6 +58,9 @@ export const CreateServer = (): Express => {
   app.all("/api/auth/*splat", toNodeHandler(auth));
   // .use(logMiddleware);
 
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
   app.get(
     "/docs",
     apiReference({

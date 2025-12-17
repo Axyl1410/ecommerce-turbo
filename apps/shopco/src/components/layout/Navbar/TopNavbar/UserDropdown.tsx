@@ -93,6 +93,11 @@ export default function UserDropdown() {
                                 Profile
                             </Link>
                         </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link href="/wishlist" className="cursor-pointer">
+                                Wishlist
+                            </Link>
+                        </DropdownMenuItem>
                         {(user as { role?: string })?.role === "admin" && (
                             <>
                                 <DropdownMenuSeparator />

@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import type { NavMenu } from "../navbar.types";
 import CartBtn from "./CartBtn";
+import WishlistBtn from "./WishlistBtn";
 import { MenuItem } from "./MenuItem";
 import { MenuList } from "./MenuList";
 import ResTopNavbar from "./ResTopNavbar";
@@ -148,6 +149,7 @@ const TopNavbar = () => {
 							className="max-w-[22px] max-h-[22px]"
 						/>
 					</Link>
+					<WishlistBtn />
 					<CartBtn />
 					<UserDropdown />
 				</div>

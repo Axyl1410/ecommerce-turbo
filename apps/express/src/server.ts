@@ -1,6 +1,5 @@
 import { apiReference } from "@scalar/express-api-reference";
-import { ProductStatus, prisma } from "@workspace/database";
-import { Product } from "@workspace/types";
+import { prisma } from "@workspace/database";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express, { type Express, type Request, type Response } from "express";
@@ -14,8 +13,6 @@ export const CreateServer = (): Express => {
   const app = express();
 
   console.log("prisma", prisma);
-
-
 
   const configuredOrigins = (
     process.env.CORS_ORIGINS ??
@@ -126,7 +123,6 @@ export const CreateServer = (): Express => {
 
   app.use("/api/v1", v1);
 
-  // Error handling middleware must be last
   app.use(errorMiddleware);
 
   return app;

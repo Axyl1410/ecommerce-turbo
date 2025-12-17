@@ -17,15 +17,8 @@ export default function TestPage() {
 
 	const { isLoading: isLoadingMe, data: dataMe } = useQuery({
 		queryKey: ["me"],
-		queryFn: () =>
-			apiClient
-				.get("/me")
-				.then((res) => res.data),
+		queryFn: () => apiClient.get("/me").then((res) => res.data),
 	});
-
-console.log(dataMe);
-
-
 
 	const handleClick = () => {
 		toast.error("Hello");

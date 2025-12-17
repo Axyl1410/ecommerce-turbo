@@ -3,10 +3,48 @@ import Brands from "@/components/homepage/Brands";
 import DressStyle from "@/components/homepage/DressStyle";
 import Header from "@/components/homepage/Header";
 import Reviews from "@/components/homepage/Reviews";
-import type { Product } from "@/types/product.types";
-import type { Review } from "@/types/review.types";
+import type { ProductListItemDTO } from "@workspace/types";
 
-export const newArrivalsData: Product[] = [
+type ProductMock = ProductListItemDTO & { gallery?: string[] };
+
+const toSlug = (value: string) =>
+	value
+		.toLowerCase()
+		.trim()
+		.replace(/["']/g, "")
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/(^-|-$)+/g, "");
+
+const makeMockProduct = (input: {
+	id: number;
+	title: string;
+	srcUrl: string;
+	gallery?: string[];
+	price: number;
+	discount: { amount: number; percentage: number };
+	rating: number;
+}): ProductMock => {
+	const salePrice =
+		input.discount.percentage > 0
+			? Math.round(input.price - (input.price * input.discount.percentage) / 100)
+			: input.discount.amount > 0
+				? Math.round(input.price - input.discount.amount)
+				: null;
+
+	return {
+		id: String(input.id),
+		name: input.title,
+		slug: toSlug(input.title),
+		defaultImage: input.srcUrl,
+		price: input.price,
+		salePrice,
+		ratingAvg: input.rating,
+		ratingCount: 0,
+		gallery: input.gallery,
+	};
+};
+
+const newArrivalsRaw = [
 	{
 		id: 1,
 		title: "T-shirt with Tape Details",
@@ -57,7 +95,9 @@ export const newArrivalsData: Product[] = [
 	},
 ];
 
-export const topSellingData: Product[] = [
+export const newArrivalsData: ProductMock[] = newArrivalsRaw.map(makeMockProduct);
+
+const topSellingRaw = [
 	{
 		id: 5,
 		title: "Vertical Striped Shirt",
@@ -108,7 +148,9 @@ export const topSellingData: Product[] = [
 	},
 ];
 
-export const relatedProductData: Product[] = [
+export const topSellingData: ProductMock[] = topSellingRaw.map(makeMockProduct);
+
+const relatedProductRaw = [
 	{
 		id: 12,
 		title: "Polo with Contrast Trims",
@@ -159,7 +201,10 @@ export const relatedProductData: Product[] = [
 	},
 ];
 
-export const reviewsData: Review[] = [
+export const relatedProductData: ProductMock[] =
+	relatedProductRaw.map(makeMockProduct);
+
+export const reviewsData = [
 	{
 		id: 1,
 		user: "Alex K.",

@@ -1,4 +1,3 @@
-import type { ProductStatusEnumType as ProductStatus } from "@workspace/types";
 import { z } from "zod";
 
 /**

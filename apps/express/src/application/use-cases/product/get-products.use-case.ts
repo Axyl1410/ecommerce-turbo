@@ -102,30 +102,22 @@ export class GetProductsUseCase {
 	private toDTO(product: {
 		id: string;
 		name: string;
-		getSlug(): string;
-		description: string | null;
-		brandId: string | null;
-		categoryId: string | null;
+		slug: string;
 		defaultImage: string | null;
-		seoMetaTitle: string | null;
-		seoMetaDesc: string | null;
-		getStatus(): string;
-		createdAt: Date;
-		updatedAt: Date;
+		lowestPrice: number;
+		lowestSalePrice: number | null;
+		ratingAvg: number;
+		ratingCount: number;
 	}) {
 		return {
 			id: product.id,
 			name: product.name,
-			slug: product.getSlug(),
-			description: product.description,
-			brandId: product.brandId,
-			categoryId: product.categoryId,
+			slug: product.slug,
 			defaultImage: product.defaultImage,
-			seoMetaTitle: product.seoMetaTitle,
-			seoMetaDesc: product.seoMetaDesc,
-			status: product.getStatus() as "DRAFT" | "PUBLISHED" | "ARCHIVED",
-			createdAt: product.createdAt,
-			updatedAt: product.updatedAt,
+			price: product.lowestPrice,
+			salePrice: product.lowestSalePrice,
+			ratingAvg: product.ratingAvg,
+			ratingCount: product.ratingCount,
 		};
 	}
 }

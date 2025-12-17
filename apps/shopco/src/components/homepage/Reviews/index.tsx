@@ -15,9 +15,16 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
-import type { Review } from "@/types/review.types";
 
-type ReviewsProps = { data: Review[] };
+type ReviewItem = {
+	id: string | number;
+	user: string;
+	content: string;
+	rating: number;
+	date: string;
+};
+
+type ReviewsProps = { data: ReviewItem[] };
 
 const Reviews = ({ data }: ReviewsProps) => {
 	const [api, setApi] = React.useState<CarouselApi>();

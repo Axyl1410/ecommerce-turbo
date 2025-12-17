@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import CartCounter from "@/components/ui/CartCounter";
-import type { Product } from "@/types/product.types";
+import type { ProductListItemDTO } from "@workspace/types";
 import AddToCartBtn from "./AddToCartBtn";
 
-const AddToCardSection = ({ data }: { data: Product }) => {
+type ProductDetailData = ProductListItemDTO & { gallery?: string[] };
+
+const AddToCardSection = ({ data }: { data: ProductDetailData }) => {
 	const [quantity, setQuantity] = useState<number>(1);
 
 	return (

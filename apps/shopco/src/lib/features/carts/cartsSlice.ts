@@ -1,7 +1,11 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { compareArrays } from "@/lib/utils";
-import type { Discount } from "@/types/product.types";
+
+export type Discount = {
+	amount: number;
+	percentage: number;
+};
 
 const calcAdjustedTotalPrice = (
 	totalPrice: number,
@@ -18,13 +22,14 @@ const calcAdjustedTotalPrice = (
 };
 
 export type RemoveCartItem = {
-	id: number;
+	id: string;
 	attributes: string[];
 };
 
 export type CartItem = {
-	id: number;
+	id: string;
 	name: string;
+	slug?: string;
 	srcUrl: string;
 	price: number;
 	attributes: string[];

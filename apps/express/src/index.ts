@@ -11,11 +11,11 @@ if (process.env.NODE_ENV === "production") {
 			`Server is running at http://${config.host}:${config.port}`,
 		);
 	});
+} else {
+	server.listen(config.port, () => {
+		logger.info(
+			{ port: config.port },
+			`Server is running at http://localhost:${config.port}`,
+		);
+	});
 }
-
-server.listen(config.port, () => {
-	logger.info(
-		{ port: config.port },
-		`Server is running at http://localhost:${config.port}`,
-	);
-});

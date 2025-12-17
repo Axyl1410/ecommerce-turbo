@@ -157,8 +157,9 @@ export default function UsersPage() {
 		},
 	});
 
-	const handleBan = (userId: string, banReason: string) => {
-		banMutation.mutate({ userId, banReason });
+	const handleBan = (userId: string) => {
+		setActionUserId(userId);
+		setActionType("ban");
 	};
 
 	const handleUnban = (userId: string) => {
@@ -309,7 +310,7 @@ export default function UsersPage() {
 						setActionUserId(null);
 						setActionType(null);
 					}}
-					onBan={(banReason) => handleBan(actionUserId, banReason)}
+					onBan={(banReason) => banMutation.mutate({ userId: actionUserId, banReason })}
 					onUnban={() => unbanMutation.mutate(actionUserId)}
 					onDelete={() => deleteMutation.mutate(actionUserId)}
 					onSetRole={(role) => {

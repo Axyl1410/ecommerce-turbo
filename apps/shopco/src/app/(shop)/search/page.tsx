@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import ProductCard from "@/components/common/ProductCard";
 import { useSearchProducts } from "@/hooks/useProducts";
-import { mapProductSearchItemsToProducts } from "@/lib/adapters/product.adapter";
+import { mapSearchItemsToListItems } from "@/lib/adapters/product.adapter";
 import type { ProductStatusEnumType } from "@workspace/types";
 
 export default function SearchPage() {
@@ -43,7 +43,7 @@ export default function SearchPage() {
 	const products = data?.data?.products || [];
 	const total = data?.data?.total || 0;
 	const totalPages = data?.data?.totalPages || 1;
-	const mappedProducts = mapProductSearchItemsToProducts(products);
+	const mappedProducts = mapSearchItemsToListItems(products);
 	const hasProducts = products.length > 0;
 
 	const handlePageChange = (newPage: number) => {

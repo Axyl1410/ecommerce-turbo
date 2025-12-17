@@ -1,5 +1,27 @@
-import type { ProductDTO, ProductSearchItemDTO } from "@workspace/types";
+import type {
+	ProductDTO,
+	ProductSearchItemDTO,
+	ProductListItemDTO,
+} from "@workspace/types";
 import type { Product } from "@/types/product.types";
+
+/**
+ * Maps backend ProductSearchItemDTO to ProductListItemDTO for ProductCard
+ */
+export function mapSearchItemToListItem(
+	dto: ProductSearchItemDTO,
+): ProductListItemDTO {
+	return {
+		id: dto.id,
+		name: dto.name,
+		slug: dto.slug,
+		defaultImage: dto.defaultImage,
+		price: Math.round(dto.price * 100) / 100,
+		salePrice: dto.salePrice ? Math.round(dto.salePrice * 100) / 100 : null,
+		ratingAvg: 0, // Backend doesn't provide rating in search yet
+		ratingCount: 0,
+	};
+}
 
 /**
  * Maps backend ProductSearchItemDTO (with price) to frontend Product type
@@ -22,10 +44,10 @@ export function mapProductSearchItemToProduct(
 	const discount =
 		salePrice && salePrice < price
 			? {
-					amount: Math.round(((price - salePrice) / price) * 100),
-					label: `-${Math.round(((price - salePrice) / price) * 100)}%`,
+					amount: price - salePrice,
+					percentage: Math.round(((price - salePrice) / price) * 100),
 				}
-			: { amount: 0, label: "" };
+			: { amount: 0, percentage: 0 };
 
 	return {
 		id,
@@ -53,7 +75,7 @@ export function mapProductDTOToProduct(dto: ProductDTO): Product {
 		srcUrl: dto.defaultImage || "/images/placeholder-product.png",
 		gallery: [],
 		price: 0,
-		discount: { amount: 0, label: "" },
+		discount: { amount: 0, percentage: 0 },
 		rating: 0,
 	};
 }
@@ -69,6 +91,15 @@ function hashString(str: string): number {
 		hash = hash & hash; // Convert to 32bit integer
 	}
 	return hash;
+}
+
+/**
+ * Maps array of ProductSearchItemDTOs to ProductListItemDTOs
+ */
+export function mapSearchItemsToListItems(
+	dtos: ProductSearchItemDTO[],
+): ProductListItemDTO[] {
+	return dtos.map(mapSearchItemToListItem);
 }
 
 /**

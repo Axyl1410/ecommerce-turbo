@@ -22,6 +22,7 @@ import { DeleteProductUseCase } from "@/application/use-cases/product/delete-pro
 import { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
 import { GetProductBySlugUseCase } from "@/application/use-cases/product/get-product-by-slug.use-case";
 import { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
+import { GetBrandsUseCase } from "@/application/use-cases/product/get-brands.use-case";
 import { SearchProductsUseCase } from "@/application/use-cases/product/search-products.use-case";
 import { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
 import { AddToWishlistUseCase } from "@/application/use-cases/wishlist/add-wishlist.use-case";
@@ -29,16 +30,19 @@ import { RemoveFromWishlistUseCase } from "@/application/use-cases/wishlist/remo
 import { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/get-wishlist.use-case";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
+import type { IBrandRepository } from "@/domain/repositories/brand.repository";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
 import { RedisCacheService } from "@/infrastructure/cache/redis-cache.service";
 import { PrismaCartRepository } from "@/infrastructure/persistence/prisma/cart.repository.impl";
 import { PrismaCategoryRepository } from "@/infrastructure/persistence/prisma/category.repository.impl";
+import { PrismaBrandRepository } from "@/infrastructure/persistence/prisma/brand.repository.impl";
 import { PrismaProductRepository } from "@/infrastructure/persistence/prisma/product.repository.impl";
 import { PrismaWishlistRepository } from "@/infrastructure/persistence/prisma/wishlistitem.repository";
 import { CartController } from "@/presentation/controllers/cart.controller";
 import { CategoryController } from "@/presentation/controllers/category.controller";
 import { ProductController } from "@/presentation/controllers/product.controller";
+import { BrandController } from "@/presentation/controllers/brand.controller";
 import { WishlistController } from "@/presentation/controllers/wishlist.controller";
 
 export class DIContainer {
@@ -77,6 +81,7 @@ export class DIContainer {
 		const productRepository: IProductRepository = new PrismaProductRepository();
 		const categoryRepository: ICategoryRepository =
 			new PrismaCategoryRepository();
+		const brandRepository: IBrandRepository = new PrismaBrandRepository();
 		const cartRepository: ICartRepository = new PrismaCartRepository();
 		const cacheService: ICacheService = new RedisCacheService();
 
@@ -85,6 +90,7 @@ export class DIContainer {
 		this.register("categoryRepository", categoryRepository);
 		this.register("cacheService", cacheService);
 		this.register("cartRepository", cartRepository);
+		this.register("brandRepository", brandRepository);
 
 		// Application layer - Use cases
 		const getProductsUseCase = new GetProductsUseCase(
@@ -114,6 +120,10 @@ export class DIContainer {
 		);
 		const deleteProductUseCase = new DeleteProductUseCase(
 			productRepository,
+			cacheService,
+		);
+		const getBrandsUseCase = new GetBrandsUseCase(
+			brandRepository,
 			cacheService,
 		);
 
@@ -191,6 +201,7 @@ export class DIContainer {
 		this.register("createProductUseCase", createProductUseCase);
 		this.register("updateProductUseCase", updateProductUseCase);
 		this.register("deleteProductUseCase", deleteProductUseCase);
+		this.register("getBrandsUseCase", getBrandsUseCase);
 		this.register("getOrCreateCartUseCase", getOrCreateCartUseCase);
 		this.register("getCartDetailsUseCase", getCartDetailsUseCase);
 		this.register("addItemToCartUseCase", addItemToCartUseCase);
@@ -239,12 +250,14 @@ export class DIContainer {
 			removeFromWishlistUseCase,
 			getUserWishlistUseCase,
 		);
+		const brandController = new BrandController(getBrandsUseCase);
 
 		// Register controllers
 		this.register("productController", productController);
 		this.register("cartController", cartController);
 		this.register("categoryController", categoryController);
 		this.register("wishlistController", wishlistController);
+		this.register("brandController", brandController);
 	}
 }
 

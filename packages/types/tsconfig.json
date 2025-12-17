@@ -4,6 +4,7 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "composite": true,
+    "incremental": true,
     "noEmit": false,
     "emitDeclarationOnly": true,
     "strictNullChecks": true

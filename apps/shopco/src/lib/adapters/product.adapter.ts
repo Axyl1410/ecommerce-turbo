@@ -2,6 +2,7 @@ import type {
 	ProductDTO,
 	ProductSearchItemDTO,
 	ProductListItemDTO,
+	ProductRow,
 } from "@workspace/types";
 import type { Product } from "@/types/product.types";
 

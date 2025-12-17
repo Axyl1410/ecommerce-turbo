@@ -33,30 +33,31 @@ export const CreateServer = (): Express => {
   const allowedOrigins =
     configuredOrigins.length > 0 ? configuredOrigins : defaultOrigins;
 
-  app.use(
-    cors({
-      origin: (origin, callback) => {
-        // Allow non-browser clients (no Origin header)
-        if (!origin) {
-          callback(null, true);
-          return;
-        }
+  app
+    .use(
+      cors({
+        origin: (origin, callback) => {
+          // Allow non-browser clients (no Origin header)
+          if (!origin) {
+            callback(null, true);
+            return;
+          }
 
-        if (allowedOrigins.includes(origin)) {
-          callback(null, true);
-          return;
-        }
+          if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+            return;
+          }
 
-        callback(new Error("Not allowed by CORS"));
-      },
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Specify allowed HTTP methods
-      credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-    })
-  );
+          callback(new Error("Not allowed by CORS"));
+        },
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"], // Specify allowed HTTP methods
+        credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+      })
+    )
+    .use(logMiddleware);
 
   // Ensure Better Auth routes also get CORS headers
   app.all("/api/auth/*splat", toNodeHandler(auth));
-  // .use(logMiddleware);
 
   app.get(
     "/docs",

@@ -31,8 +31,10 @@ export class CreateProductUseCase {
       dto.name
         .toLowerCase()
         .trim()
+        .normalize("NFD") 
+        .replace(/[\u0300-\u036f]/g, "") 
         .replace(/\s+/g, "-")
-        .replace(/[^\w-]+/g, "");
+        .replace(/[^a-z0-9_-]+/g, "");
 
     if (!slug) {
       throw new ApplicationError(

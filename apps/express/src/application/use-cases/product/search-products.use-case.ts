@@ -1,8 +1,8 @@
 import type {
-	GetProductsDTO,
 	ProductSearchItemDTO,
 	ProductSearchListDTO,
-} from "../../dto/product.dto.js";
+} from "@workspace/types";
+import type { GetProductsDTO } from "../../dto/product.dto.js";
 import type { IProductRepository } from "../../../domain/repositories/product.repository.js";
 
 export class SearchProductsUseCase {
@@ -12,7 +12,7 @@ export class SearchProductsUseCase {
 		const {
 			page = 1,
 			limit = 10,
-			status,
+			status = "PUBLISHED", // Default to only show published products
 			categoryId,
 			brandId,
 			search,

@@ -1,41 +1,28 @@
-import express, { type Router } from "express";
-import { asyncHandler, sendError } from "@/lib/api-response-helper";
+import { Router } from "express";
 import type { BrandController } from "@/presentation/controllers/brand.controller";
-import { getBrandsQuerySchema } from "@/presentation/validators/brand.validator";
 
 /**
  * Brand Routes
- * Defines routes for brand endpoints
- *
- * For now we only support listing brands for product CRUD helpers.
+ * /api/v1/brands
  */
-export function createBrandRoutes(controller: BrandController): Router {
-	const router = express.Router();
+export function createBrandRoutes(brandController: BrandController): Router {
+	const router = Router();
 
 	/**
 	 * GET /api/v1/brands
-	 * Get list of brands with pagination, filtering, and sorting
-	 * Public access (no authentication required)
+	 * Get list of brands with pagination and filtering
 	 */
-	router.get(
-		"/",
-		asyncHandler(async (req, res) => {
-			const validation = getBrandsQuerySchema.safeParse(req.query);
-
-			if (!validation.success) {
-				sendError(
-					res,
-					validation.error.issues[0]?.message ?? "Invalid query parameters",
-					400,
-				);
-				return;
-			}
-
-			await controller.getBrands(validation.data, res);
-		}),
-	);
+	router.get("/", (req, res) => {
+		const query = {
+			page: req.query.page ? Number(req.query.page) : undefined,
+			limit: req.query.limit ? Number(req.query.limit) : undefined,
+			active: req.query.active === "true" ? true : req.query.active === "false" ? false : undefined,
+			search: req.query.search as string | undefined,
+			sortBy: req.query.sortBy as "name" | "createdAt" | "updatedAt" | undefined,
+			sortOrder: req.query.sortOrder as "asc" | "desc" | undefined,
+		};
+		brandController.getBrands(query, res);
+	});
 
 	return router;
 }
-
-

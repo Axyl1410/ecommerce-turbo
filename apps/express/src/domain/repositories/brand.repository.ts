@@ -1,4 +1,4 @@
-import type { Brand } from "../entities/brand.entity";
+import type { BrandRow } from "@workspace/types";
 
 /**
  * Brand Repository Interface
@@ -8,12 +8,12 @@ export interface IBrandRepository {
 	/**
 	 * Find brand by ID
 	 */
-	findById(id: string): Promise<Brand | null>;
+	findById(id: string): Promise<BrandRow | null>;
 
 	/**
 	 * Find brand by slug
 	 */
-	findBySlug(slug: string): Promise<Brand | null>;
+	findBySlug(slug: string): Promise<BrandRow | null>;
 
 	/**
 	 * Find brands with pagination, filtering, and sorting
@@ -26,7 +26,7 @@ export interface IBrandRepository {
 		sortBy?: "name" | "createdAt" | "updatedAt";
 		sortOrder?: "asc" | "desc";
 	}): Promise<{
-		brands: Brand[];
+		brands: BrandRow[];
 		total: number;
 	}>;
 
@@ -39,7 +39,7 @@ export interface IBrandRepository {
 		description?: string | null;
 		logoUrl?: string | null;
 		active?: boolean;
-	}): Promise<Brand>;
+	}): Promise<string>; // Returns brand ID
 
 	/**
 	 * Update an existing brand
@@ -53,22 +53,10 @@ export interface IBrandRepository {
 			logoUrl?: string | null;
 			active?: boolean;
 		},
-	): Promise<Brand>;
+	): Promise<void>;
 
 	/**
-	 * Delete a brand
+	 * Delete a brand by ID
 	 */
 	delete(id: string): Promise<void>;
-
-	/**
-	 * Check if brand with slug exists
-	 */
-	existsBySlug(slug: string, excludeId?: string): Promise<boolean>;
-
-	/**
-	 * Get all brands (for dropdowns / validation)
-	 */
-	findAll(): Promise<Brand[]>;
 }
-
-

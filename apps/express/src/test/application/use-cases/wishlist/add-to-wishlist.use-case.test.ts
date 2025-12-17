@@ -1,5 +1,5 @@
 import type { IProductRepository } from "@/domain/repositories/product.repository";
-import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
+import type { IWishlistRepository } from "@/domain/repositories/wishlist.repository";
 import { AddToWishlistUseCase } from "@/application/use-cases/wishlist/add-wishlist.use-case";
 import { ApplicationError } from "@/shared/errors/application.error";
 import { WishlistItem } from "@/domain/entities/wish-list-item.entity";

@@ -1,49 +1,46 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
-import type { ProductListItemDTO } from "@workspace/types";
+import { useState } from "react";
+import type { ProductDetailPageData } from "@/lib/adapters/productdetail.adapter";
 
-type ProductDetailData = ProductListItemDTO & { gallery?: string[] };
-
-const PhotoSection = ({ data }: { data: ProductDetailData }) => {
-	const initial =
-		data.defaultImage ?? data.gallery?.[0] ?? "/images/placeholder.png";
-	const [selected, setSelected] = useState<string>(initial);
+const PhotoSection = ({ data }: { data: ProductDetailPageData }) => {
+	const images =
+		data.gallery.length > 0
+			? data.gallery
+			: [data.defaultImage ?? "/images/placeholder.png"];
+	const [selectedImage, setSelectedImage] = useState(images[0]);
 
 	return (
-		<div className="flex flex-col-reverse lg:flex-row lg:space-x-3.5">
-			{data?.gallery && data.gallery.length > 0 && (
-				<div className="flex lg:flex-col space-x-3 lg:space-x-0 lg:space-y-3.5 w-full lg:w-fit items-center lg:justify-start justify-center">
-					{data.gallery.map((photo, index) => (
-						<button
-							key={index}
-							type="button"
-							className="bg-[#F0EEED] rounded-[13px] xl:rounded-[20px] w-full max-w-[111px] xl:max-w-[152px] max-h-[106px] xl:max-h-[167px] xl:min-h-[167px] aspect-square overflow-hidden"
-							onClick={() => setSelected(photo)}
-						>
-							<Image
-								src={photo}
-								width={152}
-								height={167}
-								className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
-								alt={data.name}
-								priority
-							/>
-						</button>
-					))}
-				</div>
-			)}
-
-			<div className="flex items-center justify-center bg-[#F0EEED] rounded-[13px] sm:rounded-[20px] w-full sm:w-96 md:w-full mx-auto h-full max-h-[530px] min-h-[330px] lg:min-h-[380px] xl:min-h-[530px] overflow-hidden mb-3 lg:mb-0">
+		<div className="flex flex-col-reverse md:flex-row gap-3.5">
+			<div className="flex md:flex-col gap-3.5 overflow-x-auto md:overflow-y-auto">
+				{images.map((img, index) => (
+					<button
+						key={`${img}-${index}`}
+						type="button"
+						onClick={() => setSelectedImage(img)}
+						className={`relative shrink-0 w-[111px] h-[106px] md:w-[152px] md:h-[167px] rounded-[20px] overflow-hidden border-2 transition-all ${
+							selectedImage === img
+								? "border-black"
+								: "border-transparent hover:border-gray-300"
+						}`}
+					>
+						<Image
+							src={img}
+							alt={`${data.name} thumbnail ${index + 1}`}
+							fill
+							className="object-cover"
+						/>
+					</button>
+				))}
+			</div>
+			<div className="relative w-full aspect-square md:aspect-[444/530] bg-[#F0EEED] rounded-[20px] overflow-hidden">
 				<Image
-					src={selected}
-					width={444}
-					height={530}
-					className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
+					src={selectedImage|| "/images/placeholder.png"}
 					alt={data.name}
+					fill
 					priority
-					unoptimized
+					className="object-cover"
 				/>
 			</div>
 		</div>

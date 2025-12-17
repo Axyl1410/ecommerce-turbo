@@ -5,7 +5,7 @@ import type { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/ge
 import { sendSuccess } from "@/lib/api-response-helper";
 import { ApplicationError } from "@/shared/errors/application.error";
 
-export class WishlistController {
+export class WishlistController { // translation: Bộ điều khiển danh sách yêu thích
     constructor(
         private addToWishlistUseCase: AddToWishlistUseCase,
         private removeFromWishlistUseCase: RemoveFromWishlistUseCase,

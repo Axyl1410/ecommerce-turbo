@@ -13,6 +13,7 @@ import {
 } from "@workspace/ui/components/card";
 import { Button } from "@workspace/ui/components/button";
 import { admin } from "@/lib/auth-client";
+import { apiClient } from "@/lib/api";
 import UserForm from "@/components/admin/user-form";
 import UserActions from "@/components/admin/user-actions";
 import { toast } from "sonner";
@@ -57,6 +58,35 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
 			return user;
 		},
 	});
+
+	// Fetch user accounts to check if user has password account
+	const { data: accountsData } = useQuery({
+		queryKey: ["admin-user-accounts", id],
+		queryFn: async () => {
+			try {
+				const response = await apiClient.get<{
+					data: {
+						accounts: Array<{
+							id: string;
+							providerId: string;
+							accountId: string;
+							createdAt: string;
+						}>;
+					};
+				}>(`/api/v1/admin/users/${id}/accounts`);
+				return response.data.data.accounts || [];
+			} catch (error) {
+				// If API doesn't exist or fails, return empty array
+				return [];
+			}
+		},
+		enabled: !!userData, // Only fetch when user data is loaded
+	});
+
+	// Check if user has password account (providerId === "credential")
+	const hasPasswordAccount = accountsData?.some(
+		(account: { providerId: string }) => account.providerId === "credential"
+	) ?? false;
 
 	const user = userData;
 
@@ -248,14 +278,16 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="space-y-2">
-					<Button
-						variant="outline"
-						className="w-full justify-start"
-						onClick={() => setActionType("setPassword")}
-					>
-						<Key className="mr-2 size-4" />
-						Set Password
-					</Button>
+					{hasPasswordAccount && (
+						<Button
+							variant="outline"
+							className="w-full justify-start"
+							onClick={() => setActionType("setPassword")}
+						>
+							<Key className="mr-2 size-4" />
+							Set Password
+						</Button>
+					)}
 					{user.banned ? (
 						<Button
 							variant="outline"

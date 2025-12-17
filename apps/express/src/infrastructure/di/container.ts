@@ -28,18 +28,22 @@ import { UpdateProductUseCase } from "@/application/use-cases/product/update-pro
 import { AddToWishlistUseCase } from "@/application/use-cases/wishlist/add-wishlist.use-case";
 import { RemoveFromWishlistUseCase } from "@/application/use-cases/wishlist/remove-wishlist.use-case";
 import { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/get-wishlist.use-case";
+import { GetUserAccountsUseCase } from "@/application/use-cases/admin/get-user-accounts.use-case";
+import type { IAccountRepository } from "@/domain/repositories/account.repository";
 import type { IBrandRepository } from "@/domain/repositories/brand.repository";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import type { IWishlistRepository } from "@/domain/repositories/wishlist.repository";
 import { RedisCacheService } from "@/infrastructure/cache/redis-cache.service";
+import { PrismaAccountRepository } from "@/infrastructure/persistence/prisma/account.repository.impl";
 import { PrismaBrandRepository } from "@/infrastructure/persistence/prisma/brand.repository.impl";
 import { PrismaCartRepository } from "@/infrastructure/persistence/prisma/cart.repository.impl";
 import { PrismaCategoryRepository } from "@/infrastructure/persistence/prisma/category.repository.impl";
 import { PrismaProductRepository } from "@/infrastructure/persistence/prisma/product.repository.impl";
 import { BrandController } from "@/presentation/controllers/brand.controller";
 import { PrismaWishlistRepository } from "@/infrastructure/persistence/prisma/wishlist.repository";
+import { AdminController } from "@/presentation/controllers/admin.controller";
 import { CartController } from "@/presentation/controllers/cart.controller";
 import { CategoryController } from "@/presentation/controllers/category.controller";
 import { ProductController } from "@/presentation/controllers/product.controller";
@@ -83,6 +87,7 @@ export class DIContainer {
     const categoryRepository: ICategoryRepository =
       new PrismaCategoryRepository();
     const cartRepository: ICartRepository = new PrismaCartRepository();
+    const accountRepository: IAccountRepository = new PrismaAccountRepository();
     const cacheService: ICacheService = new RedisCacheService();
 
     // Register infrastructure
@@ -91,6 +96,7 @@ export class DIContainer {
     this.register("categoryRepository", categoryRepository);
     this.register("cacheService", cacheService);
     this.register("cartRepository", cartRepository);
+    this.register("accountRepository", accountRepository);
 
     // Application layer - Use cases
     const getProductsUseCase = new GetProductsUseCase(
@@ -194,6 +200,10 @@ export class DIContainer {
       wishlistRepository
     );
 
+    const getUserAccountsUseCase = new GetUserAccountsUseCase(
+      accountRepository
+    );
+
     // Register use cases
     this.register("getProductsUseCase", getProductsUseCase);
     this.register("searchProductsUseCase", searchProductsUseCase);
@@ -219,6 +229,7 @@ export class DIContainer {
     this.register("addToWishlistUseCase", addToWishlistUseCase);
     this.register("removeFromWishlistUseCase", removeFromWishlistUseCase);
     this.register("getUserWishlistUseCase", getUserWishlistUseCase);
+    this.register("getUserAccountsUseCase", getUserAccountsUseCase);
 
     // Presentation layer - Controllers
     const productController = new ProductController(
@@ -252,6 +263,7 @@ export class DIContainer {
       removeFromWishlistUseCase,
       getUserWishlistUseCase
     );
+    const adminController = new AdminController(getUserAccountsUseCase);
 
     // Register controllers
     this.register("productController", productController);
@@ -259,6 +271,7 @@ export class DIContainer {
     this.register("cartController", cartController);
     this.register("categoryController", categoryController);
     this.register("wishlistController", wishlistController);
+    this.register("adminController", adminController);
   }
 }
 

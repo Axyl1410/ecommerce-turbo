@@ -17,7 +17,7 @@ export default function AdminLayout({
             <SidebarProvider>
                 <AdminSidebar />
                 <SidebarInset>
-                    <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+                    <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
                         <SidebarTrigger className="-ml-1" />
                     </header>
                     <div className="flex flex-1 flex-col gap-4 p-4 md:p-6">

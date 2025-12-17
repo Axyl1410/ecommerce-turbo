@@ -12,6 +12,8 @@ import { createCategoryRoutes } from "@/presentation/routes/v1/category.routes";
 import { createBrandRoutes } from "@/presentation/routes/v1/brand.routes";
 import { createProductRoutes } from "@/presentation/routes/v1/product.routes";
 import { createWishlistRoutes } from "@/presentation/routes/v1/wishlist.routes";
+import { createAdminRoutes } from "@/presentation/routes/v1/admin.routes";
+import type { AdminController } from "@/presentation/controllers/admin.controller";
 import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "@/lib/auth";
 
@@ -50,5 +52,8 @@ v1.use("/cart", createCartRoutes(cartController));
 const wishlistController =
   container.get<WishlistController>("wishlistController");
 v1.use("/wishlist", createWishlistRoutes(wishlistController));
+
+const adminController = container.get<AdminController>("adminController");
+v1.use("/admin", createAdminRoutes(adminController));
 
 export default v1;

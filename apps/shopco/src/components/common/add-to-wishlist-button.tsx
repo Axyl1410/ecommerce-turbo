@@ -3,12 +3,12 @@
 import { Heart } from "lucide-react";
 import { useCallback } from "react";
 import { useWishlist } from "@/hooks/use-wishlist";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Button } from "@workspace/ui/components/button";
 
 interface AddToWishlistButtonProps {
 	productId: string;
-	size?: "sm" | "md" | "lg";
+	size?: "sm" | "lg" | "default" | "icon";
 	variant?: "default" | "outline" | "ghost";
 	showLabel?: boolean;
 	className?: string;
@@ -27,7 +27,7 @@ interface AddToWishlistButtonProps {
  */
 export function AddToWishlistButton({
 	productId,
-	size = "md",
+	size = "sm",
 	variant = "ghost",
 	showLabel = false,
 	className,

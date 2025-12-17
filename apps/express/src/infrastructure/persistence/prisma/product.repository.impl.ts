@@ -178,6 +178,107 @@ export class PrismaProductRepository implements IProductRepository {
 		};
 	}
 
+	async findManyWithVariants(params: {
+		page?: number;
+		limit?: number;
+		status?: ProductStatus;
+		categoryId?: string;
+		brandId?: string;
+		search?: string;
+		sortBy?: "name" | "createdAt" | "updatedAt";
+		sortOrder?: "asc" | "desc";
+	}): Promise<{
+		products: Array<
+			Product & {
+				variants?: Array<{
+					id: string;
+					price: number;
+					salePrice: number | null;
+				}>;
+			}
+		>;
+		total: number;
+	}> {
+		const {
+			page = 1,
+			limit = 10,
+			status,
+			categoryId,
+			brandId,
+			search,
+			sortBy = "createdAt",
+			sortOrder = "desc",
+		} = params;
+
+		// Build where clause (same as findMany)
+		const where: {
+			status?: ProductStatus;
+			categoryId?: string;
+			brandId?: string;
+			OR?: Array<{
+				name?: { contains: string; mode: "insensitive" };
+				description?: { contains: string; mode: "insensitive" };
+			}>;
+		} = {};
+
+		if (status) {
+			where.status = status;
+		}
+
+		if (categoryId) {
+			where.categoryId = categoryId;
+		}
+
+		if (brandId) {
+			where.brandId = brandId;
+		}
+
+		if (search) {
+			where.OR = [
+				{ name: { contains: search, mode: "insensitive" } },
+				{ description: { contains: search, mode: "insensitive" } },
+			];
+		}
+
+		// Get total count
+		const total = await prisma.product.count({ where });
+
+		// Get products with first variant only (for performance)
+		const products = await prisma.product.findMany({
+			where,
+			skip: (page - 1) * limit,
+			take: limit,
+			orderBy: {
+				[sortBy]: sortOrder,
+			},
+			include: {
+				variants: {
+					select: {
+						id: true,
+						price: true,
+						salePrice: true,
+					},
+					take: 1, // Only get first variant for list view
+				},
+			},
+		});
+
+		return {
+			products: products.map((p) => {
+				const domainProduct = this.toDomain(p);
+				const variants = p.variants.map((v) => ({
+					id: v.id,
+					price: Math.round(Number(v.price) * 100) / 100,
+					salePrice: v.salePrice
+						? Math.round(Number(v.salePrice) * 100) / 100
+						: null,
+				}));
+				return Object.assign(domainProduct, { variants });
+			}),
+			total,
+		};
+	}
+
 	async create(data: {
 		name: string;
 		slug: string;

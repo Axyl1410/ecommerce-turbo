@@ -4,6 +4,7 @@ import React from "react";
 import type { ProductListItemDTO } from "@workspace/types";
 import Rating from "../ui/Rating";
 
+
 type ProductCardProps = {
 	data: ProductListItemDTO;
 };
@@ -22,8 +23,11 @@ const ProductCard = ({ data }: ProductCardProps) => {
 			: 0;
 
 	return (
-		<Link href={productHref} className="flex flex-col items-start aspect-auto">
-			<div className="bg-[#F0EEED] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden">
+		<Link
+			href={`/shop/product/${data.id}/${data.name.split(" ").join("-")}`}
+			className="flex flex-col items-start aspect-auto"
+		>
+			<div className="bg-[#F0EEED] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden relative group">
 				<Image
 					src={data.defaultImage ?? "/images/placeholder.png"}
 					width={295}

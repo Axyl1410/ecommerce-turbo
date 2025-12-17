@@ -1,46 +1,67 @@
-import Link from "next/link";
-import React from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { useCategories } from "@/hooks/useCategories";
 
-type Category = {
-	title: string;
-	slug: string;
+type CategoriesSectionProps = {
+	selectedCategoryId?: string;
+	onSelectCategory: (categoryId?: string) => void;
 };
 
-const categoriesData: Category[] = [
-	{
-		title: "T-shirts",
-		slug: "/shop?category=t-shirts",
-	},
-	{
-		title: "Shorts",
-		slug: "/shop?category=shorts",
-	},
-	{
-		title: "Shirts",
-		slug: "/shop?category=shirts",
-	},
-	{
-		title: "Hoodie",
-		slug: "/shop?category=hoodie",
-	},
-	{
-		title: "Jeans",
-		slug: "/shop?category=jeans",
-	},
-];
+const CategoriesSection = ({
+	selectedCategoryId,
+	onSelectCategory,
+}: CategoriesSectionProps) => {
+	const { data, isLoading } = useCategories({
+		active: true,
+		limit: 20,
+		sortBy: "name",
+		sortOrder: "asc",
+	});
 
-const CategoriesSection = () => {
+	const categories = data?.data?.categories ?? [];
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col space-y-0.5 text-black/60">
+				<p className="text-sm">Loading categories...</p>
+			</div>
+		);
+	}
+
+	if (categories.length === 0) {
+		return (
+			<div className="flex flex-col space-y-0.5 text-black/60">
+				<p className="text-sm">No categories available</p>
+			</div>
+		);
+	}
+
 	return (
 		<div className="flex flex-col space-y-0.5 text-black/60">
-			{categoriesData.map((category, idx) => (
-				<Link
-					key={idx}
-					href={category.slug}
-					className="flex items-center justify-between py-2"
+			{/* All Categories option */}
+			<button
+				type="button"
+				onClick={() => onSelectCategory(undefined)}
+				className={`flex items-center justify-between py-2 text-left transition-colors ${
+					!selectedCategoryId
+						? "text-black font-semibold"
+						: "hover:text-black"
+				}`}
+			>
+				All Categories <MdKeyboardArrowRight />
+			</button>
+			{categories.map((category) => (
+				<button
+					type="button"
+					key={category.id}
+					onClick={() => onSelectCategory(category.id)}
+					className={`flex items-center justify-between py-2 text-left transition-colors ${
+						selectedCategoryId === category.id
+							? "text-black font-semibold"
+							: "hover:text-black"
+					}`}
 				>
-					{category.title} <MdKeyboardArrowRight />
-				</Link>
+					{category.name} <MdKeyboardArrowRight />
+				</button>
 			))}
 		</div>
 	);

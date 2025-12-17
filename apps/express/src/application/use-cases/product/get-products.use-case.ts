@@ -16,7 +16,7 @@ export class GetProductsUseCase {
 		const {
 			page = 1,
 			limit = 10,
-			status,
+			status = "PUBLISHED", // Default to only show published products
 			categoryId,
 			brandId,
 			search,

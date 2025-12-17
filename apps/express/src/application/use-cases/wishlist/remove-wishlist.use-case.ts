@@ -1,4 +1,4 @@
-import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
+import type { IWishlistRepository } from "@/domain/repositories/wishlist.repository";
 
 export class RemoveFromWishlistUseCase {
     constructor(private wishlistRepository: IWishlistRepository) {}

@@ -1,4 +1,4 @@
-import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
+import type { IWishlistRepository } from "@/domain/repositories/wishlist.repository";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
 

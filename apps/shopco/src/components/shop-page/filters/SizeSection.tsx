@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
 	Accordion,
 	AccordionContent,
@@ -9,8 +9,19 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 
-const SizeSection = () => {
-	const [selected, setSelected] = useState<string>("Large");
+type SizeSectionProps = {
+	selectedSizes: string[];
+	onSizesChange: (sizes: string[]) => void;
+};
+
+const SizeSection = ({ selectedSizes, onSizesChange }: SizeSectionProps) => {
+	const handleSizeToggle = (size: string) => {
+		if (selectedSizes.includes(size)) {
+			onSizesChange(selectedSizes.filter((s) => s !== size));
+		} else {
+			onSizesChange([...selectedSizes, size]);
+		}
+	};
 
 	return (
 		<Accordion type="single" collapsible defaultValue="filter-size">
@@ -36,9 +47,9 @@ const SizeSection = () => {
 								type="button"
 								className={cn([
 									"bg-[#F0F0F0] m-1 flex items-center justify-center px-5 py-2.5 text-sm rounded-full max-h-[39px]",
-									selected === size && "bg-black font-medium text-white",
+									selectedSizes.includes(size) && "bg-black font-medium text-white",
 								])}
-								onClick={() => setSelected(size)}
+								onClick={() => handleSizeToggle(size)}
 							>
 								{size}
 							</button>

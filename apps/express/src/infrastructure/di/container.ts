@@ -11,6 +11,7 @@ import { GetCartDetailsUseCase } from "@/application/use-cases/cart/get-cart-det
 import { GetOrCreateCartUseCase } from "@/application/use-cases/cart/get-or-create-cart.use-case";
 import { RemoveCartItemUseCase } from "@/application/use-cases/cart/remove-cart-item.use-case";
 import { UpdateCartItemUseCase } from "@/application/use-cases/cart/update-cart-item.use-case";
+import { GetBrandsUseCase } from "@/application/use-cases/brand/get-brands.use-case";
 import { CreateCategoryUseCase } from "@/application/use-cases/category/create-category.use-case";
 import { DeleteCategoryUseCase } from "@/application/use-cases/category/delete-category.use-case";
 import { GetCategoriesUseCase } from "@/application/use-cases/category/get-categories.use-case";
@@ -27,14 +28,17 @@ import { UpdateProductUseCase } from "@/application/use-cases/product/update-pro
 import { AddToWishlistUseCase } from "@/application/use-cases/wishlist/add-wishlist.use-case";
 import { RemoveFromWishlistUseCase } from "@/application/use-cases/wishlist/remove-wishlist.use-case";
 import { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/get-wishlist.use-case";
+import type { IBrandRepository } from "@/domain/repositories/brand.repository";
 import type { ICartRepository } from "@/domain/repositories/cart.repository";
 import type { ICategoryRepository } from "@/domain/repositories/category.repository";
 import type { IProductRepository } from "@/domain/repositories/product.repository";
 import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
 import { RedisCacheService } from "@/infrastructure/cache/redis-cache.service";
+import { PrismaBrandRepository } from "@/infrastructure/persistence/prisma/brand.repository.impl";
 import { PrismaCartRepository } from "@/infrastructure/persistence/prisma/cart.repository.impl";
 import { PrismaCategoryRepository } from "@/infrastructure/persistence/prisma/category.repository.impl";
 import { PrismaProductRepository } from "@/infrastructure/persistence/prisma/product.repository.impl";
+import { BrandController } from "@/presentation/controllers/brand.controller";
 import { PrismaWishlistRepository } from "@/infrastructure/persistence/prisma/wishlistitem.repository";
 import { CartController } from "@/presentation/controllers/cart.controller";
 import { CategoryController } from "@/presentation/controllers/category.controller";
@@ -75,6 +79,7 @@ export class DIContainer {
 	initialize(): void {
 		// Infrastructure layer
 		const productRepository: IProductRepository = new PrismaProductRepository();
+		const brandRepository: IBrandRepository = new PrismaBrandRepository();
 		const categoryRepository: ICategoryRepository =
 			new PrismaCategoryRepository();
 		const cartRepository: ICartRepository = new PrismaCartRepository();
@@ -82,6 +87,7 @@ export class DIContainer {
 
 		// Register infrastructure
 		this.register("productRepository", productRepository);
+		this.register("brandRepository", brandRepository);
 		this.register("categoryRepository", categoryRepository);
 		this.register("cacheService", cacheService);
 		this.register("cartRepository", cartRepository);
@@ -143,6 +149,11 @@ export class DIContainer {
 			cacheService,
 		);
 
+		const getBrandsUseCase = new GetBrandsUseCase(
+			brandRepository,
+			cacheService,
+		);
+
 		const getCategoriesUseCase = new GetCategoriesUseCase(
 			categoryRepository,
 			cacheService,
@@ -198,6 +209,7 @@ export class DIContainer {
 		this.register("removeCartItemUseCase", removeCartItemUseCase);
 		this.register("clearCartUseCase", clearCartUseCase);
 		this.register("clearCartAfterOrderUseCase", clearCartAfterOrderUseCase);
+		this.register("getBrandsUseCase", getBrandsUseCase);
 		this.register("getCategoriesUseCase", getCategoriesUseCase);
 		this.register("getCategoryByIdUseCase", getCategoryByIdUseCase);
 		this.register("getCategoryBySlugUseCase", getCategoryBySlugUseCase);
@@ -226,6 +238,7 @@ export class DIContainer {
 			removeCartItemUseCase,
 			clearCartUseCase,
 		);
+		const brandController = new BrandController(getBrandsUseCase);
 		const categoryController = new CategoryController(
 			getCategoriesUseCase,
 			getCategoryByIdUseCase,
@@ -242,6 +255,7 @@ export class DIContainer {
 
 		// Register controllers
 		this.register("productController", productController);
+		this.register("brandController", brandController);
 		this.register("cartController", cartController);
 		this.register("categoryController", categoryController);
 		this.register("wishlistController", wishlistController);

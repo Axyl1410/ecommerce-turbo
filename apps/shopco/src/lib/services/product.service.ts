@@ -1,7 +1,7 @@
 import type {
 	ApiResponse,
 	GetProductsDTO,
-	ProductDTO,
+	ProductDetailDTO,
 	ProductSearchListDTO,
 } from "@workspace/types";
 import { apiClient } from "../api";
@@ -23,20 +23,24 @@ export const productService = {
 	},
 
 	/**
-	 * Get product by ID
+	 * Get product by ID (detail)
 	 */
-	getProductById: async (id: string): Promise<ApiResponse<ProductDTO>> => {
-		const response = await apiClient.get<ApiResponse<ProductDTO>>(
+	getProductById: async (
+		id: string,
+	): Promise<ApiResponse<ProductDetailDTO>> => {
+		const response = await apiClient.get<ApiResponse<ProductDetailDTO>>(
 			`/products/${id}`,
 		);
 		return response.data;
 	},
 
 	/**
-	 * Get product by slug
+	 * Get product by slug (detail)
 	 */
-	getProductBySlug: async (slug: string): Promise<ApiResponse<ProductDTO>> => {
-		const response = await apiClient.get<ApiResponse<ProductDTO>>(
+	getProductBySlug: async (
+		slug: string,
+	): Promise<ApiResponse<ProductDetailDTO>> => {
+		const response = await apiClient.get<ApiResponse<ProductDetailDTO>>(
 			`/products/slug/${slug}`,
 		);
 		return response.data;

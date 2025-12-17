@@ -1,14 +1,15 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 import { FiSliders } from "react-icons/fi";
-import type { ApiResponse, ProductListDTO } from "@workspace/types";
+import type { ProductListItemDTO } from "@workspace/types";
 import ProductCard from "@/components/common/ProductCard";
 import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
 import Filters from "@/components/shop-page/filters";
 import MobileFilters from "@/components/shop-page/filters/MobileFilters";
+import { useSearchProducts } from "@/hooks/useProducts";
+import { mapSearchItemsToListItems } from "@/lib/adapters/product.adapter";
 import {
 	Pagination,
 	PaginationContent,
@@ -25,11 +26,19 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { apiClient } from "@/lib/api";
+
+export type FilterState = {
+	categoryId?: string;
+	brandIds: string[];
+	priceRange: [number, number];
+	sizes: string[];
+};
 
 export default function ShopPage() {
+	const router = useRouter();
 	const searchParams = useSearchParams();
 
+	// Read URL params
 	const page = useMemo(() => Number(searchParams.get("page")) || 1, [searchParams]);
 	const limit = useMemo(() => Number(searchParams.get("limit")) || 9, [searchParams]);
 	const sortBy = useMemo(
@@ -40,47 +49,130 @@ export default function ShopPage() {
 		() => (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
 		[searchParams],
 	);
+	const categoryIdFromUrl = useMemo(() => searchParams.get("categoryId") || undefined, [searchParams]);
+	const brandIdsFromUrl = useMemo(() => {
+		const brandParam = searchParams.get("brandIds");
+		return brandParam ? brandParam.split(",") : [];
+	}, [searchParams]);
+	const searchQuery = useMemo(() => searchParams.get("search") || undefined, [searchParams]);
 
-	const { data, isLoading, error } = useQuery({
-		queryKey: ["products", page, limit, sortBy, sortOrder],
-		queryFn: () =>
-			apiClient
-				.get<ApiResponse<ProductListDTO>>("/products", {
-					params: {
-						page,
-						limit,
-						sortBy,
-						sortOrder,
-						status: "PUBLISHED",
-					},
-				})
-				.then((res) => res.data.data),
-		staleTime: 5 * 60 * 1000, // 5 minutes
+	// Local filter state (pending filters before Apply is clicked)
+	const [pendingFilters, setPendingFilters] = useState<FilterState>({
+		categoryId: categoryIdFromUrl,
+		brandIds: brandIdsFromUrl,
+		priceRange: [0, 250],
+		sizes: [],
 	});
+
+	// Fetch products with applied filters from URL
+	const { data, isLoading, error } = useSearchProducts({
+		page,
+		limit,
+		sortBy,
+		sortOrder,
+		status: "PUBLISHED",
+		categoryId: categoryIdFromUrl,
+		brandId: brandIdsFromUrl[0], // Backend only supports single brandId currently
+		search: searchQuery,
+	});
+
+	// Navigation helpers
+	const buildUrlParams = (updates: Record<string, string | undefined>) => {
+		const params = new URLSearchParams();
+		// Preserve existing filters
+		if (categoryIdFromUrl) params.set("categoryId", categoryIdFromUrl);
+		if (brandIdsFromUrl.length > 0) params.set("brandIds", brandIdsFromUrl.join(","));
+		if (searchQuery) params.set("search", searchQuery);
+		// Add sorting and pagination
+		params.set("page", String(page));
+		params.set("limit", String(limit));
+		params.set("sortBy", sortBy);
+		params.set("sortOrder", sortOrder);
+		// Apply updates
+		for (const [key, value] of Object.entries(updates)) {
+			if (value) params.set(key, value);
+			else params.delete(key);
+		}
+		return params.toString();
+	};
 
 	const handleSortChange = (value: string) => {
 		const [newSortBy, newSortOrder] = value.split(":") as [
 			"name" | "createdAt" | "updatedAt",
 			"asc" | "desc",
 		];
-		const params = new URLSearchParams();
-		params.set("page", "1");
-		params.set("limit", String(limit));
-		params.set("sortBy", newSortBy);
-		params.set("sortOrder", newSortOrder);
-		window.history.pushState(null, "", `?${params.toString()}`);
-		window.location.href = `?${params.toString()}`;
+		const params = buildUrlParams({
+			page: "1",
+			sortBy: newSortBy,
+			sortOrder: newSortOrder,
+		});
+		router.push(`?${params}`);
 	};
 
 	const handlePageChange = (newPage: number) => {
+		const params = buildUrlParams({ page: String(newPage) });
+		window.scrollTo({ top: 0, behavior: "smooth" });
+		router.push(`?${params}`);
+	};
+
+	// Instant apply for category filter
+	const handleCategoryChange = (categoryId?: string) => {
+		setPendingFilters({ ...pendingFilters, categoryId });
 		const params = new URLSearchParams();
-		params.set("page", String(newPage));
+		params.set("page", "1");
 		params.set("limit", String(limit));
 		params.set("sortBy", sortBy);
 		params.set("sortOrder", sortOrder);
-		window.scrollTo({ top: 0, behavior: "smooth" });
-		window.history.pushState(null, "", `?${params.toString()}`);
-		window.location.href = `?${params.toString()}`;
+		if (categoryId) params.set("categoryId", categoryId);
+		if (pendingFilters.brandIds.length > 0) {
+			params.set("brandIds", pendingFilters.brandIds.join(","));
+		}
+		if (searchQuery) params.set("search", searchQuery);
+		router.push(`?${params.toString()}`);
+	};
+
+	// Instant apply for brand filter
+	const handleBrandsChange = (brandIds: string[]) => {
+		setPendingFilters({ ...pendingFilters, brandIds });
+		const params = new URLSearchParams();
+		params.set("page", "1");
+		params.set("limit", String(limit));
+		params.set("sortBy", sortBy);
+		params.set("sortOrder", sortOrder);
+		if (pendingFilters.categoryId) {
+			params.set("categoryId", pendingFilters.categoryId);
+		}
+		if (brandIds.length > 0) params.set("brandIds", brandIds.join(","));
+		if (searchQuery) params.set("search", searchQuery);
+		router.push(`?${params.toString()}`);
+	};
+
+	// Apply filters (when Apply Filter button is clicked) - for price/size only
+	const handleApplyFilters = () => {
+		const params = new URLSearchParams();
+		params.set("page", "1");
+		params.set("limit", String(limit));
+		params.set("sortBy", sortBy);
+		params.set("sortOrder", sortOrder);
+		if (pendingFilters.categoryId) {
+			params.set("categoryId", pendingFilters.categoryId);
+		}
+		if (pendingFilters.brandIds.length > 0) {
+			params.set("brandIds", pendingFilters.brandIds.join(","));
+		}
+		if (searchQuery) params.set("search", searchQuery);
+		router.push(`?${params.toString()}`);
+	};
+
+	// Clear all filters - instant apply
+	const handleClearFilters = () => {
+		setPendingFilters({ categoryId: undefined, brandIds: [], priceRange: [0, 250], sizes: [] });
+		const params = new URLSearchParams();
+		params.set("page", "1");
+		params.set("limit", String(limit));
+		params.set("sortBy", sortBy);
+		params.set("sortOrder", sortOrder);
+		router.push(`?${params.toString()}`);
 	};
 
 	if (error) {
@@ -95,9 +187,33 @@ export default function ShopPage() {
 		);
 	}
 
-	const totalProducts = data?.total ?? 0;
-	const displayProducts = data?.products ?? [];
-	const totalPages = data?.totalPages ?? 1;
+	const totalProducts = data?.data?.total ?? 0;
+	const rawProducts = data?.data?.products ?? [];
+	const mappedProducts = useMemo(
+		() => mapSearchItemsToListItems(rawProducts),
+		[rawProducts],
+	);
+
+	// Client-side filtering for price and size
+	const displayProducts = useMemo(() => {
+		let filtered = mappedProducts;
+
+		// Apply price filter
+		const [minPrice, maxPrice] = pendingFilters.priceRange;
+		filtered = filtered.filter((product) => {
+			const price = product.salePrice ?? product.price;
+			return price >= minPrice && price <= maxPrice;
+		});
+
+		// Apply size filter (if any sizes selected)
+		if (pendingFilters.sizes.length > 0) {
+			// For now, keep all products if size filter is active
+			// Size filtering would require variant data which we don't have in list view
+		}
+
+		return filtered;
+	}, [mappedProducts, pendingFilters.priceRange, pendingFilters.sizes]);
+	const totalPages = data?.data?.totalPages ?? 1;
 	const startIndex = (page - 1) * limit + 1;
 	const endIndex = Math.min(page * limit, totalProducts);
 
@@ -112,13 +228,27 @@ export default function ShopPage() {
 							<span className="font-bold text-black text-xl">Filters</span>
 							<FiSliders className="text-2xl text-black/40" />
 						</div>
-						<Filters />
+						<Filters
+							filters={pendingFilters}
+							onFiltersChange={setPendingFilters}
+							onCategoryChange={handleCategoryChange}
+							onBrandsChange={handleBrandsChange}
+							onApply={handleApplyFilters}
+							onClear={handleClearFilters}
+						/>
 					</div>
 					<div className="flex flex-col w-full space-y-5">
 						<div className="flex flex-col lg:flex-row lg:justify-between">
 							<div className="flex items-center justify-between">
 								<h1 className="font-bold text-2xl md:text-[32px]">Shop</h1>
-								<MobileFilters />
+								<MobileFilters
+									filters={pendingFilters}
+									onFiltersChange={setPendingFilters}
+									onCategoryChange={handleCategoryChange}
+									onBrandsChange={handleBrandsChange}
+									onApply={handleApplyFilters}
+									onClear={handleClearFilters}
+								/>
 							</div>
 							<div className="flex flex-col sm:items-center sm:flex-row gap-3">
 								<span className="text-sm md:text-base text-black/60">
@@ -160,7 +290,7 @@ export default function ShopPage() {
 									<p className="text-black/60">No products found</p>
 								</div>
 							) : (
-								displayProducts.map((product) => (
+								displayProducts.map((product: ProductListItemDTO) => (
 									<ProductCard key={product.id} data={product} />
 								))
 							)}

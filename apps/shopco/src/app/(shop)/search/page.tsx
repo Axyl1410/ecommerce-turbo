@@ -15,9 +15,9 @@ export default function SearchPage() {
 	const categoryId = searchParams.get("category") || undefined;
 	const brandId = searchParams.get("brand") || undefined;
 	const statusParam = searchParams.get("status");
-	const status: ProductStatusEnumType | undefined = statusParam
+	const status: ProductStatusEnumType = statusParam
 		? (statusParam as ProductStatusEnumType)
-		: undefined;
+		: "PUBLISHED"; // Default to only show published products
 	const sortBy = searchParams.get("sortBy") || "createdAt";
 	const sortOrder = searchParams.get("sortOrder") || "desc";
 	const pageParam = searchParams.get("page") || "1";

@@ -1,4 +1,4 @@
-import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
+import type { IWishlistRepository } from "@/domain/repositories/wishlist.repository";
 import { GetUserWishlistUseCase } from "@/application/use-cases/wishlist/get-wishlist.use-case";
 import { WishlistItem } from "@/domain/entities/wish-list-item.entity";
 

@@ -1,8 +1,10 @@
+import type { WishlistItemRow } from "@workspace/types";
+
 export class WishlistItem {
-    public constructor(
-        public readonly id: string,
-        public readonly wishListId: string,
-        public  readonly variantId: string,
-        public readonly createdAt: Date,
-    ) { }
+	public constructor(
+		public readonly id: WishlistItemRow["id"],
+		public readonly userId: WishlistItemRow["userId"],
+		public readonly productId: WishlistItemRow["productId"],
+		public readonly createdAt: WishlistItemRow["createdAt"],
+	) {}
 }

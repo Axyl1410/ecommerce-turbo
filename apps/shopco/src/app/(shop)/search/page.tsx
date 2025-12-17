@@ -102,7 +102,7 @@ export default function SearchPage() {
 				<>
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 						{mappedProducts.map((product, index) => (
-							<ProductCard key={products[index]?.id ?? index} data={product} />
+							<ProductCard key={`${product.id}-${index}`} data={product} />
 						))}
 					</div>
 

@@ -44,6 +44,31 @@ export interface IProductRepository {
 	}>;
 
 	/**
+	 * Find products with variants included for search/list views
+	 */
+	findManyWithVariants(params: {
+		page?: number;
+		limit?: number;
+		status?: ProductStatus;
+		categoryId?: string;
+		brandId?: string;
+		search?: string;
+		sortBy?: "name" | "createdAt" | "updatedAt";
+		sortOrder?: "asc" | "desc";
+	}): Promise<{
+		products: Array<
+			Product & {
+				variants?: Array<{
+					id: string;
+					price: number;
+					salePrice: number | null;
+				}>;
+			}
+		>;
+		total: number;
+	}>;
+
+	/**
 	 * Create a new product
 	 */
 	create(data: {

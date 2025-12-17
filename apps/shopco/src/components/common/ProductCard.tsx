@@ -5,6 +5,7 @@ import type { ProductListItemDTO } from "@workspace/types";
 import Rating from "../ui/Rating";
 import { AddToWishlistButton } from "./add-to-wishlist-button";
 
+
 type ProductCardProps = {
 	data: ProductListItemDTO;
 };

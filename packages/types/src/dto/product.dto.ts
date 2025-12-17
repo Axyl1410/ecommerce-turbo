@@ -59,6 +59,15 @@ export type UpdateProductDTO = Partial<
 export type ProductDTO = ProductRow;
 
 /**
+ * Product Search Item Output DTO (with minimal variant info for list view)
+ */
+export interface ProductSearchItemDTO extends ProductDTO {
+	price: number; // Price from first/default variant
+	salePrice: number | null; // Sale price from first/default variant
+	variantCount: number; // Total number of variants
+}
+
+/**
  * Product Detail Output DTO (with relations)
  */
 export interface ProductDetailDTO extends ProductDTO {
@@ -108,6 +117,17 @@ export type ProductListItemDTO = Pick<
  */
 export interface ProductListDTO {
 	products: ProductListItemDTO[];
+	total: number;
+	page: number;
+	limit: number;
+	totalPages: number;
+}
+
+/**
+ * Product Search List Output DTO (with prices)
+ */
+export interface ProductSearchListDTO {
+	products: ProductSearchItemDTO[];
 	total: number;
 	page: number;
 	limit: number;

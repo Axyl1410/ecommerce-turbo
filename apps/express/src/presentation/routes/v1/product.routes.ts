@@ -21,7 +21,7 @@ export function createProductRoutes(controller: ProductController): Router {
 
 	/**
 	 * GET /api/v1/products
-	 * Get list of products with pagination, filtering, and sorting
+	 * Search products with prices included (for frontend list/search)
 	 * Public access (no authentication required)
 	 */
 	router.get(
@@ -36,8 +36,8 @@ export function createProductRoutes(controller: ProductController): Router {
 				);
 				return;
 			}
-			// Pass validated data directly to controller
-			await controller.getProducts(validation.data, res);
+			// Use searchProducts for public endpoints (includes prices)
+			await controller.searchProducts(validation.data, res);
 		}),
 	);
 

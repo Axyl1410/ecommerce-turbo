@@ -22,6 +22,7 @@ import { DeleteProductUseCase } from "@/application/use-cases/product/delete-pro
 import { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
 import { GetProductBySlugUseCase } from "@/application/use-cases/product/get-product-by-slug.use-case";
 import { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
+import { SearchProductsUseCase } from "@/application/use-cases/product/search-products.use-case";
 import { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
 import { AddToWishlistUseCase } from "@/application/use-cases/wishlist/add-wishlist.use-case";
 import { RemoveFromWishlistUseCase } from "@/application/use-cases/wishlist/remove-wishlist.use-case";
@@ -89,6 +90,9 @@ export class DIContainer {
 		const getProductsUseCase = new GetProductsUseCase(
 			productRepository,
 			cacheService,
+		);
+		const searchProductsUseCase = new SearchProductsUseCase(
+			productRepository,
 		);
 		const getProductByIdUseCase = new GetProductByIdUseCase(
 			productRepository,
@@ -181,6 +185,7 @@ export class DIContainer {
 
 		// Register use cases
 		this.register("getProductsUseCase", getProductsUseCase);
+		this.register("searchProductsUseCase", searchProductsUseCase);
 		this.register("getProductByIdUseCase", getProductByIdUseCase);
 		this.register("getProductBySlugUseCase", getProductBySlugUseCase);
 		this.register("createProductUseCase", createProductUseCase);
@@ -206,6 +211,7 @@ export class DIContainer {
 		// Presentation layer - Controllers
 		const productController = new ProductController(
 			getProductsUseCase,
+			searchProductsUseCase,
 			getProductByIdUseCase,
 			getProductBySlugUseCase,
 			createProductUseCase,

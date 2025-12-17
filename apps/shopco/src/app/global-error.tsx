@@ -32,7 +32,7 @@ export default function GlobalError({
 							<Button onClick={() => reset()}>Try again</Button>
 							<Button variant={"outline"} asChild>
 								<Link href="/">Go home</Link>
-								Go home
+
 							</Button>
 						</div>
 						<div className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl" />

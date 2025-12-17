@@ -24,11 +24,12 @@ export const API_URL = `${API_BASE_URL}${API_VERSION}`;
  * Use this for all API calls instead of creating new axios instances
  */
 export const apiClient = axios.create({
-	baseURL: API_URL,
-	headers: {
-		"Content-Type": "application/json",
-	},
-	timeout: 10000, // 10 seconds
+  baseURL: API_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  timeout: 10000, // 10 seconds
 });
 
 /**
@@ -36,17 +37,17 @@ export const apiClient = axios.create({
  * Can be used to add auth tokens, etc.
  */
 apiClient.interceptors.request.use(
-	(config) => {
-		// Add auth token if available
-		// const token = localStorage.getItem('token');
-		// if (token) {
-		//   config.headers.Authorization = `Bearer ${token}`;
-		// }
-		return config;
-	},
-	(error) => {
-		return Promise.reject(error);
-	},
+  (config) => {
+    // Add auth token if available
+    // const token = localStorage.getItem('token');
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 /**
@@ -54,16 +55,16 @@ apiClient.interceptors.request.use(
  * Can be used to handle errors globally
  */
 apiClient.interceptors.response.use(
-	(response) => {
-		return response;
-	},
-	(error) => {
-		// Handle errors globally
-		// if (error.response?.status === 401) {
-		//   // Handle unauthorized
-		// }
-		return Promise.reject(error);
-	},
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle errors globally
+    // if (error.response?.status === 401) {
+    //   // Handle unauthorized
+    // }
+    return Promise.reject(error);
+  }
 );
 
 export default apiClient;

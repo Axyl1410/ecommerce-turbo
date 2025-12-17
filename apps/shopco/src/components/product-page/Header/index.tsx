@@ -7,6 +7,7 @@ import AddToCardSection from "./AddToCardSection";
 import ColorSelection from "./ColorSelection";
 import PhotoSection from "./PhotoSection";
 import SizeSelection from "./SizeSelection";
+import { AddToWishlistButton } from "@/components/common/add-to-wishlist-button";
 
 const Header = ({ data }: { data: Product }) => {
 	return (
@@ -85,7 +86,16 @@ const Header = ({ data }: { data: Product }) => {
 					<hr className="h-[1px] border-t-black/10 my-5" />
 					<SizeSelection />
 					<hr className="hidden md:block h-[1px] border-t-black/10 my-5" />
+				<div className="flex gap-3 sm:gap-4">
 					<AddToCardSection data={data} />
+					<AddToWishlistButton
+						productId={data.id}
+						size="md"
+						variant="outline"
+						showLabel
+						className="flex-shrink-0 px-6 sm:px-8"
+					/>
+				</div>
 				</div>
 			</div>
 		</>

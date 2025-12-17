@@ -38,7 +38,8 @@ export interface UpdateCategoryDTO {
 }
 
 /**
- * Category Output DTO
+ * Category Output DTO 
+ * // tiengg viet: Đối tượng truyền dữ liệu danh mục
  */
 export interface CategoryDTO {
 	id: string;

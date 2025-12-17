@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import type { Product } from "@/types/product.types";
 import Rating from "../ui/Rating";
+import { AddToWishlistButton } from "./add-to-wishlist-button";
 
 type ProductCardProps = {
 	data: Product;
@@ -14,7 +15,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
 			href={`/shop/product/${data.id}/${data.title.split(" ").join("-")}`}
 			className="flex flex-col items-start aspect-auto"
 		>
-			<div className="bg-[#F0EEED] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden">
+			<div className="bg-[#F0EEED] rounded-[13px] lg:rounded-[20px] w-full lg:max-w-[295px] aspect-square mb-2.5 xl:mb-4 overflow-hidden relative group">
 				<Image
 					src={data.srcUrl}
 					width={295}
@@ -23,6 +24,13 @@ const ProductCard = ({ data }: ProductCardProps) => {
 					alt={data.title}
 					priority
 				/>
+				<div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+					<AddToWishlistButton
+						productId={data.id}
+						size="sm"
+						variant="default"
+					/>
+				</div>
 			</div>
 			<strong className="text-black xl:text-xl">{data.title}</strong>
 			<div className="flex items-end mb-1 xl:mb-2">

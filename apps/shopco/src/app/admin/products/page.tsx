@@ -175,17 +175,26 @@ export default function ProductsPage() {
 		saveMutation.mutate(form);
 	};
 
-	const handleEdit = (product: ProductListDTO["products"][number]) => {
-		setForm({
-			id: product.id,
-			name: product.name,
-			slug: product.slug,
-			description: product.description || "",
-			brandId: product.brand?.id,
-			categoryId: product.category?.id,
-			status: product.status as "DRAFT" | "PUBLISHED" | "ARCHIVED",
-		});
-		setEditingId(product.id);
+	const handleEdit = async (product: ProductListDTO["products"][number]) => {
+		// Fetch full product details for editing
+		try {
+			const response = await apiClient.get<ApiResponse<ProductDetailDTO>>(
+				`/products/${product.id}`
+			);
+			const productDetail = response.data.data;
+			setForm({
+				id: productDetail.id,
+				name: productDetail.name,
+				slug: productDetail.slug,
+				description: productDetail.description || "",
+				brandId: productDetail.brand?.id,
+				categoryId: productDetail.category?.id,
+				status: productDetail.status as "DRAFT" | "PUBLISHED" | "ARCHIVED",
+			});
+			setEditingId(productDetail.id);
+		} catch (error) {
+			toast.error("Failed to load product details");
+		}
 	};
 
 	const handleDelete = (productId: string) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
 	Dialog,
@@ -36,7 +36,7 @@ type UserActionsProps = {
 	userId: string;
 	actionType: "ban" | "unban" | "delete" | "setRole" | "setPassword";
 	onClose: () => void;
-	onBan: () => void;
+	onBan: (banReason: string) => void;
 	onUnban: () => void;
 	onDelete: () => void;
 	onSetRole: (role: string) => void;
@@ -57,6 +57,14 @@ export default function UserActions({
 	const [selectedRole, setSelectedRole] = useState<string>("user");
 	const [password, setPassword] = useState<string>("");
 	const [confirmPassword, setConfirmPassword] = useState<string>("");
+	const [banReason, setBanReason] = useState<string>("");
+
+	// Reset banReason when dialog opens/closes
+	useEffect(() => {
+		if (actionType === "ban") {
+			setBanReason("");
+		}
+	}, [actionType]);
 
 	// Set role mutation
 	const setRoleMutation = useMutation({
@@ -124,21 +132,43 @@ export default function UserActions({
 
 	if (actionType === "ban") {
 		return (
-			<AlertDialog open onOpenChange={onClose}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Ban User</AlertDialogTitle>
-						<AlertDialogDescription>
+			<Dialog open onOpenChange={onClose}>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Ban User</DialogTitle>
+						<DialogDescription>
 							Are you sure you want to ban this user? They will not be able to
-							access their account.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-						<AlertDialogAction onClick={onBan}>Ban User</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+							access their account. Please provide a reason for the ban.
+						</DialogDescription>
+					</DialogHeader>
+					<div className="space-y-4 py-4">
+						<div className="space-y-2">
+							<label className="text-sm font-medium">Ban Reason</label>
+							<Input
+								value={banReason}
+								onChange={(e) => setBanReason(e.target.value)}
+								placeholder="Enter the reason for banning this user"
+								className="w-full"
+							/>
+							<p className="text-xs text-muted-foreground">
+								This reason will be stored and visible to administrators.
+							</p>
+						</div>
+					</div>
+					<DialogFooter>
+						<Button variant="outline" onClick={onClose}>
+							Cancel
+						</Button>
+						<Button
+							onClick={() => onBan(banReason || "No reason provided")}
+							variant="destructive"
+							disabled={!banReason.trim()}
+						>
+							Ban User
+						</Button>
+					</DialogFooter>
+				</DialogContent>
+			</Dialog>
 		);
 	}
 

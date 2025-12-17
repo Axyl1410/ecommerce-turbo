@@ -99,10 +99,10 @@ export default function UsersPage() {
 
 	// Ban user mutation
 	const banMutation = useMutation({
-		mutationFn: async (userId: string) => {
+		mutationFn: async ({ userId, banReason }: { userId: string; banReason: string }) => {
 			const result = await admin.banUser({
 				userId,
-				banReason: "Banned by admin",
+				banReason,
 			});
 			if (result?.error) {
 				throw new Error(result.error.message);
@@ -157,9 +157,8 @@ export default function UsersPage() {
 		},
 	});
 
-	const handleBan = (userId: string) => {
-		setActionUserId(userId);
-		setActionType("ban");
+	const handleBan = (userId: string, banReason: string) => {
+		banMutation.mutate({ userId, banReason });
 	};
 
 	const handleUnban = (userId: string) => {
@@ -310,7 +309,7 @@ export default function UsersPage() {
 						setActionUserId(null);
 						setActionType(null);
 					}}
-					onBan={() => banMutation.mutate(actionUserId)}
+					onBan={(banReason) => handleBan(actionUserId, banReason)}
 					onUnban={() => unbanMutation.mutate(actionUserId)}
 					onDelete={() => deleteMutation.mutate(actionUserId)}
 					onSetRole={(role) => {

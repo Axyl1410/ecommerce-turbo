@@ -124,10 +124,10 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
 
 	// Ban/Unban mutations
 	const banMutation = useMutation({
-		mutationFn: async () => {
+		mutationFn: async (banReason: string) => {
 			const result = await admin.banUser({
 				userId: id,
-				banReason: "Banned by admin",
+				banReason,
 			});
 			if (result?.error) {
 				throw new Error(result.error.message);
@@ -292,7 +292,7 @@ export default function UserDetailPage({ params }: UserDetailPageProps) {
 					userId={id}
 					actionType={actionType}
 					onClose={() => setActionType(null)}
-					onBan={() => banMutation.mutate()}
+					onBan={(banReason) => banMutation.mutate(banReason)}
 					onUnban={() => unbanMutation.mutate()}
 					onDelete={() => deleteMutation.mutate()}
 					onSetRole={(role) => {

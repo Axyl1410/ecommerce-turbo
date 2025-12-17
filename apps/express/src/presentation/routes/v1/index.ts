@@ -4,12 +4,14 @@ import { sendError, sendSuccess } from "@/lib/api-response-helper";
 import type { BrandController } from "@/presentation/controllers/brand.controller";
 import type { CartController } from "@/presentation/controllers/cart.controller";
 import type { CategoryController } from "@/presentation/controllers/category.controller";
+import type { BrandController } from "@/presentation/controllers/brand.controller";
 import type { ProductController } from "@/presentation/controllers/product.controller";
 import type { WishlistController } from "@/presentation/controllers/wishlist.controller";
 import AuthMiddleware from "@/presentation/middleware/auth.middleware";
 import { createBrandRoutes } from "@/presentation/routes/v1/brand.routes";
 import { createCartRoutes } from "@/presentation/routes/v1/cart.routes";
 import { createCategoryRoutes } from "@/presentation/routes/v1/category.routes";
+import { createBrandRoutes } from "@/presentation/routes/v1/brand.routes";
 import { createProductRoutes } from "@/presentation/routes/v1/product.routes";
 import { createWishlistRoutes } from "@/presentation/routes/v1/wishlist.routes";
 import { fromNodeHeaders } from "better-auth/node";
@@ -43,6 +45,9 @@ v1.use("/brands", createBrandRoutes(brandController));
 const categoryController =
   container.get<CategoryController>("categoryController");
 v1.use("/categories", createCategoryRoutes(categoryController));
+
+const brandController = container.get<BrandController>("brandController");
+v1.use("/brands", createBrandRoutes(brandController));
 
 const cartController = container.get<CartController>("cartController");
 v1.use("/cart", createCartRoutes(cartController));

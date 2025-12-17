@@ -1,6 +1,6 @@
 import { prisma } from  "@workspace/database";
 import { WishlistItem } from "@/domain/entities/wish-list-item.entity";
-import type { IWishlistRepository } from "@/domain/repositories/wishlistitem.repository";
+import type { IWishlistRepository } from "@/domain/repositories/wishlist.repository";
 import { ApplicationError } from "@/shared/errors/application.error";
 
 export class PrismaWishlistRepository implements IWishlistRepository {

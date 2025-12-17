@@ -1,5 +1,5 @@
 import { apiReference } from "@scalar/express-api-reference";
-import { eq, ProductStatus, prisma } from "@workspace/database";
+import {  ProductStatus, prisma } from "@workspace/database";
 import { Product } from "@workspace/types";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
@@ -50,16 +50,16 @@ export const CreateServer = (): Express => {
 		);
 	});
 
-	app.get("/test", async (_req: Request, res: Response) => {
-		const products = await prisma.$drizzle
-			.select()
-			.from(Product)
-			.where(eq(Product.status, ProductStatus.PUBLISHED));
+	// app.get("/test", async (_req: Request, res: Response) => {
+		// const products = await prisma.$drizzle
+			// .select()
+			// .from(Product)
+			// .where(eq(Product.status, ProductStatus.PUBLISHED));
 		// const products = await prisma.product.findMany();
-		res.json(products);
+		// res.json(products);
 		// console.log("hey");
 		// sendSuccess(res, { message: "Hello, World!" }, "Welcome to API");
-	});
+	// });
 
 	app.use(express.static("public"));
 

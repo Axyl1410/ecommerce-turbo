@@ -11,4 +11,5 @@ export type Product = {
 	price: number;
 	discount: Discount;
 	rating: number;
+	slug?: string;
 };

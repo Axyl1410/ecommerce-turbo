@@ -5,6 +5,7 @@ import type { DeleteProductUseCase } from "@/application/use-cases/product/delet
 import type { GetProductByIdUseCase } from "@/application/use-cases/product/get-product-by-id.use-case";
 import type { GetProductBySlugUseCase } from "@/application/use-cases/product/get-product-by-slug.use-case";
 import type { GetProductsUseCase } from "@/application/use-cases/product/get-products.use-case";
+import type { SearchProductsUseCase } from "@/application/use-cases/product/search-products.use-case";
 import type { UpdateProductUseCase } from "@/application/use-cases/product/update-product.use-case";
 import {
 	sendError,
@@ -21,6 +22,7 @@ import { NotFoundError } from "@/shared/errors/not-found.error";
 export class ProductController {
 	constructor(
 		private getProductsUseCase: GetProductsUseCase,
+		private searchProductsUseCase: SearchProductsUseCase,
 		private getProductByIdUseCase: GetProductByIdUseCase,
 		private getProductBySlugUseCase: GetProductBySlugUseCase,
 		private createProductUseCase: CreateProductUseCase,
@@ -35,6 +37,19 @@ export class ProductController {
 	async getProducts(query: GetProductsDTO, res: Response): Promise<void> {
 		try {
 			const result = await this.getProductsUseCase.execute(query);
+			sendSuccess(res, result, "Products retrieved successfully");
+		} catch (error) {
+			this.handleError(error, res);
+		}
+	}
+
+	/**
+	 * GET /products/search
+	 * Search products with prices included
+	 */
+	async searchProducts(query: GetProductsDTO, res: Response): Promise<void> {
+		try {
+			const result = await this.searchProductsUseCase.execute(query);
 			sendSuccess(res, result, "Products retrieved successfully");
 		} catch (error) {
 			this.handleError(error, res);

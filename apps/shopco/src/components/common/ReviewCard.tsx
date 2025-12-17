@@ -2,15 +2,22 @@ import type React from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { IoEllipsisHorizontal } from "react-icons/io5";
 import { cn } from "@/lib/utils";
-import type { Review } from "@/types/review.types";
 import { Button } from "../ui/button";
 import Rating from "../ui/Rating";
+
+type ReviewItem = {
+	id: string | number;
+	user: string;
+	content: string;
+	rating: number;
+	date: string;
+};
 
 type ReviewCardProps = {
 	blurChild?: React.ReactNode;
 	isAction?: boolean;
 	isDate?: boolean;
-	data: Review;
+	data: ReviewItem;
 	className?: string;
 };
 

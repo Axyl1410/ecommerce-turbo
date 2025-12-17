@@ -1,25 +1,18 @@
+import type { CartItemRow, CartRow } from "../drizzle/type.js";
+
 /**
  * Cart Output DTO
  */
-export interface CartDTO {
-	id: string;
-	userId: string | null;
-	sessionId: string | null;
-	createdAt: Date;
-	updatedAt: Date;
-}
+export type CartDTO = CartRow;
 
 /**
  * CartItem Output DTO
  */
-export interface CartItemDTO {
-	id: string;
-	cartId: string;
-	variantId: string;
-	quantity: number;
+// NOTE: Drizzle `decimal` columns infer as string by default.
+// The API/domain currently uses `number` for money snapshots, so we normalize here.
+export type CartItemDTO = Omit<CartItemRow, "priceAtAdd"> & {
 	priceAtAdd: number;
-	createdAt: Date;
-}
+};
 
 /**
  * Cart Validation Issue DTO

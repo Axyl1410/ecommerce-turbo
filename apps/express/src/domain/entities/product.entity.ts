@@ -1,7 +1,9 @@
-import type { ProductStatus } from "@workspace/types";
+import type { ProductRow } from "@workspace/types";
 import { DomainError } from "@/shared/errors/domain.error";
 import { Price } from "../value-objects/price.vo";
 import { Slug } from "../value-objects/slug.vo";
+
+type ProductStatus = ProductRow["status"];
 
 /**
  * Product Entity

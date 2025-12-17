@@ -8,12 +8,12 @@ import {
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
-import type { Product } from "@/types/product.types";
+import type { ProductListItemDTO } from "@workspace/types";
 import ProductCard from "./ProductCard";
 
 type ProductListSecProps = {
 	title: string;
-	data: Product[];
+	data: ProductListItemDTO[];
 	viewAllLink?: string;
 };
 

@@ -1,3 +1,5 @@
+import type { CategoryInsert, CategoryRow } from "../drizzle/type.js";
+
 /**
  * Get Categories Input DTO
  */
@@ -14,44 +16,22 @@ export interface GetCategoriesDTO {
 /**
  * Create Category Input DTO
  */
-export interface CreateCategoryDTO {
-	name: string;
-	slug: string;
-	description?: string | null;
-	imageUrl?: string | null;
-	parentId?: string | null;
-	sortOrder?: number | null;
-	active?: boolean;
-}
+export type CreateCategoryDTO = Omit<
+	CategoryInsert,
+	"id" | "createdAt" | "updatedAt"
+>;
 
 /**
  * Update Category Input DTO
  */
-export interface UpdateCategoryDTO {
-	name?: string;
-	slug?: string;
-	description?: string | null;
-	imageUrl?: string | null;
-	parentId?: string | null;
-	sortOrder?: number | null;
-	active?: boolean;
-}
+export type UpdateCategoryDTO = Partial<
+	Omit<CategoryInsert, "id" | "createdAt" | "updatedAt">
+>;
 
 /**
  * Category Output DTO
  */
-export interface CategoryDTO {
-	id: string;
-	name: string;
-	slug: string;
-	description: string | null;
-	imageUrl: string | null;
-	parentId: string | null;
-	sortOrder: number | null;
-	active: boolean;
-	createdAt: Date;
-	updatedAt: Date;
-}
+export type CategoryDTO = CategoryRow;
 
 /**
  * Category Detail Output DTO (with relations)

@@ -1,24 +1,29 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
+import { drizzle } from "drizzle-orm/prisma/pg";
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const createPrismaClient = () => {
+	if (!process.env.DATABASE_URL) {
+		throw new Error("DATABASE_URL environment variable is not defined");
+	}
 
-export const prisma =
-	globalForPrisma.prisma ||
-	(() => {
-		if (!process.env.DATABASE_URL) {
-			throw new Error("DATABASE_URL environment variable is not defined");
-		}
+	const adapter = new PrismaPg({
+		connectionString: process.env.DATABASE_URL,
+	});
 
-		const adapter = new PrismaPg({
-			connectionString: process.env.DATABASE_URL,
-		});
+	const client = new PrismaClient({
+		adapter,
+	}).$extends(drizzle());
 
-		const _prisma = new PrismaClient({
-			adapter,
-		});
+	return client;
+};
 
-		globalForPrisma.prisma = _prisma;
+const globalForPrisma = global as unknown as {
+	prisma?: ReturnType<typeof createPrismaClient>;
+};
 
-		return _prisma;
-	})();
+if (!globalForPrisma.prisma) {
+	globalForPrisma.prisma = createPrismaClient();
+}
+
+export const prisma = globalForPrisma.prisma;

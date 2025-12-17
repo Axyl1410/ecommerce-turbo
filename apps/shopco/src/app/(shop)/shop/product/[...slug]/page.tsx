@@ -8,9 +8,8 @@ import ProductListSec from "@/components/common/ProductListSec";
 import BreadcrumbProduct from "@/components/product-page/BreadcrumbProduct";
 import Header from "@/components/product-page/Header";
 import Tabs from "@/components/product-page/Tabs";
-import type { Product } from "@/types/product.types";
 
-const data: Product[] = [
+const data = [
 	...newArrivalsData,
 	...topSellingData,
 	...relatedProductData,
@@ -20,11 +19,10 @@ export default async function ProductPage(props: {
 	params: Promise<{ slug: string[] }>;
 }) {
 	const params = await props.params;
-	const productData = data.find(
-		(product) => product.id === Number(params.slug[0]),
-	);
+	const productSlug = params.slug[0];
+	const productData = data.find((product) => product.slug === productSlug);
 
-	if (!productData?.title) {
+	if (!productData?.name) {
 		notFound();
 	}
 
@@ -32,7 +30,7 @@ export default async function ProductPage(props: {
 		<main>
 			<div className="max-w-frame mx-auto px-4 xl:px-0">
 				<hr className="h-px border-t-black/10 mb-5 sm:mb-6" />
-				<BreadcrumbProduct title={productData?.title ?? "product"} />
+				<BreadcrumbProduct title={productData?.name ?? "product"} />
 				<section className="mb-11">
 					<Header data={productData} />
 				</section>

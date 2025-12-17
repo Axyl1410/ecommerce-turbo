@@ -20,7 +20,7 @@ jest.mock("@/lib/logger", () => {
 });
 
 import logger from "@/lib/logger";
-import logMiddleware from "@/middleware/log.middleware";
+import logMiddleware from "@/presentation/middleware/log.middleware";
 
 describe("LogMiddleware", () => {
 	let req: Partial<Request>;

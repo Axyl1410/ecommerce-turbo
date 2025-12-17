@@ -18,7 +18,7 @@ jest.mock("@/lib/logger", () => {
 
 import { sendErrorFromException } from "@/lib/api-response-helper";
 import logger from "@/lib/logger";
-import { errorMiddleware } from "@/middleware/error.middleware";
+import { errorMiddleware } from "@/presentation/middleware/error.middleware";
 import { ApplicationError } from "@/shared/errors/application.error";
 import { NotFoundError } from "@/shared/errors/not-found.error";
 

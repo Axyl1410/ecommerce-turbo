@@ -10,12 +10,12 @@ export class AddItemToCartUseCase {
 		private cacheService: ICacheService,
 	) {}
 
-	async execute(params: {
+	async execute(params: { // tiengg viet: thực hiện thêm sản phẩm vào giỏ hàng
 		cartId: string;
 		variantId: string;
 		quantity: number;
 	}): Promise<CartItemDTO> {
-		if (params.quantity <= 0) {
+		if (params.quantity <= 0) { // tiengg viet: kiểm tra số lượng sản phẩm phải lớn hơn 0
 			throw new ApplicationError(
 				"Quantity must be greater than 0",
 				"INVALID_QUANTITY",

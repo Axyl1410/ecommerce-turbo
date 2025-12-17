@@ -1,11 +1,14 @@
 {
-	"extends": "@workspace/typescript-config/base.json",
-	"compilerOptions": {
-		"rootDir": "./src",
-		"outDir": "./dist",
-		"composite": true,
-		"noEmit": false,
-		"emitDeclarationOnly": true
-	},
-	"include": ["src/**/*.ts"]
+  "extends": "@workspace/typescript-config/base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "composite": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "strictNullChecks": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
 }

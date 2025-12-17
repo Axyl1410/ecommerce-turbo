@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import { assertValue } from "@workspace/utils";
 import { Resend } from "resend";
 

@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import type { Product } from "@/types/product.types";
+import type { ProductListItemDTO } from "@workspace/types";
 
-const PhotoSection = ({ data }: { data: Product }) => {
-	const [selected, setSelected] = useState<string>(data.srcUrl);
+type ProductDetailData = ProductListItemDTO & { gallery?: string[] };
+
+const PhotoSection = ({ data }: { data: ProductDetailData }) => {
+	const initial =
+		data.defaultImage ?? data.gallery?.[0] ?? "/images/placeholder.png";
+	const [selected, setSelected] = useState<string>(initial);
 
 	return (
 		<div className="flex flex-col-reverse lg:flex-row lg:space-x-3.5">
@@ -23,7 +27,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
 								width={152}
 								height={167}
 								className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
-								alt={data.title}
+								alt={data.name}
 								priority
 							/>
 						</button>
@@ -37,7 +41,7 @@ const PhotoSection = ({ data }: { data: Product }) => {
 					width={444}
 					height={530}
 					className="rounded-md w-full h-full object-cover hover:scale-110 transition-all duration-500"
-					alt={data.title}
+					alt={data.name}
 					priority
 					unoptimized
 				/>

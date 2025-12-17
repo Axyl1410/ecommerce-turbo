@@ -1,13 +1,14 @@
 import { apiReference } from "@scalar/express-api-reference";
+import { eq, ProductStatus, prisma } from "@workspace/database";
+import { Product } from "@workspace/types";
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express, { type Express, type Request, type Response } from "express";
 import { sendSuccess } from "@/lib/api-response-helper";
 import { auth } from "./lib/auth";
-import errorMiddleware from "./middleware/error.middleware";
-import logMiddleware from "./middleware/log.middleware";
-
-import v1 from "./routes/v1";
+import errorMiddleware from "./presentation/middleware/error.middleware";
+import logMiddleware from "./presentation/middleware/log.middleware";
+import v1 from "./presentation/routes/v1";
 
 const corsOptions = {
 	origin: "*",
@@ -47,6 +48,17 @@ export const CreateServer = (): Express => {
 			{ timestamp: new Date().toISOString() },
 			"Server is healthy",
 		);
+	});
+
+	app.get("/test", async (_req: Request, res: Response) => {
+		const products = await prisma.$drizzle
+			.select()
+			.from(Product)
+			.where(eq(Product.status, ProductStatus.PUBLISHED));
+		// const products = await prisma.product.findMany();
+		res.json(products);
+		// console.log("hey");
+		// sendSuccess(res, { message: "Hello, World!" }, "Welcome to API");
 	});
 
 	app.use(express.static("public"));

@@ -1,10 +1,9 @@
 import type {
 	ProductSearchItemDTO,
 	ProductSearchListDTO,
+	GetProductsDTO,
 } from "@workspace/types";
-import type { GetProductsDTO } from "../../dto/product.dto.js";
 import type { IProductRepository } from "../../../domain/repositories/product.repository.js";
-
 export class SearchProductsUseCase {
 	constructor(private productRepository: IProductRepository) {}
 

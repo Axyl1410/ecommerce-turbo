@@ -18,6 +18,7 @@
     "lint": "turbo lint",
     "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "heroku-prebuild": "bun install",
     "postinstall": "node scripts/postinstall.mjs",
     "heroku-postbuild": "bun run build:database && bun run build:express",
     "format-and-lint": "biome check .",

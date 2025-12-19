@@ -2,6 +2,7 @@
 // Infer types from Drizzle tables for use in application code
 
 import type {
+	Account,
 	Address,
 	Brand,
 	Cart,
@@ -21,6 +22,9 @@ import type {
 
 export type UserRow = typeof User.$inferSelect;
 export type UserInsert = typeof User.$inferInsert;
+
+export type AccountRow = typeof Account.$inferSelect;
+export type AccountInsert = typeof Account.$inferInsert;
 
 export type CategoryRow = typeof Category.$inferSelect;
 export type CategoryInsert = typeof Category.$inferInsert;

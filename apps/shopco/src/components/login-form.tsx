@@ -24,7 +24,7 @@ import { authClient } from "@/lib/auth-client";
 type LoginFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 const loginSchema = z.object({
-	email: z.email({ message: "Valid email is required" }),
+	email: z.string().email("Valid email is required"),
 	password: z.string().min(6, "Min 6 characters"),
 	rememberMe: z.boolean(),
 });

@@ -2,18 +2,32 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Trash2 } from "lucide-react";
+import { Heart, ShoppingCart, Trash2 } from "lucide-react";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
+import { useAppDispatch } from "@/lib/hooks/redux";
+import { addToCart } from "@/lib/features/carts/cartsSlice";
+import { useState } from "react";
 
 export function WishlistPageContent() {
-	const { wishlist, loading, removeProduct } = useWishlist();
+	const { wishlist, loading, error, removeProduct } = useWishlist();
 
 	if (loading) {
+		return <WishlistSkeleton />;
+	}
+
+	if (error) {
 		return (
-			<div className="flex items-center justify-center py-12">
-				<p className="text-lg text-gray-500">Loading wishlist...</p>
+			<div className="flex flex-col items-center justify-center py-12 text-center">
+				<div className="rounded-full bg-red-100 p-4 mb-4">
+					<Heart size={48} className="text-red-500" />
+				</div>
+				<h2 className="mb-2 text-2xl font-semibold text-gray-700">
+					Failed to Load Wishlist
+				</h2>
+				<p className="mb-6 text-gray-500 max-w-md">{error}</p>
+				<Button onClick={() => window.location.reload()}>Try Again</Button>
 			</div>
 		);
 	}
@@ -70,11 +84,48 @@ interface WishlistItemProps {
 }
 
 function WishlistItem({ item, onRemove }: WishlistItemProps) {
+	const dispatch = useAppDispatch();
+	const [isRemoving, setIsRemoving] = useState(false);
+	const [isAddingToCart, setIsAddingToCart] = useState(false);
+
 	const handleRemove = async () => {
 		try {
+			setIsRemoving(true);
 			await onRemove(item.productId);
 		} catch (error) {
 			console.error("Failed to remove from wishlist:", error);
+			alert("Failed to remove item from wishlist");
+		} finally {
+			setIsRemoving(false);
+		}
+	};
+
+	const handleAddToCart = () => {
+		try {
+			setIsAddingToCart(true);
+			dispatch(
+				addToCart({
+					id: item.productId,
+					name: item.productName,
+					slug: item.productSlug,
+					srcUrl: item.productImage || "/images/placeholder.png",
+					price: item.price,
+					attributes: [],
+					discount: {
+						amount: item.salePrice
+							? item.price - item.salePrice
+							: 0,
+						percentage: item.salePrice
+							? Math.round(((item.price - item.salePrice) / item.price) * 100)
+							: 0,
+					},
+					quantity: 1,
+				}),
+			);
+			setTimeout(() => setIsAddingToCart(false), 500);
+		} catch (error) {
+			console.error("Failed to add to cart:", error);
+			setIsAddingToCart(false);
 		}
 	};
 
@@ -87,7 +138,7 @@ function WishlistItem({ item, onRemove }: WishlistItemProps) {
 	return (
 		<div className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white transition-all duration-200 hover:shadow-lg">
 			{/* Image Container */}
-			<Link href={`/product/${item.productSlug}`}>
+			<Link href={`/shop/product/${item.productSlug}`}>
 				<div className="relative aspect-square overflow-hidden bg-gray-100">
 					{item.productImage ? (
 						<Image
@@ -125,7 +176,7 @@ function WishlistItem({ item, onRemove }: WishlistItemProps) {
 
 			{/* Product Info */}
 			<div className="p-4">
-				<Link href={`/product/${item.productSlug}`}>
+				<Link href={`/shop/product/${item.productSlug}`}>
 					<h3 className="mb-2 line-clamp-2 font-semibold text-gray-900 transition-colors hover:text-blue-600">
 						{item.productName}
 					</h3>
@@ -145,20 +196,57 @@ function WishlistItem({ item, onRemove }: WishlistItemProps) {
 
 				{/* Action Buttons */}
 				<div className="flex gap-2">
-					<Link href={`/product/${item.productSlug}`} className="flex-1">
-						<Button variant="outline" size="sm" className="w-full">
-							View Details
-						</Button>
-					</Link>
+					<Button
+						onClick={handleAddToCart}
+						disabled={isAddingToCart}
+						size="sm"
+						className="flex-1"
+					>
+						<ShoppingCart size={16} className="mr-1" />
+						{isAddingToCart ? "Adding..." : "Add to Cart"}
+					</Button>
 					<Button
 						variant="ghost"
 						size="sm"
 						onClick={handleRemove}
+						disabled={isRemoving}
 						className="text-red-500 hover:bg-red-50 hover:text-red-600"
 					>
 						<Trash2 size={16} />
 					</Button>
 				</div>
+			</div>
+		</div>
+	);
+}
+
+// Loading Skeleton Component
+function WishlistSkeleton() {
+	return (
+		<div className="space-y-6">
+			<div>
+				<div className="mb-2 h-9 w-48 animate-pulse rounded bg-gray-200" />
+				<div className="h-5 w-24 animate-pulse rounded bg-gray-200" />
+			</div>
+
+			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+				{[...Array(8)].map((_, index) => (
+					<div
+						key={index}
+						className="overflow-hidden rounded-lg border border-gray-200 bg-white"
+					>
+						<div className="aspect-square animate-pulse bg-gray-200" />
+						<div className="p-4 space-y-3">
+							<div className="h-5 w-full animate-pulse rounded bg-gray-200" />
+							<div className="h-5 w-3/4 animate-pulse rounded bg-gray-200" />
+							<div className="h-6 w-1/2 animate-pulse rounded bg-gray-200" />
+							<div className="flex gap-2">
+								<div className="h-9 flex-1 animate-pulse rounded bg-gray-200" />
+								<div className="h-9 w-9 animate-pulse rounded bg-gray-200" />
+							</div>
+						</div>
+					</div>
+				))}
 			</div>
 		</div>
 	);

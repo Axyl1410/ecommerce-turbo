@@ -2,24 +2,29 @@
   "name": "e-commerce",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "build:docs": "turbo build --filter=docs",
-    "build:database": "pnpm --filter @workspace/database run build",
-    "build:express": "cd apps/express && pnpm build",
+    "build:database": "cd packages/database && bun run build",
+    "build:express": "cd apps/express && bun run build",
     "dev": "node scripts/kill-port.mjs 8080 && turbo dev",
-    "dev:express": "cd apps/express && pnpm dev",
-    "dev:express:clean": "node scripts/kill-port.mjs 8080 && pnpm --filter=express run dev",
+    "dev:express": "cd apps/express && bun run dev",
+    "dev:express:clean": "node scripts/kill-port.mjs 8080 && cd apps/express && bun run dev",
     "kill:port": "node scripts/kill-port.mjs",
     "lint": "turbo lint",
     "test": "turbo test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "node scripts/postinstall.mjs",
-    "heroku-postbuild": "pnpm build:database && pnpm build:express",
+    "heroku-postbuild": "bun run build:database && bun run build:express",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write",
-    "database:studio": "pnpm --filter @workspace/database run database:studio",
-    "prepare": "lefthook install"
+    "database:studio": "cd packages/database && bun run database:studio",
+    "prepare": "lefthook install",
+    "start": "turbo start"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.8",
@@ -29,5 +34,9 @@
     "typescript": "5.7.3",
     "ultracite": "6.4.1"
   },
-  "packageManager": "pnpm@10.23.0"
+  "engines": {
+    "node": ">=20",
+    "bun": ">=1.3.4"
+  },
+  "packageManager": "bun@1.3.4"
 }

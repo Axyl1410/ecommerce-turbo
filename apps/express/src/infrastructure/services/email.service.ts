@@ -1,5 +1,3 @@
-import ResetPasswordEmail from "@workspace/ui/components/email/reset-password";
-import VerificationEmail from "@workspace/ui/components/email/verification-email";
 import logger from "@/lib/logger";
 import { resend } from "@/lib/resend";
 
@@ -21,6 +19,11 @@ export async function sendResetPasswordEmail(
 	try {
 		const link = new URL(resetUrl);
 		link.searchParams.set("callbackURL", "/new-password");
+
+		// Dynamic import to avoid loading .tsx files at module initialization
+		const { default: ResetPasswordEmail } = await import(
+			"@workspace/ui/components/email/reset-password"
+		);
 
 		await resend.emails.send({
 			to: [user.email],
@@ -58,6 +61,14 @@ export async function sendVerificationEmail(
 	link.searchParams.set("callbackURL", "/welcome");
 
 	try {
+		// Dynamic import to avoid loading .tsx files at module initialization
+		const verificationEmailModule = await import(
+			"@workspace/ui/components/email/verification-email"
+		);
+		const VerificationEmail =
+			verificationEmailModule.VerificationEmail ||
+			verificationEmailModule.default;
+
 		await resend.emails.send({
 			to: [user.email],
 			from: "Axyl Team <onboarding@resend.dev>",

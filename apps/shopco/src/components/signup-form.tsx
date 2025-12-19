@@ -32,7 +32,7 @@ type SignupFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 const signupSchema = z.object({
 	name: z.string().min(1, "Name is required"),
-	email: z.email({ message: "Valid email is required" }),
+	email: z.string().email("Valid email is required"),
 	password: z.string().min(6, "Min 6 characters"),
 });
 

@@ -6,6 +6,9 @@
 	"keywords": ["node", "express", "api", "e-commerce"],
 	"buildpacks": [
 		{
+			"url": "https://github.com/oven-sh/setup-bun"
+		},
+		{
 			"url": "heroku/nodejs"
 		}
 	],
@@ -26,6 +29,6 @@
 		}
 	},
 	"scripts": {
-		"postdeploy": "cd apps/express && pnpm build"
+		"postdeploy": "cd apps/express && bun run build"
 	}
 }

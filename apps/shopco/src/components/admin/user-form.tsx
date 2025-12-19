@@ -26,7 +26,7 @@ import type { admin } from "@/lib/auth-client";
 const userFormSchema = z.object({
 	name: z.string().min(1, "Name is required").min(2, "Name must be at least 2 characters"),
 	email: z.string().email("Valid email is required"),
-	image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+	image: z.union([z.string().url("Must be a valid URL"), z.literal("")]).optional(),
 	role: z.enum(["user", "admin"]),
 });
 

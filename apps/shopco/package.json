@@ -72,9 +72,10 @@
 		"tailwindcss-animate": "^1.0.7",
 		"usehooks-ts": "^3.1.0",
 		"vaul": "^0.9.9",
-		"zod": "^4.1.13"
+		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@tailwindcss/postcss": "^4.1.11",
 		"@tanstack/eslint-plugin-query": "^4.39.1",
 		"@types/node": "^20",
 		"@types/react": "19.2.7",
@@ -84,10 +85,8 @@
 		"tailwindcss": "^4.1.11",
 		"typescript": "^5"
 	},
-	"pnpm": {
-		"overrides": {
-			"@types/react": "19.2.7",
-			"@types/react-dom": "19.2.3"
-		}
+	"overrides": {
+		"@types/react": "19.2.7",
+		"@types/react-dom": "19.2.3"
 	}
 }

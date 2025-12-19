@@ -40,7 +40,7 @@ SKIP_PRISMA_GENERATE=1
 
 ```bash
 # Build only docs (recommended)
-pnpm build:docs
+bun run build:docs
 
 # Or using turbo directly
 turbo build --filter=docs
@@ -50,7 +50,7 @@ turbo build --filter=docs
 
 ```bash
 cd apps/docs
-pnpm build
+bun run build
 ```
 
 ## Deployment Examples
@@ -59,45 +59,44 @@ pnpm build
 
 1. **Connect your repository** to Vercel
 2. **Set root directory** to `apps/docs` (recommended)
-3. **Build command**: `cd ../.. && pnpm build:docs` (if root is `apps/docs`)
-   - Or: `pnpm build` (if root is monorepo root)
+3. **Build command**: `cd ../.. && bun run build:docs` (if root is `apps/docs`)
+   - Or: `bun run build` (if root is monorepo root)
 4. **Environment variables**:
    - `SKIP_PRISMA_GENERATE=1` (if building from root)
 
 ### Netlify
 
 1. **Base directory**: `apps/docs`
-2. **Build command**: `cd ../.. && pnpm build:docs`
+2. **Build command**: `cd ../.. && bun run build:docs`
 3. **Environment variables**:
    - `SKIP_PRISMA_GENERATE=1`
 
 ### Self-hosted (Docker example)
 
 ```dockerfile
-FROM node:20-alpine
+FROM oven/bun:1-alpine
 
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json bun.lockb ./
 COPY apps/docs/package.json ./apps/docs/
 COPY packages/*/package.json ./packages/*/
 
 # Install dependencies
 ENV SKIP_PRISMA_GENERATE=1
-RUN corepack enable && corepack prepare pnpm@10.23.0 --activate
-RUN pnpm install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 # Copy source
 COPY apps/docs ./apps/docs
 COPY turbo.json ./
 
 # Build
-RUN pnpm build:docs
+RUN bun run build:docs
 
 # Start
 WORKDIR /app/apps/docs
-CMD ["pnpm", "start"]
+CMD ["bun", "run", "start"]
 ```
 
 ## Turborepo Configuration
@@ -122,9 +121,8 @@ This ensures that building docs doesn't trigger builds of other packages (`@work
 
 ### Build includes other packages
 
-**Solution:** Use `pnpm build:docs` or `turbo build --filter=docs` instead of `turbo build`.
+**Solution:** Use `bun run build:docs` or `turbo build --filter=docs` instead of `turbo build`.
 
 ### Postinstall script fails
 
-**Solution:** Ensure `SKIP_PRISMA_GENERATE=1` is set before running `pnpm install`.
-
+**Solution:** Ensure `SKIP_PRISMA_GENERATE=1` is set before running `bun install`.

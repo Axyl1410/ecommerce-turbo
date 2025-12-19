@@ -26,6 +26,6 @@
 		}
 	},
 	"scripts": {
-		"postdeploy": "cd apps/express && pnpm build"
+		"postdeploy": "cd apps/express && bun run build"
 	}
 }

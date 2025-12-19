@@ -1,6 +1,6 @@
 [build]
-  command = "cd apps/express && pnpm build"
+  command = "cd apps/express && bun run build"
 
 [deploy]
-  release = "cd ../.. && pnpm --filter @workspace/database run database:generate && pnpm --filter @workspace/database run database:deploy"
+  release = "cd ../.. && cd packages/database && bun run database:generate && bun run database:deploy"
 

@@ -1,7 +1,7 @@
 # NOTE: Disable pre-commit until ultracite is fixed
 # pre-commit:
 #   jobs:
-#     - run: pnpm dlx ultracite fix
+#     - run: bunx ultracite fix
 #       glob:
 #         - "*.js"
 #         - "*.jsx"

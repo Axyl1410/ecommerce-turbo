@@ -6,7 +6,7 @@
 	"keywords": ["node", "express", "api", "e-commerce"],
 	"buildpacks": [
 		{
-			"url": "https://github.com/oven-sh/setup-bun"
+			"url": "https://github.com/oven-sh/heroku-buildpack-bun.git"
 		},
 		{
 			"url": "heroku/nodejs"
